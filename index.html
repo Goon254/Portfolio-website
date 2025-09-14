@@ -941,106 +941,19 @@
             color: var(--text-muted);
         }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Project card link styling */
+        .frame-inner {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .modal-toggle:checked + .frame-inner + .modal {
-            display: flex;
-            opacity: 1;
+        .frame-inner:hover {
+            color: inherit;
         }
 
-        .modal-content {
-            background: var(--surface-light);
-            padding: 3rem;
-            border-radius: 24px;
-            max-width: 700px;
-            margin: 2rem;
-            position: relative;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            animation: modalSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-lg);
-        }
-
-        @keyframes modalSlide {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .modal-content h3 {
-            font-family: 'Orbitron', monospace;
-            color: var(--primary);
-            margin-bottom: 2rem;
-            font-size: 1.5rem;
-        }
-
-        .modal-content ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .modal-content li {
-            padding: 1rem 0;
-            padding-left: 2rem;
-            position: relative;
-            color: var(--text);
-            line-height: 1.6;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .modal-content li:last-child {
-            border-bottom: none;
-        }
-
-        .modal-content li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .close {
-            position: absolute;
-            top: 1.5rem;
-            right: 2rem;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .close:hover {
-            color: var(--warning);
-            background: rgba(239, 68, 68, 0.2);
-            transform: rotate(90deg);
+        .frame-inner:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
 
         /* Enhanced Interactive Room */
@@ -1703,35 +1616,35 @@
                         <span class="meter-label">C++</span>
                         <div class="bar-container">
                             <div class="bar" style="--level: 85%"></div>
-                            <span class="percentage">85%</span>
+                            <span class="percentage">75%</span>
                         </div>
                     </div>
                     <div class="meter">
                         <span class="meter-label">C#</span>
                         <div class="bar-container">
                             <div class="bar" style="--level: 80%"></div>
-                            <span class="percentage">80%</span>
+                            <span class="percentage">70%</span>
                         </div>
                     </div>
                     <div class="meter">
                         <span class="meter-label">Python</span>
                         <div class="bar-container">
                             <div class="bar" style="--level: 82%"></div>
-                            <span class="percentage">82%</span>
+                            <span class="percentage">72%</span>
                         </div>
                     </div>
                     <div class="meter">
                         <span class="meter-label">MySQL</span>
                         <div class="bar-container">
                             <div class="bar" style="--level: 78%"></div>
-                            <span class="percentage">78%</span>
+                            <span class="percentage">88%</span>
                         </div>
                     </div>
                     <div class="meter">
                         <span class="meter-label">React</span>
                         <div class="bar-container">
                             <div class="bar" style="--level: 83%"></div>
-                            <span class="percentage">83%</span>
+                            <span class="percentage">63%</span>
                         </div>
                     </div>
                     <div class="meter">
@@ -1752,7 +1665,7 @@
                         <span class="meter-label">Unix/Linux</span>
                         <div class="bar-container">
                             <div class="bar" style="--level: 75%"></div>
-                            <span class="percentage">75%</span>
+                            <span class="percentage">55%</span>
                         </div>
                     </div>
                     <div class="meter">
@@ -1782,8 +1695,7 @@
         <div class="gallery">
             <!-- Diaspora Link Project -->
             <article class="frame" data-tags="react">
-                <input type="checkbox" id="proj-diaspora" class="modal-toggle" aria-hidden="true">
-                <label class="frame-inner" for="proj-diaspora" tabindex="0">
+                <a href="projects/diaspora-link.html" class="frame-inner" tabindex="0">
                     <div class="project-header">
                         <div class="project-icon">🌍</div>
                         <h3>Diaspora Link</h3>
@@ -1805,27 +1717,12 @@
                             <span>Cross-Platform</span>
                         </div>
                     </div>
-                </label>
-                <label class="modal" for="proj-diaspora">
-                    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="proj-diaspora-title">
-                        <h3 id="proj-diaspora-title">Diaspora Link – Global Community Platform</h3>
-                        <ul>
-                            <li>Connecting diaspora communities globally with location-based group chats and networking features</li>
-                            <li>Integrated Google APIs for precise geolocation services (e.g., Kenyans in Manchester, USA)</li>
-                            <li>Comprehensive marketplace with Housing, Jobs, and Rides modules featuring advanced listing management</li>
-                            <li>Firebase backend architecture for authentication, real-time data storage, and instant updates</li>
-                            <li>Cross-platform compatibility using React Native for iOS and Android deployment</li>
-                            <li>Advanced search and filtering system for personalized community discovery</li>
-                        </ul>
-                        <span class="close">×</span>
-                    </div>
-                </label>
+                </a>
             </article>
 
             <!-- RC Vehicle Project -->
             <article class="frame" data-tags="embedded">
-                <input type="checkbox" id="proj-rc-car" class="modal-toggle" aria-hidden="true">
-                <label class="frame-inner" for="proj-rc-car" tabindex="0">
+                <a href="projects/smart-rc-vehicle.html" class="frame-inner" tabindex="0">
                     <div class="project-header">
                         <div class="project-icon">🤖</div>
                         <h3>Smart RC Vehicle</h3>
@@ -1847,27 +1744,12 @@
                             <span>High Precision</span>
                         </div>
                     </div>
-                </label>
-                <label class="modal" for="proj-rc-car">
-                    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="proj-rc-car-title">
-                        <h3 id="proj-rc-car-title">Smart RC Vehicle with PID Control</h3>
-                        <ul>
-                            <li>Remote-controlled vehicle with wireless joystick interface for precise motor and directional control</li>
-                            <li>Arduino Nano microcontroller integrated with HC-05 Bluetooth modules for reliable communication</li>
-                            <li>Advanced PID (Proportional-Integral-Derivative) control algorithm for enhanced stability and responsiveness</li>
-                            <li>LED status indicators providing real-time system feedback and operational diagnostics</li>
-                            <li>Custom mobile application for intuitive vehicle control and parameter adjustment</li>
-                            <li>Real-time sensor data processing for obstacle detection and avoidance capabilities</li>
-                        </ul>
-                        <span class="close">×</span>
-                    </div>
-                </label>
+                </a>
             </article>
 
             <!-- Event-Hive Project -->
             <article class="frame" data-tags="react">
-                <input type="checkbox" id="proj-event-hive" class="modal-toggle" aria-hidden="true">
-                <label class="frame-inner" for="proj-event-hive" tabindex="0">
+                <a href="projects/event-hive.html" class="frame-inner" tabindex="0">
                     <div class="project-header">
                         <div class="project-icon">🎉</div>
                         <h3>Event-Hive</h3>
@@ -1889,27 +1771,12 @@
                             <span>Social Focus</span>
                         </div>
                     </div>
-                </label>
-                <label class="modal" for="proj-event-hive">
-                    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="proj-event-hive-title">
-                        <h3 id="proj-event-hive-title">Event-Hive – Social Event Platform</h3>
-                        <ul>
-                            <li>End-to-end application featuring event discovery, social connections, and interactive community feeds</li>
-                            <li>Firestore database integration for real-time updates and seamless data synchronization across devices</li>
-                            <li>Modern UI/UX design with smooth animations, gradient backgrounds, and intuitive tab navigation</li>
-                            <li>Advanced search and filtering capabilities for personalized event recommendations</li>
-                            <li>Social networking features including user profiles, messaging, and event check-ins</li>
-                            <li>Push notifications system for event updates and social interactions</li>
-                        </ul>
-                        <span class="close">×</span>
-                    </div>
-                </label>
+                </a>
             </article>
 
             <!-- ML Fruit Classification -->
             <article class="frame" data-tags="ml">
-                <input type="checkbox" id="proj-fruit-ml" class="modal-toggle" aria-hidden="true">
-                <label class="frame-inner" for="proj-fruit-ml" tabindex="0">
+                <a href="projects/ai-fruit-classifier.html" class="frame-inner" tabindex="0">
                     <div class="project-header">
                         <div class="project-icon">🧠</div>
                         <h3>AI Fruit Classifier</h3>
@@ -1931,21 +1798,7 @@
                             <span>High Accuracy</span>
                         </div>
                     </div>
-                </label>
-                <label class="modal" for="proj-fruit-ml">
-                    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="proj-fruit-ml-title">
-                        <h3 id="proj-fruit-ml-title">AI Fruit Classification System</h3>
-                        <ul>
-                            <li>Developed and trained Convolutional Neural Network (CNN) for accurate fruit image classification using TensorFlow/Keras</li>
-                            <li>Implemented comprehensive hyperparameter tuning and model optimization techniques for enhanced performance</li>
-                            <li>Generated detailed accuracy reports and confusion matrices to analyze model performance and guide improvements</li>
-                            <li>Data preprocessing pipeline including image augmentation and normalization for robust training</li>
-                            <li>Model evaluation using cross-validation and performance metrics analysis</li>
-                            <li>Real-time inference capabilities with optimized model deployment strategies</li>
-                        </ul>
-                        <span class="close">×</span>
-                    </div>
-                </label>
+                </a>
             </article>
         </div>
     </section>
@@ -2044,7 +1897,7 @@
                 <span class="name">Email</span>
                 <span class="url">Get In Touch</span>
             </a>
-            <a class="social-card" href="tel:+1234567890" aria-label="Call Collins">
+            <a class="social-card" href="tel:+1 6033381650" aria-label="Call Collins">
                 <span class="icon">📞</span>
                 <span class="name">Call</span>
                 <span class="url">Let's Talk</span>
@@ -2275,20 +2128,15 @@
             }
         }
 
-        // Enhanced modal system
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('close') || e.target.classList.contains('modal')) {
-                const modals = document.querySelectorAll('.modal-toggle');
-                modals.forEach(modal => modal.checked = false);
-            }
-        });
-
-        // Enhanced keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modals = document.querySelectorAll('.modal-toggle');
-                modals.forEach(modal => modal.checked = false);
-            }
+        // Enhanced project card interactions
+        document.querySelectorAll('.frame').forEach(frame => {
+            frame.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            frame.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
         });
 
         // Enhanced orb interactions with haptic feedback
