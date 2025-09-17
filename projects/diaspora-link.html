@@ -440,6 +440,29 @@
             background: var(--glass);
         }
 
+        .screenshot-container {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .screenshot-container:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .screenshot-container img {
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot-container:hover img {
+            transform: scale(1.02);
+        }
+
         .timeline {
             position: relative;
             padding-left: 2rem;
@@ -602,18 +625,53 @@
         <section class="content-section">
             <div class="media-section">
                 <h2 class="section-title">Screenshots & Media</h2>
+                
+                <!-- Demo Video -->
+                <div style="margin-bottom: 3rem; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem; font-family: 'Orbitron', monospace;">App Demo Video</h3>
+                    <div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);">
+                        <iframe width="100%" height="450" src="https://www.youtube.com/embed/d5Vv0J_j3y0?si=GE1gf_HqW5r17_m1" title="Diaspora Link App Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius: 16px;"></iframe>
+                    </div>
+                </div>
+
+                <!-- App Screenshots -->
+                <h3 style="color: var(--primary); margin-bottom: 1.5rem; font-family: 'Orbitron', monospace; text-align: center;">App Screenshots</h3>
                 <div class="media-grid">
-                    <div class="media-placeholder">
-                        📱 App Screenshots Coming Soon
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/welcome page.jpg" alt="Welcome Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Welcome Screen</p>
                     </div>
-                    <div class="media-placeholder">
-                        🎥 Demo Video Coming Soon
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/login page.jpg" alt="Login Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Login Interface</p>
                     </div>
-                    <div class="media-placeholder">
-                        🗺️ Location Features Preview
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/create account page.jpg" alt="Create Account Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Account Creation</p>
                     </div>
-                    <div class="media-placeholder">
-                        💬 Chat Interface Preview
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/profile screen1.jpg" alt="Profile Screen 1" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">User Profile</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/profile screen2.jpg" alt="Profile Screen 2" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Profile Settings</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/community page.jpg" alt="Community Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Community Hub</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/housing page.jpg" alt="Housing Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Housing Marketplace</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/jobs page.jpg" alt="Jobs Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Jobs Board</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="diaspora-link/rides page.jpg" alt="Rides Page" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Ride Sharing</p>
                     </div>
                 </div>
             </div>
