@@ -363,14 +363,16 @@
 
         .constellation {
             font-family: 'Orbitron', monospace;
-            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-size: clamp(2.8rem, 8vw, 7rem);
             font-weight: 900;
             margin-bottom: 2rem;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
-            gap: 0.1em;
+            gap: 0.05em;
             position: relative;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .constellation span {
