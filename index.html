@@ -1060,16 +1060,23 @@
             line-height: 1.7;
         }
 
-        .type::after {
-            content: var(--text);
-            animation: typing 6s steps(80) infinite;
-            white-space: pre-wrap;
+        .type {
+            position: relative;
+            min-height: 1.5em;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            line-height: 1.7;
         }
 
-        @keyframes typing {
-            0%, 85% { content: var(--text); }
-            90%, 95% { content: var(--text) '▋'; }
-            100% { content: var(--text); }
+        .type::after {
+            content: '▋';
+            animation: blink 1s infinite;
+            color: var(--accent);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         /* Enhanced Space Journey */
@@ -2054,12 +2061,18 @@
                             if (entry.target.classList.contains('skills')) {
                                 animateSkillBars();
                             }
+                            if (entry.target.classList.contains('terminal')) {
+                                // Initialize typing animation when terminal section comes into view
+                                setTimeout(() => {
+                                    initializeTypingAnimation();
+                                }, 500);
+                            }
                         }, index * 100);
                         
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { 
+            }, {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
             });
@@ -2331,6 +2344,46 @@
                 // Could implement swipe gestures here if needed
             }, { passive: true });
         })();
+
+        // Typing animation for terminal thoughts
+        function initializeTypingAnimation() {
+            const typeElements = document.querySelectorAll('.type');
+            
+            typeElements.forEach((element, index) => {
+                const text = element.style.getPropertyValue('--text').replace(/'/g, '');
+                if (!text) return;
+                
+                element.textContent = '';
+                element.style.position = 'relative';
+                
+                // Add typing effect with delay based on element index
+                setTimeout(() => {
+                    typeText(element, text, 50); // 50ms delay between characters
+                }, index * 2000); // 2 second delay between each element
+            });
+        }
+        
+        function typeText(element, text, speed) {
+            let i = 0;
+            element.textContent = '';
+            
+            function typeChar() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeChar, speed);
+                } else {
+                    // Add blinking cursor after typing is complete
+                    const cursor = document.createElement('span');
+                    cursor.textContent = '▋';
+                    cursor.style.animation = 'blink 1s infinite';
+                    cursor.style.color = 'var(--accent)';
+                    element.appendChild(cursor);
+                }
+            }
+            
+            typeChar();
+        }
 
         // Performance monitoring
         (function() {
