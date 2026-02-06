@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Collins Kibet | Software Engineer & Robotics</title>
-  <meta name="description" content="Collins Kibet - Software engineer specializing in robotics, embedded systems, and full-stack development. Building technology at the intersection of code and motion.">
+  <title>Projects | Collins Kibet</title>
+  <meta name="description" content="Collins Kibet's portfolio of software and robotics projects.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -15,10 +15,10 @@
     <nav class="nav">
       <a class="brand" href="index.html">Collins Kibet</a>
       <ul class="nav-menu">
-        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="skills.html">Skills</a></li>
-        <li><a href="projects.html">Projects</a></li>
+        <li><a href="projects.html" class="active">Projects</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
       <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
@@ -26,22 +26,11 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container">
-        <img src="assets/images/collins.jpeg" alt="Collins Kibet - graduation headshot" class="hero-photo">
-        <h1>Collins Kibet</h1>
-        <p>Software engineer specializing in robotics, embedded systems, and full-stack development. Building technology at the intersection of code and motion.</p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="projects.html" class="btn btn-primary">View Projects</a>
-          <a href="contact.html" class="btn btn-secondary">Get in Touch</a>
-        </div>
-      </div>
-    </section>
-
     <section class="section">
       <div class="container">
-        <h2 class="section-title">Featured Work</h2>
-        <p class="section-subtitle">Live projects and selected work spanning full-stack web, mobile apps, and embedded systems.</p>
+        <h1 class="section-title">Projects</h1>
+        <p class="section-subtitle">Live apps, client work, and solutions spanning full-stack web, mobile, and embedded systems.</p>
+        
         <div class="project-grid">
           <a href="projects/thletiq.html" class="project-card">
             <h3>ThletIQ</h3>
@@ -49,8 +38,9 @@
               <span class="tag">Next.js</span>
               <span class="tag">TypeScript</span>
               <span class="tag">PostgreSQL</span>
+              <span class="tag">Live</span>
             </div>
-            <p class="blurb">AI-powered fitness app at thletiq.com — personalized workout programs, 200+ exercises, progress tracking. Free gym plans for everyone.</p>
+            <p class="blurb">AI-powered fitness platform (thletiq.com) — personalized workout programs, 200+ exercises, progress tracking. Free for everyone.</p>
           </a>
           <a href="projects/east-african-bites.html" class="project-card">
             <h3>East African Bites</h3>
@@ -58,6 +48,7 @@
               <span class="tag">Next.js</span>
               <span class="tag">Supabase</span>
               <span class="tag">Twilio</span>
+              <span class="tag">Live</span>
             </div>
             <p class="blurb">Full-stack food ordering platform for chapatis & mandazis. Multi-step checkout, zone-based delivery, SMS notifications, admin dashboard.</p>
           </a>
@@ -66,35 +57,39 @@
             <div class="project-tags">
               <span class="tag">React Native</span>
               <span class="tag">Firebase</span>
-              <span class="tag">Cross-Platform</span>
+              <span class="tag">Google APIs</span>
+              <span class="tag">Closed Testing</span>
             </div>
-            <p class="blurb">Community networking app connecting diaspora communities. In closed testing on iOS & Android. Housing, Jobs, Rides marketplace.</p>
+            <p class="blurb">Community networking app connecting diaspora communities worldwide. Location-based chat, Housing/Jobs/Rides marketplace. iOS & Android.</p>
           </a>
           <a href="projects/ministry-website.html" class="project-card">
             <h3>Ministry Website</h3>
             <div class="project-tags">
               <span class="tag">Client Work</span>
               <span class="tag">Vercel</span>
+              <span class="tag">Live</span>
             </div>
-            <p class="blurb">Website for a church organization in Kenya. Client project — learned client handling and the importance of clear communication.</p>
+            <p class="blurb">Website for a church organization in Kenya. Client project — learned client handling and clear communication.</p>
           </a>
           <a href="projects/smart-rc-vehicle.html" class="project-card">
             <h3>Smart RC Vehicle</h3>
             <div class="project-tags">
               <span class="tag">Arduino</span>
               <span class="tag">PID Control</span>
+              <span class="tag">Bluetooth</span>
               <span class="tag">Embedded C++</span>
             </div>
-            <p class="blurb">Autonomous vehicle with PID stabilization, wireless control, and real-time feedback systems.</p>
+            <p class="blurb">Advanced autonomous vehicle with PID stabilization, wireless control, and real-time feedback systems. Custom mobile app for control.</p>
           </a>
           <a href="projects/event-hive.html" class="project-card">
             <h3>Event-Hive</h3>
             <div class="project-tags">
               <span class="tag">React Native</span>
               <span class="tag">Firestore</span>
+              <span class="tag">Real-time</span>
               <span class="tag">Social</span>
             </div>
-            <p class="blurb">Social events platform featuring event discovery, networking, and community engagement.</p>
+            <p class="blurb">Social events platform featuring event discovery, networking, and community engagement. Built with React Native and real-time sync.</p>
           </a>
           <a href="projects/ai-fruit-classifier.html" class="project-card">
             <h3>AI Fruit Classifier</h3>
@@ -102,12 +97,10 @@
               <span class="tag">TensorFlow</span>
               <span class="tag">CNN</span>
               <span class="tag">Python</span>
+              <span class="tag">Computer Vision</span>
             </div>
-            <p class="blurb">Deep learning image classification using Convolutional Neural Networks with 94%+ accuracy.</p>
+            <p class="blurb">Deep learning image classification using Convolutional Neural Networks. 94%+ accuracy, comprehensive model evaluation.</p>
           </a>
-        </div>
-        <div style="text-align: center; margin-top: 2rem;">
-          <a href="projects.html" class="btn btn-secondary">View All Projects</a>
         </div>
       </div>
     </section>

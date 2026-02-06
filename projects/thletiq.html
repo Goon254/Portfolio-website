@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThletIQ | Collins Kibet</title>
+  <meta name="description" content="ThletIQ - AI-powered fitness platform that generates personalized workout programs. Live at thletiq.com.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="../index.html">Collins Kibet</a>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../skills.html">Skills</a></li>
+        <li><a href="../projects.html" class="active">Projects</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <a href="../projects.html" class="back-link">← Back to Projects</a>
+      
+      <section class="project-hero">
+        <h1>ThletIQ</h1>
+        <p class="subtitle">AI-powered fitness platform that generates personalized workout programs — free, structured gym plans without subscriptions.</p>
+        <div class="project-tags" style="justify-content: center; margin: 1rem 0;">
+          <span class="tag">Next.js</span>
+          <span class="tag">React</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Prisma</span>
+          <span class="tag">Clerk</span>
+          <span class="tag">Vercel</span>
+        </div>
+        <a href="https://www.thletiq.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 0.5rem;">Visit thletiq.com →</a>
+      </section>
+
+      <section class="content-section">
+        <h2>Why I Built This</h2>
+        <p style="color: var(--color-text-muted); line-height: 1.8; max-width: 640px;">
+          I was tired of big fitness apps charging users just to get a structured gym plan. When my friend Allan asked me to make him a workout plan, I decided to build something that would enable many people to have structure in the gym without paying a penny.
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Project Overview</h2>
+        <div class="content-grid">
+          <div class="content-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>AI-powered program generation from user onboarding (experience level, goals, equipment)</li>
+              <li>200+ exercises with equipment substitution logic and movement-pattern coverage</li>
+              <li>Personalized workout plans adapted to fitness goals and weekly availability</li>
+              <li>End-to-end workout tracking: session logging, set/rep/weight, RPE, personal records</li>
+              <li>Progress dashboards with volume trends, muscle distribution, and streak tracking</li>
+              <li>Secure authentication and real-time workout logging across dashboard and history views</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>Technical Architecture</h3>
+            <ul>
+              <li>Next.js 16, React 19, TypeScript — full-stack app deployed on Vercel</li>
+              <li>PostgreSQL (Neon) with Prisma ORM for workout sessions, progress, and streaks</li>
+              <li>RESTful API for program generation, progress tracking, and personal records</li>
+              <li>Clerk authentication and Zustand state management</li>
+              <li>Recharts for data visualization (volume trends, muscle distribution)</li>
+              <li>Tailwind CSS for responsive UI</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Collins Kibet. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

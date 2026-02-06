@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>East African Bites | Collins Kibet</title>
+  <meta name="description" content="East African Bites - Full-stack food ordering platform for chapatis, mandazis, and East African snacks. Live cottage food business.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="../index.html">Collins Kibet</a>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../skills.html">Skills</a></li>
+        <li><a href="../projects.html" class="active">Projects</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <a href="../projects.html" class="back-link">← Back to Projects</a>
+      
+      <section class="project-hero">
+        <h1>East African Bites</h1>
+        <p class="subtitle">Full-stack food ordering platform for a cottage food business — chapatis, mandazis, and East African snacks with pickup and delivery.</p>
+        <div class="project-tags" style="justify-content: center; margin: 1rem 0;">
+          <span class="tag">Next.js</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Supabase</span>
+          <span class="tag">Twilio</span>
+          <span class="tag">Zustand</span>
+          <span class="tag">Tailwind</span>
+        </div>
+        <a href="https://east-african-bites-ggni.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 0.5rem;">Visit Site →</a>
+      </section>
+
+      <section class="content-section">
+        <h2>Why I Built This</h2>
+        <p style="color: var(--color-text-muted); line-height: 1.8; max-width: 640px;">
+          I love baking — especially chapatis (flatbread) and mandazis (East African snacks). After graduation, job hunting as an international student has been tough. I got creative and started this small business to help pay bills while sharing the food I love with my community.
+        </p>
+      </section>
+
+      <section class="content-section">
+        <h2>Project Overview</h2>
+        <div class="content-grid">
+          <div class="content-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Full-stack e-commerce with pickup and delivery options</li>
+              <li>Zone-based delivery fees and daily capacity limits</li>
+              <li>Multi-step checkout with Zod validation and React Hook Form</li>
+              <li>Twilio SMS for order confirmations, status updates, and cancellations</li>
+              <li>Admin dashboard for order management and financial tracking</li>
+              <li>Cart system with Zustand and localStorage persistence</li>
+              <li>Phone verification for secure order lookup</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>Technical Architecture</h3>
+            <ul>
+              <li>Next.js 16 with Server Actions and React 19</li>
+              <li>Supabase (PostgreSQL) for orders, delivery zones, and capacity logic</li>
+              <li>RPC functions for order numbering and capacity checks</li>
+              <li>Twilio integration for SMS notifications</li>
+              <li>Zustand for state management, Framer Motion for animations</li>
+              <li>Tailwind CSS for responsive, mobile-first UI</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Collins Kibet. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
