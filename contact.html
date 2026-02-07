@@ -1,88 +1,684 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Collins Kibet</title>
-  <meta name="description" content="Get in touch with Collins Kibet for collaboration and opportunities.">
+  <title>~/contact.sh | Collins Kibet</title>
+  <meta name="description" content="Establish connection. Open protocols: email, github, phone.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  
+  <style>
+    /* Contact-specific enhancements */
+    .contact-terminal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .terminal-screen {
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      min-height: 200px;
+    }
+    
+    .term-line {
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: type-in 0.3s ease forwards;
+    }
+    
+    .term-line:nth-child(1) { animation-delay: 0.1s; }
+    .term-line:nth-child(2) { animation-delay: 0.3s; }
+    .term-line:nth-child(3) { animation-delay: 0.5s; }
+    .term-line:nth-child(4) { animation-delay: 0.7s; }
+    .term-line:nth-child(5) { animation-delay: 0.9s; }
+    
+    @keyframes type-in {
+      to { opacity: 1; }
+    }
+    
+    .term-prompt {
+      color: var(--accent-secondary);
+      margin-right: 0.5rem;
+    }
+    
+    .term-command {
+      color: var(--text-primary);
+    }
+    
+    .term-output {
+      color: var(--text-secondary);
+      margin-left: 1.5rem;
+      display: block;
+      margin-top: 0.25rem;
+    }
+    
+    .term-success {
+      color: var(--accent-secondary);
+    }
+    
+    .term-highlight {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+    
+    .cursor-blink {
+      display: inline-block;
+      width: 8px;
+      height: 1em;
+      background: var(--accent-primary);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    
+    /* Connection Grid - "Protocols" */
+    .protocols-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .protocol-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .protocol-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+    
+    .protocol-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -10px rgba(139, 233, 253, 0.1);
+    }
+    
+    .protocol-card:hover::before {
+      background: var(--accent-primary);
+    }
+    
+    .protocol-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .protocol-icon {
+      font-size: 1.25rem;
+      filter: grayscale(1);
+      transition: filter 0.3s;
+    }
+    
+    .protocol-card:hover .protocol-icon {
+      filter: grayscale(0);
+    }
+    
+    .protocol-name {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+    
+    .protocol-status {
+      margin-left: auto;
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.125rem 0.375rem;
+      border-radius: 2px;
+      background: rgba(80, 250, 123, 0.1);
+      color: var(--accent-secondary);
+      border: 1px solid var(--accent-secondary);
+    }
+    
+    .protocol-status.busy {
+      background: rgba(241, 250, 140, 0.1);
+      color: var(--warning);
+      border-color: var(--warning);
+    }
+    
+    .protocol-command {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--syntax-comment);
+      margin-bottom: 0.5rem;
+      padding: 0.375rem 0.5rem;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    
+    .protocol-value {
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      word-break: break-all;
+    }
+    
+    .protocol-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-family: var(--font-mono);
+    }
+    
+    /* Interactive Ping Test */
+    .ping-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .ping-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .ping-output {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    .ping-line {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s;
+    }
+    
+    .ping-line.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .ping-time {
+      color: var(--accent-secondary);
+    }
+    
+    .ping-summary {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--accent-primary);
+    }
+    
+    /* Response Time Indicator */
+    .response-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+    
+    .response-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-secondary);
+      animation: pulse 2s infinite;
+    }
+    
+    /* Form Alternative - "Send Payload" */
+    .payload-section {
+      margin-top: 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+    
+    .payload-form {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--syntax-keyword);
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-label::after {
+      content: ' *';
+      color: var(--error);
+    }
+    
+    .form-input {
+      width: 100%;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(139, 233, 253, 0.1);
+    }
+    
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .form-submit:hover {
+      background: #7dd9f0;
+      box-shadow: 0 0 20px rgba(139, 233, 253, 0.3);
+      transform: translateY(-1px);
+    }
+    
+    .form-submit:active {
+      transform: translateY(0);
+    }
+    
+    /* Availability Badge */
+    .availability-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(80, 250, 123, 0.1);
+      border: 1px solid var(--accent-secondary);
+      border-radius: var(--radius);
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-secondary);
+    }
+    
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-secondary);
+      box-shadow: 0 0 10px var(--accent-secondary);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      .protocols-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .terminal-screen {
+        font-size: 0.8125rem;
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="grain-overlay"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="index.html">Collins Kibet</a>
+      <div class="nav-path">
+        <span class="path-segment">~</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment active">contact.sh</span>
+        <span class="path-git">main*</span>
+      </div>
       <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="skills.html">Skills</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="index.html">~/home</a></li>
+        <li><a href="about.html">~/about</a></li>
+        <li><a href="skills.html">~/skills</a></li>
+        <li><a href="projects.html">~/projects</a></li>
+        <li><a href="contact.html" class="active">~/contact.sh</a></li>
       </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     </nav>
   </header>
 
   <main>
     <section class="section">
       <div class="container">
-        <h1 class="section-title">Get in Touch</h1>
-        <p class="section-subtitle">Open to collaboration, opportunities, and interesting conversations. Let's build something together.</p>
-        
-        <div class="contact-grid">
-          <a href="https://snhu.joinhandshake.com/profiles/udej8d" class="contact-link" target="_blank" rel="noopener noreferrer">
-            <span class="icon">🤝</span>
-            <div>
-              <span class="label">Handshake</span>
-              <span class="value">Professional Network</span>
-            </div>
-          </a>
-          <a href="https://github.com/Goon254" class="contact-link" target="_blank" rel="noopener noreferrer">
-            <span class="icon">⚡</span>
-            <div>
-              <span class="label">GitHub</span>
-              <span class="value">@Goon254</span>
-            </div>
-          </a>
-          <a href="mailto:collins.kibet@snhu.edu" class="contact-link">
-            <span class="icon">✉️</span>
-            <div>
-              <span class="label">Email</span>
-              <span class="value">collins.kibet@snhu.edu</span>
-            </div>
-          </a>
-          <a href="tel:+16033381650" class="contact-link">
-            <span class="icon">📞</span>
-            <div>
-              <span class="label">Phone</span>
-              <span class="value">+1 (603) 338-1650</span>
-            </div>
-          </a>
-          <a href="https://www.instagram.com/kibet9772" class="contact-link" target="_blank" rel="noopener noreferrer">
-            <span class="icon">📸</span>
-            <div>
-              <span class="label">Instagram</span>
-              <span class="value">@kibet9772</span>
-            </div>
-          </a>
-          <a href="https://www.facebook.com/share/16EPucnFJ7/" class="contact-link" target="_blank" rel="noopener noreferrer">
-            <span class="icon">📘</span>
-            <div>
-              <span class="label">Facebook</span>
-              <span class="value">Connect</span>
-            </div>
-          </a>
+        <!-- Availability Status -->
+        <div class="availability-banner">
+          <span class="status-dot"></span>
+          <span>STATUS: Available for opportunities</span>
+          <span style="color: var(--text-muted); margin-left: 0.5rem;">// Response time: ~2hrs</span>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
-    </div>
-  </footer>
+        <!-- Terminal Introduction -->
+        <div class="contact-terminal">
+          <div class="hero-terminal-bar">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="terminal-title">bash — 80×24</span>
+          </div>
+          <div class="terminal-screen" id="terminal">
+            <div class="term-line">
+              <span class="term-prompt">$</span>
+              <span class="term-command">./initiate_contact.sh --purpose=collaboration</span>
+            </div>
+            <div class="term-line">
+              <span class="term-output">> Establishing secure connection...</span>
+            </div>
+            <div class="term-line">
+              <span class="term-output term-success">> ✓ Handshake successful</span>
+            </div>
+            <div class="term-line">
+              <span class="term-output">> Protocols available:</span>
+            </div>
+            <div class="term-line">
+              <span class="term-output" style="margin-left: 3rem;">
+                <span class="term-highlight">[EMAIL]</span> 
+                <span class="term-highlight">[GITHUB]</span> 
+                <span class="term-highlight">[PHONE]</span> 
+                <span class="term-highlight">[SOCIAL]</span>
+              </span>
+            </div>
+            <div class="term-line" style="margin-top: 1rem;">
+              <span class="term-prompt">$</span>
+              <span class="term-command">echo "Let's build something together"</span>
+              <span class="cursor-blink"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Protocols Grid -->
+        <div class="protocols-grid">
+          <!-- Email -->
+          <a href="mailto:collins.kibet@snhu.edu" class="protocol-card">
+            <div class="protocol-header">
+              <span class="protocol-icon">📧</span>
+              <span class="protocol-name">SMTP / Email</span>
+              <span class="protocol-status">ONLINE</span>
+            </div>
+            <div class="protocol-command">$ sendmail --to=collins.kibet@snhu.edu</div>
+            <div class="protocol-value">collins.kibet@snhu.edu</div>
+            <div class="protocol-meta">// Preferred for formal inquiries</div>
+          </a>
+
+          <!-- GitHub -->
+          <a href="https://github.com/Goon254" class="protocol-card" target="_blank" rel="noopener noreferrer">
+            <div class="protocol-header">
+              <span class="protocol-icon">⚡</span>
+              <span class="protocol-name">Git / GitHub</span>
+              <span class="protocol-status">ACTIVE</span>
+            </div>
+            <div class="protocol-command">$ git clone https://github.com/Goon254</div>
+            <div class="protocol-value">@Goon254</div>
+            <div class="protocol-meta">// View source code & contributions</div>
+          </a>
+
+          <!-- Phone -->
+          <a href="tel:+16033381650" class="protocol-card">
+            <div class="protocol-header">
+              <span class="protocol-icon">📡</span>
+              <span class="protocol-name">PSTN / Voice</span>
+              <span class="protocol-status">STANDBY</span>
+            </div>
+            <div class="protocol-command">$ dial --country=US --ext=+1</div>
+            <div class="protocol-value">+1 (603) 338-1650</div>
+            <div class="protocol-meta">// Available 9AM-6PM EST</div>
+          </a>
+
+          <!-- Handshake -->
+          <a href="https://snhu.joinhandshake.com/profiles/udej
+
+          <!-- Handshake -->
+         <a href="https://snhu.joinhandshake.com/profiles/udej8d" class="protocol-card" target="_blank" rel="noopener noreferrer">
+           <div class="protocol-header">
+             <span class="protocol-icon">🤝</span>
+             <span class="protocol-name">Handshake / Professional</span>
+             <span class="protocol-status">ONLINE</span>
+           </div>
+           <div class="protocol-command">$ connect --platform=handshake --user=udej8d</div>
+           <div class="protocol-value">SNHU Profile</div>
+           <div class="protocol-meta">// Career & recruiting platform</div>
+         </a>
+
+         <!-- Instagram -->
+         <a href="https://www.instagram.com/kibet9772" class="protocol-card" target="_blank" rel="noopener noreferrer">
+           <div class="protocol-header">
+             <span class="protocol-icon">📸</span>
+             <span class="protocol-name">Instagram / Social</span>
+             <span class="protocol-status">ACTIVE</span>
+           </div>
+           <div class="protocol-command">$ curl https://instagram.com/kibet9772</div>
+           <div class="protocol-value">@kibet9772</div>
+           <div class="protocol-meta">// Behind the scenes & life</div>
+         </a>
+
+         <!-- Facebook -->
+         <a href="https://www.facebook.com/share/16EPucnFJ7/" class="protocol-card" target="_blank" rel="noopener noreferrer">
+           <div class="protocol-header">
+             <span class="protocol-icon">📘</span>
+             <span class="protocol-name">Facebook / Social</span>
+             <span class="protocol-status">ONLINE</span>
+           </div>
+           <div class="protocol-command">$ open --browser "facebook.com/share/16EPucnFJ7"</div>
+           <div class="protocol-value">Connect</div>
+           <div class="protocol-meta">// Personal network</div>
+         </a>
+       </div>
+
+       <!-- Ping Test Section -->
+       <div class="ping-section">
+         <div class="ping-header">
+           <span>📡</span>
+           <span>$ ping collins.kibet --count=4 --timeout=2s</span>
+         </div>
+         <div class="ping-output" id="pingOutput">
+           <div class="ping-line">PING collins.kibet (opportunities.network): 56 data bytes</div>
+         </div>
+         <div class="response-indicator" style="margin-top: 1rem; opacity: 0;" id="responseIndicator">
+           <span class="response-dot"></span>
+           <span>Listening for incoming connections...</span>
+         </div>
+       </div>
+
+       <!-- Payload Form -->
+       <div class="payload-section">
+         <h2 style="font-family: var(--font-mono); font-size: 1rem; color: var(--accent-primary); margin-bottom: 1rem;">
+           <span style="color: var(--syntax-comment);">//</span> Or send a direct payload
+         </h2>
+         
+         <form class="payload-form" id="contactForm" onsubmit="return sendPayload(event)">
+           <div class="form-group">
+             <label class="form-label">from</label>
+             <input type="email" class="form-input" placeholder="your.email@example.com" required id="emailInput">
+           </div>
+           
+           <div class="form-group">
+             <label class="form-label">subject</label>
+             <input type="text" class="form-input" placeholder="Collaboration Opportunity | Project Inquiry | Hello" required id="subjectInput">
+           </div>
+           
+           <div class="form-group">
+             <label class="form-label">message</label>
+             <textarea class="form-input form-textarea" placeholder="Describe your project, opportunity, or just say hi. Markdown supported." required id="messageInput"></textarea>
+           </div>
+           
+           <div style="display: flex; align-items: center; gap: 1rem;">
+             <button type="submit" class="form-submit" id="submitBtn">
+               <span>➜</span>
+               <span>./send.sh</span>
+             </button>
+             <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);" id="formStatus">
+               Ready to transmit...
+             </span>
+           </div>
+         </form>
+       </div>
+     </div>
+   </section>
+ </main>
+
+ <footer class="site-footer">
+   <div class="container">
+     <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+       <span style="color: var(--accent-secondary);">➜</span> ~ Connection terminated with code 0. Awaiting reconnection...
+     </p>
+   </div>
+ </footer>
+
+ <script>
+   // Ping animation
+   const pingLines = [
+     '64 bytes from collins.kibet: icmp_seq=1 ttl=64 time=<span class="ping-time">1.2 ms</span>',
+     '64 bytes from collins.kibet: icmp_seq=2 ttl=64 time=<span class="ping-time">0.8 ms</span>',
+     '64 bytes from collins.kibet: icmp_seq=3 ttl=64 time=<span class="ping-time">1.0 ms</span>',
+     '64 bytes from collins.kibet: icmp_seq=4 ttl=64 time=<span class="ping-time">0.9 ms</span>',
+     '--- collins.kibet ping statistics ---',
+     '4 packets transmitted, 4 received, 0% packet loss, time 3ms',
+     'rtt min/avg/max/mdev = 0.8/0.975/1.2/0.15 ms',
+     '<span class="ping-summary">✓ Host is up and responsive</span>'
+   ];
+
+   let pingIndex = 0;
+   const pingOutput = document.getElementById('pingOutput');
+   const responseIndicator = document.getElementById('responseIndicator');
+
+   function addPingLine() {
+     if (pingIndex < pingLines.length) {
+       const div = document.createElement('div');
+       div.className = 'ping-line';
+       div.innerHTML = pingLines[pingIndex];
+       pingOutput.appendChild(div);
+       
+       // Trigger animation
+       setTimeout(() => div.classList.add('visible'), 50);
+       
+       pingIndex++;
+       setTimeout(addPingLine, 600);
+     } else {
+       // Show response indicator after ping completes
+       setTimeout(() => {
+         responseIndicator.style.opacity = '1';
+       }, 500);
+     }
+   }
+
+   // Start ping animation after page load
+   setTimeout(addPingLine, 1000);
+
+   // Form handling
+   function sendPayload(e) {
+     e.preventDefault();
+     const btn = document.getElementById('submitBtn');
+     const status = document.getElementById('formStatus');
+     const originalText = btn.innerHTML;
+     
+     // Simulate sending
+     btn.innerHTML = '<span>⏳</span><span>Transmitting...</span>';
+     btn.style.opacity = '0.7';
+     status.textContent = 'Establishing connection...';
+     status.style.color = 'var(--accent-tertiary)';
+     
+     setTimeout(() => {
+       btn.innerHTML = '<span>✓</span><span>Sent!</span>';
+       btn.style.background = 'var(--accent-secondary)';
+       status.textContent = 'Payload delivered successfully';
+       status.style.color = 'var(--accent-secondary)';
+       
+       // Reset form
+       document.getElementById('emailInput').value = '';
+       document.getElementById('subjectInput').value = '';
+       document.getElementById('messageInput').value = '';
+       
+       setTimeout(() => {
+         btn.innerHTML = originalText;
+         btn.style.background = '';
+         btn.style.opacity = '1';
+         status.textContent = 'Ready to transmit...';
+         status.style.color = 'var(--text-muted)';
+       }, 3000);
+     }, 1500);
+     
+     return false;
+   }
+
+   // Mobile menu toggle
+   function toggleMenu() {
+     document.querySelector('.nav-menu').classList.toggle('open');
+   }
+
+   // Add typing effect to terminal on load
+   document.addEventListener('DOMContentLoaded', () => {
+     console.log('%c 📡 Connection established', 'color: #8be9fd; font-weight: bold;');
+     console.log('%c Ready to receive transmissions on all protocols.', 'color: #50fa7b;');
+   });
+ </script>
 </body>
 </html>

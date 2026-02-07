@@ -1,68 +1,856 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Skills | Collins Kibet</title>
-  <meta name="description" content="Collins Kibet's technical skills and technologies.">
+  <title>~/skills | Collins Kibet</title>
+  <meta name="description" content="Technical stack and proficiencies.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  
+  <style>
+    /* Skills-specific enhancements */
+    .skills-layout {
+      display: grid;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    /* Package.json Style Header */
+    .package-header {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    
+    .package-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .package-title {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+    }
+    
+    .package-content {
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+    
+    .json-key {
+      color: var(--accent-pink);
+    }
+    
+    .json-string {
+      color: var(--syntax-string);
+    }
+    
+    .json-number {
+      color: var(--accent-tertiary);
+    }
+    
+    .json-boolean {
+      color: var(--accent-primary);
+    }
+    
+    .json-bracket {
+      color: var(--text-primary);
+    }
+    
+    .json-indent {
+      margin-left: 2ch;
+    }
+    
+    .json-indent-2 {
+      margin-left: 4ch;
+    }
+    
+    /* Skill Categories as "Imports" */
+    .skill-category {
+      margin-bottom: 2.5rem;
+      animation: compile-in 0.6s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+    }
+    
+    .skill-category:nth-child(1) { animation-delay: 0.1s; }
+    .skill-category:nth-child(2) { animation-delay: 0.2s; }
+    .skill-category:nth-child(3) { animation-delay: 0.3s; }
+    .skill-category:nth-child(4) { animation-delay: 0.4s; }
+    
+    @keyframes compile-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.9375rem;
+      color: var(--syntax-comment);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+    
+    .category-header::before {
+      content: '//';
+      color: var(--accent-primary);
+    }
+    
+    .category-import {
+      color: var(--syntax-keyword);
+      margin-right: 0.5rem;
+    }
+    
+    .category-from {
+      color: var(--syntax-keyword);
+    }
+    
+    .category-source {
+      color: var(--syntax-string);
+    }
+    
+    /* Terminal-style Skill Bars */
+    .skill-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+    
+    .skill-row {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.625rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    
+    .skill-row:hover {
+      background: var(--bg-secondary);
+      margin: 0 -0.75rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      border-radius: var(--radius);
+    }
+    
+    .skill-name {
+      color: var(--text-primary);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .skill-icon {
+      font-size: 1rem;
+    }
+    
+    .skill-bar-container {
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+    }
+    
+    .skill-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .skill-bar-fill.advanced {
+      background: var(--accent-secondary);
+      width: 90%;
+    }
+    
+    .skill-bar-fill.proficient {
+      background: var(--accent-primary);
+      width: 75%;
+    }
+    
+    .skill-bar-fill.intermediate {
+      background: var(--accent-tertiary);
+      width: 60%;
+    }
+    
+    .skill-level {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    /* Currently Learning - Git Status Style */
+    .learning-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .learning-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-tertiary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .learning-header::before {
+      content: '⚡';
+    }
+    
+    .learning-list {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+    
+    .learning-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      color: var(--text-secondary);
+    }
+    
+    .learning-status {
+      color: var(--accent-tertiary);
+    }
+    
+    .learning-name {
+      color: var(--text-primary);
+    }
+    
+    .learning-desc {
+      color: var(--syntax-comment);
+      margin-left: auto;
+      font-size: 0.75rem;
+    }
+    
+    /* Tech Stack Visualization */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .stack-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      transition: all 0.25s;
+    }
+    
+    .stack-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+    
+    .stack-title {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .stack-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .stack-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.625rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .stack-tag:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: rgba(139, 233, 253, 0.1);
+    }
+    
+    /* Code Example Block */
+    .code-example {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+    
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .code-file {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .code-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .code-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .code-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    
+    pre {
+      padding: 1.25rem;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.7;
+    }
+    
+    .line-num {
+      color: var(--text-muted);
+      margin-right: 1.5rem;
+      user-select: none;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .skill-row {
+        grid-template-columns: 100px 1fr;
+        gap: 0.75rem;
+      }
+      
+      .skill-level {
+        display: none;
+      }
+      
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Syntax highlighting helpers */
+    .syn-keyword { color: var(--syntax-keyword); }
+    .syn-function { color: var(--syntax-function); }
+    .syn-string { color: var(--syntax-string); }
+    .syn-comment { color: var(--syntax-comment); }
+    .syn-params { color: var(--accent-tertiary); }
+  </style>
 </head>
 <body>
+  <div class="grain-overlay"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="index.html">Collins Kibet</a>
+      <div class="nav-path">
+        <span class="path-segment">~</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment active">skills.json</span>
+      </div>
       <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="skills.html" class="active">Skills</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="index.html">~/home</a></li>
+        <li><a href="about.html">~/about</a></li>
+        <li><a href="skills.html" class="active">~/skills</a></li>
+        <li><a href="projects.html">~/projects</a></li>
+        <li><a href="contact.html">~/contact.sh</a></li>
       </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     </nav>
   </header>
 
   <main>
     <section class="section">
       <div class="container">
-        <h1 class="section-title">Technical Skills</h1>
-        <p class="section-subtitle">Technologies and tools I use to bring ideas to life.</p>
-        
-        <div class="skills-grid">
-          <div class="skill-item">Next.js</div>
-          <div class="skill-item">React</div>
-          <div class="skill-item">TypeScript</div>
-          <div class="skill-item">JavaScript</div>
-          <div class="skill-item">React Native</div>
-          <div class="skill-item">PostgreSQL</div>
-          <div class="skill-item">Supabase</div>
-          <div class="skill-item">Prisma</div>
-          <div class="skill-item">Firebase</div>
-          <div class="skill-item">Tailwind CSS</div>
-          <div class="skill-item">HTML / CSS</div>
-          <div class="skill-item">C++</div>
-          <div class="skill-item">C#</div>
-          <div class="skill-item">Python</div>
-          <div class="skill-item">TensorFlow</div>
-          <div class="skill-item">Arduino</div>
-          <div class="skill-item">MySQL</div>
-          <div class="skill-item">Git</div>
-          <div class="skill-item">Vercel</div>
+        <!-- Package.json Style Header -->
+        <div class="package-header">
+          <div class="package-bar">
+            <div class="project-card-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="package-title">package.json</span>
+          </div>
+          <div class="package-content">
+            <div><span class="json-bracket">{</span></div>
+            <div class="json-indent">
+              <span class="json-key">"name"</span>: <span class="json-string">"collins-kibet"</span>,
+            </div>
+            <div class="json-indent">
+              <span class="json-key">"version"</span>: <span class="json-string">"1.0.0"</span>,
+            </div>
+            <div class="json-indent">
+              <span class="json-key">"description"</span>: <span class="json-string">"Full-stack engineer & robotics developer"</span>,
+            </div>
+            <div class="json-indent">
+              <span class="json-key">"main"</span>: <span class="json-string">"index.js"</span>,
+            </div>
+            <div class="json-indent">
+              <span class="json-key">"skills"</span>: <span class="json-bracket">{</span>
+            </div>
+            <div class="json-indent-2">
+              <span class="json-key">"frontend"</span>: <span class="json-bracket">[</span><span class="json-string">"React"</span>, <span class="json-string">"Next.js"</span>, <span class="json-string">"TypeScript"</span><span class="json-bracket">]</span>,
+            </div>
+            <div class="json-indent-2">
+              <span class="json-key">"backend"</span>: <span class="json-bracket">[</span><span class="json-string">"Node.js"</span>, <span class="json-string">"PostgreSQL"</span>, <span class="json-string">"Python"</span><span class="json-bracket">]</span>,
+            </div>
+            <div class="json-indent-2">
+              <span class="json-key">"embedded"</span>: <span class="json-bracket">[</span><span class="json-string">"C++"</span>, <span class="json-string">"Arduino"</span>, <span class="json-string">"PID Control"</span><span class="json-bracket">]</span>
+            </div>
+            <div class="json-indent"><span class="json-bracket">}</span></div>
+            <div><span class="json-bracket">}</span></div>
+          </div>
         </div>
 
-        <h2 class="section-title" style="margin-top: 3rem;">Areas of Expertise</h2>
-        <p class="section-subtitle">Embedded systems, robotics, mobile development, machine learning, and full-stack web applications.</p>
-      </div>
-    </section>
-  </main>
+        <div class="skills-layout">
+          <!-- Frontend Development -->
+          <div class="skill-category">
+            <div class="category-header">
+              <span class="category-import">import</span>
+              <span class="json-bracket">{</span> Frontend <span class="json-bracket">}</span>
+              <span class="category-from">from</span>
+              <span class="category-source">'web-development'</span>
+            </div>
+            <div class="skill-list">
+              <div class="skill-row">
+                <div class="skill-name">
+                  <span class="skill-icon">⚛️</span>
+                  React / Next.js
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-bar-fill advanced"></div>
+                </div>
+                <div class="skill-level">Advanced</div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name">
+                  <span class="skill-icon">🔷</span>
+                  TypeScript
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-bar-fill advanced"></div>
+                </div>
+                
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
-    </div>
-  </footer>
-</body>
-</html>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🟨</span>
+                    JavaScript / ES6+
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill advanced"></div>
+                  </div>
+                  <div class="skill-level">Advanced</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">📱</span>
+                    React Native
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🎨</span>
+                    Tailwind CSS
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill advanced"></div>
+                  </div>
+                  <div class="skill-level">Advanced</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🌐</span>
+                    HTML5 / CSS3
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill advanced"></div>
+                  </div>
+                  <div class="skill-level">Advanced</div>
+                </div>
+              </div>
+            </div>
+   
+            <!-- Backend & Database -->
+            <div class="skill-category">
+              <div class="category-header">
+                <span class="category-import">import</span>
+                <span class="json-bracket">{</span> Backend, Database <span class="json-bracket">}</span>
+                <span class="category-from">from</span>
+                <span class="category-source">'server-side'</span>
+              </div>
+              <div class="skill-list">
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🐘</span>
+                    PostgreSQL
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🔥</span>
+                    Supabase / Firebase
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">📊</span>
+                    Prisma ORM
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🗄️</span>
+                    MySQL
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill intermediate"></div>
+                  </div>
+                  <div class="skill-level">Intermediate</div>
+                </div>
+              </div>
+            </div>
+   
+            <!-- Embedded Systems & Robotics -->
+            <div class="skill-category">
+              <div class="category-header">
+                <span class="category-import">import</span>
+                <span class="json-bracket">{</span> Embedded, ControlSystems <span class="json-bracket">}</span>
+                <span class="category-from">from</span>
+                <span class="category-source">'robotics'</span>
+              </div>
+              <div class="skill-list">
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">⚡</span>
+                    C++ (Embedded)
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🔧</span>
+                    Arduino / PlatformIO
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill advanced"></div>
+                  </div>
+                  <div class="skill-level">Advanced</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🎮</span>
+                    PID Control Systems
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🟣</span>
+                    C# / .NET
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill intermediate"></div>
+                  </div>
+                  <div class="skill-level">Intermediate</div>
+                </div>
+              </div>
+            </div>
+   
+            <!-- Machine Learning & Data -->
+            <div class="skill-category">
+              <div class="category-header">
+                <span class="category-import">import</span>
+                <span class="json-bracket">{</span> ML, ComputerVision <span class="json-bracket">}</span>
+                <span class="category-from">from</span>
+                <span class="category-source">'artificial-intelligence'</span>
+              </div>
+              <div class="skill-list">
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🐍</span>
+                    Python
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🧠</span>
+                    TensorFlow / Keras
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill intermediate"></div>
+                  </div>
+                  <div class="skill-level">Intermediate</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">📷</span>
+                    OpenCV
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill intermediate"></div>
+                  </div>
+                  <div class="skill-level">Intermediate</div>
+                </div>
+              </div>
+            </div>
+   
+            <!-- DevOps & Tools -->
+            <div class="skill-category">
+              <div class="category-header">
+                <span class="category-import">import</span>
+                <span class="json-bracket">{</span> DevOps, Tools <span class="json-bracket">}</span>
+                <span class="category-from">from</span>
+                <span class="category-source">'infrastructure'</span>
+              </div>
+              <div class="skill-list">
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🌿</span>
+                    Git / GitHub
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill advanced"></div>
+                  </div>
+                  <div class="skill-level">Advanced</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">▲</span>
+                    Vercel / Edge Deployment
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill proficient"></div>
+                  </div>
+                  <div class="skill-level">Proficient</div>
+                </div>
+                <div class="skill-row">
+                  <div class="skill-name">
+                    <span class="skill-icon">🐳</span>
+                    Docker
+                  </div>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-fill intermediate"></div>
+                  </div>
+                  <div class="skill-level">Intermediate</div>
+                </div>
+              </div>
+            </div>
+          </div>
+   
+          <!-- Currently Learning Section -->
+          <div class="learning-section">
+            <div class="learning-header">
+              Currently Learning (git status)
+            </div>
+            <div class="learning-list">
+              <div class="learning-item">
+                <span class="learning-status">M</span>
+                <span class="learning-name">Rust</span>
+                <span class="learning-desc">Systems programming & WASM</span>
+              </div>
+              <div class="learning-item">
+                <span class="learning-status">A</span>
+                <span class="learning-name">ROS2</span>
+                <span class="learning-desc">Robot Operating System</span>
+              </div>
+              <div class="learning-item">
+                <span class="learning-status">??</span>
+                <span class="learning-name">WebAssembly</span>
+                <span class="learning-desc">High-performance web apps</span>
+              </div>
+            </div>
+          </div>
+   
+          <!-- Code Example: Full-Stack Integration -->
+          <div class="code-example">
+            <div class="code-header">
+              <div class="code-file">
+                <span>🐍</span>
+                <span>skills/robotics_integration.py</span>
+              </div>
+              <div class="code-actions">
+                <button class="code-btn" onclick="copyCode(this)">Copy</button>
+                <button class="code-btn">Raw</button>
+              </div>
+            </div>
+            <pre><code><span class="line-num">1</span>  <span class="syn-keyword">class</span> <span class="syn-function">FullStackEngineer</span>:
+   <span class="line-num">2</span>      <span class="syn-string">"""Bridging embedded systems with modern web tech"""</span>
+   <span class="line-num">3</span>      
+   <span class="line-num">4</span>      <span class="syn-keyword">def</span> <span class="syn-function">__init__</span>(<span class="syn-keyword">self</span>):
+   <span class="line-num">5</span>          <span class="syn-keyword">self</span>.frontend = [<span class="syn-string">"React"</span>, <span class="syn-string">"Next.js"</span>, <span class="syn-string">"TypeScript"</span>]
+   <span class="line-num">6</span>          <span class="syn-keyword">self</span>.backend = [<span class="syn-string">"Node"</span>, <span class="syn-string">"PostgreSQL"</span>, <span class="syn-string">"Python"</span>]
+   <span class="line-num">7</span>          <span class="syn-keyword">self</span>.embedded = [<span class="syn-string">"C++"</span>, <span class="syn-string">"Arduino"</span>, <span class="syn-string">"PID"</span>]
+   <span class="line-num">8</span>      
+   <span class="line-num">9</span>      <span class="syn-keyword">def</span> <span class="syn-function">build_robot_dashboard</span>(<span class="syn-keyword">self</span>, sensor_data):
+   <span class="line-num">10</span>          <span class="syn-comment"># Real-time telemetry from embedded systems to web</span>
+   <span class="line-num">11</span>          websocket.emit(<span class="syn-string">'sensor_stream'</span>, sensor_data)
+   <span class="line-num">12</span>          <span class="syn-keyword">return</span> <span class="syn-string">"🤖 Connected"</span></code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+   
+    <footer class="site-footer">
+      <div class="container">
+        <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+          <span style="color: var(--accent-secondary);">➜</span>  ~ Last updated: <span id="last-updated"></span>
+        </p>
+      </div>
+    </footer>
+   
+    <script>
+      // Animate skill bars on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+   
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+              const width = bar.classList.contains('advanced') ? '90%' :
+                           bar.classList.contains('proficient') ? '75%' : '60%';
+              bar.style.width = width;
+            });
+          }
+        });
+      }, observerOptions);
+   
+      document.querySelectorAll('.skill-category').forEach(cat => {
+        observer.observe(cat);
+      });
+   
+      // Set last updated date
+      document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+   
+      // Copy code functionality
+      function copyCode(btn) {
+        const code = btn.closest('.code-example').querySelector('code').innerText;
+        navigator.clipboard.writeText(code);
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.style.borderColor = 'var(--accent-secondary)';
+        btn.style.color = 'var(--accent-secondary)';
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 2000);
+      }
+   
+      // Mobile menu toggle
+      function toggleMenu() {
+        document.querySelector('.nav-menu').classList.toggle('open');
+      }
+    </script>
+   </body>
+   </html>
+               

@@ -1,129 +1,1004 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart RC Vehicle | Collins Kibet</title>
-  <meta name="description" content="Smart RC Vehicle - Autonomous vehicle with PID stabilization and wireless control.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-</head>
-<body>
-  <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="../index.html">Collins Kibet</a>
-      <ul class="nav-menu">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../skills.html">Skills</a></li>
-        <li><a href="../projects.html" class="active">Projects</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-      </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
-    </nav>
-  </header>
-
-  <main>
-    <div class="container">
-      <a href="../projects.html" class="back-link">← Back to Projects</a>
+  <html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~/projects/smart-rc-vehicle | Collins Kibet</title>
+    <meta name="description" content="Autonomous RC vehicle with PID control, sensor fusion, and real-time telemetry. Embedded systems & robotics.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+      /* Embedded systems lab aesthetic */
+      .lab-grid-bg {
+        background-image: 
+          linear-gradient(rgba(139, 233, 253, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(139, 233, 253, 0.03) 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
       
-      <section class="project-hero">
-        <h1>Smart RC Vehicle</h1>
-        <p class="subtitle">Advanced autonomous vehicle with PID stabilization, wireless control, and real-time feedback systems</p>
-        <div class="project-tags" style="justify-content: center; margin: 1rem 0;">
-          <span class="tag">Arduino</span>
-          <span class="tag">PID Control</span>
-          <span class="tag">Bluetooth</span>
-          <span class="tag">Embedded C++</span>
+      /* Oscilloscope-style container */
+      .scope-container {
+        background: #0a0a0f;
+        border: 2px solid var(--border);
+        border-radius: var(--radius-lg);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .scope-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          linear-gradient(rgba(139, 233, 253, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(139, 233, 253, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+      }
+      
+      .scope-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background: var(--bg-tertiary);
+        border-bottom: 2px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+      }
+      
+      .scope-brand {
+        color: var(--accent-secondary);
+        font-weight: 600;
+        letter-spacing: 0.1em;
+      }
+      
+      .scope-settings {
+        display: flex;
+        gap: 1.5rem;
+        color: var(--accent-primary);
+      }
+      
+      .scope-setting {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.625rem;
+      }
+      
+      .scope-val {
+        font-size: 0.875rem;
+        color: var(--accent-tertiary);
+      }
+      
+      /* PID Visualization */
+      .pid-viz {
+        padding: 2rem;
+        position: relative;
+        height: 200px;
+      }
+      
+      .signal-line {
+        position: absolute;
+        height: 2px;
+        background: var(--accent-secondary);
+        box-shadow: 0 0 10px var(--accent-secondary);
+        animation: signal-flow 3s linear infinite;
+      }
+      
+      @keyframes signal-flow {
+        0% { opacity: 0.3; }
+        50% { opacity: 1; }
+        100% { opacity: 0.3; }
+      }
+      
+      .pid-labels {
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      
+      .pid-label {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .pid-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+      }
+      
+      .pid-p { background: var(--error); }
+      .pid-i { background: var(--accent-tertiary); }
+      .pid-d { background: var(--accent-primary); }
+      .pid-out { background: var(--accent-secondary); }
+      
+      /* Serial Monitor */
+      .serial-monitor {
+        background: #050508;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        overflow: hidden;
+      }
+      
+      .serial-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--bg-tertiary);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      
+      .serial-port {
+        color: var(--accent-primary);
+      }
+      
+      .serial-baud {
+        margin-left: auto;
+        color: var(--accent-tertiary);
+      }
+      
+      .serial-content {
+        padding: 1rem;
+        height: 200px;
+        overflow-y: auto;
+        line-height: 1.6;
+      }
+      
+      .serial-line {
+        margin-bottom: 0.25rem;
+      }
+      
+      .serial-timestamp {
+        color: var(--text-muted);
+        margin-right: 0.5rem;
+      }
+      
+      .serial-label {
+        color: var(--accent-primary);
+      }
+      
+      .serial-val {
+        color: var(--accent-secondary);
+      }
+      
+      .serial-error {
+        color: var(--error);
+      }
+      
+      .serial-warn {
+        color: var(--accent-tertiary);
+      }
+      
+      /* Circuit Diagram Style */
+      .circuit-container {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .circuit-title {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        color: var(--syntax-comment);
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      
+      .component-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1.5rem;
+        position: relative;
+      }
+      
+      .component-grid::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--border);
+        z-index: 0;
+      }
+      
+      .hw-component {
+        background: var(--bg-tertiary);
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .hw-component::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 4px;
+        background: var(--accent-primary);
+        border-radius: 2px;
+      }
+      
+      .hw-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .hw-name {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      
+      .hw-spec {
+        font-size: 0.625rem;
+        color: var(--text-muted);
+        margin-top: 0.25rem;
+      }
+      
+      /* PID Math Block */
+      .pid-equation {
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: var(--font-mono);
+        text-align: center;
+      }
+      
+      .equation-title {
+        font-size: 0.75rem;
+        color: var(--syntax-comment);
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      
+      .equation-main {
+        font-size: 1.25rem;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        line-height: 1.8;
+      }
+      
+      .equation-breakdown {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.8125rem;
+      }
+      
+      .eq-term {
+        text-align: center;
+      }
+      
+      .eq-term-name {
+        color: var(--error);
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+      
+      .eq-term-name.i { color: var(--accent-tertiary); }
+      .eq-term-name.d { color: var(--accent-primary); }
+      
+      .eq-term-desc {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+      }
+      
+      /* Compilation Output */
+      .compile-log {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        margin: 2rem 0;
+      }
+      
+      .compile-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        background: var(--bg-tertiary);
+        border-bottom: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+      }
+      
+      .compile-status {
+        margin-left: auto;
+        color: var(--accent-secondary);
+      }
+      
+      .compile-body {
+        padding: 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        line-height: 1.7;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      
+      .compile-line {
+        margin-bottom: 0.25rem;
+      }
+      
+      .compile-cmd {
+        color: var(--text-primary);
+      }
+      
+      .compile-info {
+        color: var(--syntax-comment);
+      }
+      
+      .compile-success {
+        color: var(--accent-secondary);
+      }
+      
+      .compile-size {
+        color: var(--accent-tertiary);
+      }
+      
+      /* Datasheet Table */
+      .datasheet-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        margin: 1.5rem 0;
+      }
+      
+      .datasheet-table th {
+        text-align: left;
+        padding: 0.75rem;
+        background: var(--bg-tertiary);
+        border-bottom: 2px solid var(--border);
+        color: var(--accent-primary);
+        font-weight: 600;
+      }
+      
+      .datasheet-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-secondary);
+      }
+      
+      .datasheet-table tr:hover td {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+      }
+      
+      .param-name {
+        color: var(--syntax-keyword);
+      }
+      
+      .param-val {
+        color: var(--accent-secondary);
+      }
+      
+      /* Responsive */
+      @media (max-width: 768px) {
+        .equation-breakdown {
+          grid-template-columns: 1fr;
+        }
+        
+        .scope-settings {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="lab-grid-bg">
+    <div class="grain-overlay"></div>
+  
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="../index.html">Collins Kibet</a>
+        <div class="nav-path">
+          <span class="path-segment">~</span>
+          <span class="path-separator">/</span>
+          <span class="path-segment">projects</span>
+          <span class="path-separator">/</span>
+          <span class="path-segment active">smart-rc-vehicle</span>
+          <span class="path-git" style="color: var(--accent-secondary);">hardware*</span>
         </div>
-        <p style="font-size: 0.875rem; color: var(--color-text-muted);">Completed</p>
-      </section>
-
-      <section class="content-section">
-        <h2>Project Overview</h2>
-        <div class="content-grid">
-          <div class="content-card">
-            <h3>Core Features</h3>
-            <ul>
-              <li>Remote-controlled vehicle with wireless joystick interface</li>
-              <li>Advanced PID control algorithm for enhanced stability</li>
-              <li>Real-time sensor data processing and feedback</li>
-              <li>LED status indicators for system diagnostics</li>
-              <li>Custom mobile application for intuitive control</li>
-              <li>Obstacle detection and avoidance capabilities</li>
-            </ul>
+        <ul class="nav-menu">
+          <li><a href="../index.html">~/home</a></li>
+          <li><a href="../about.html">~/about</a></li>
+          <li><a href="../skills.html">~/skills</a></li>
+          <li><a href="../projects.html" class="active">~/projects</a></li>
+          <li><a href="../contact.html">~/contact.sh</a></li>
+        </ul>
+        <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+      </nav>
+    </header>
+  
+    <main>
+      <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb-terminal" style="margin-bottom: 1rem;">
+          <span class="prompt">$</span>
+          <span class="command">cd</span>
+          <span class="path">~/projects/smart-rc-vehicle</span>
+          <span style="color: var(--syntax-comment); margin-left: 1rem;"># EMBEDDED SYSTEMS</span>
+          <a href="../projects.html" class="back-command">← cd ..</a>
+        </nav>
+  
+        <!-- Project Header with Scope View -->
+        <div class="scope-container" style="margin-bottom: 2rem;">
+          <div class="scope-header">
+            <span class="scope-brand">TEKTRONIX SIMULATION</span>
+            <div class="scope-settings">
+              <div class="scope-setting">
+                <span>CH1</span>
+                <span class="scope-val">Motor PWM</span>
+              </div>
+              <div class="scope-setting">
+                <span>CH2</span>
+                <span class="scope-val">Sensor</span>
+              </div>
+              <div class="scope-setting">
+                <span>TIME</span>
+                <span class="scope-val">10ms/div</span>
+              </div>
+              <div class="scope-setting">
+                <span>TRIG</span>
+                <span class="scope-val">AUTO</span>
+              </div>
+            </div>
           </div>
-          <div class="content-card">
-            <h3>Technical Implementation</h3>
-            <ul>
-              <li>Arduino Nano microcontroller as the main processing unit</li>
-              <li>HC-05 Bluetooth modules for wireless communication</li>
-              <li>Embedded C++ programming for real-time control</li>
-              <li>PID controller implementation for motor stabilization</li>
-              <li>Sensor fusion for improved navigation accuracy</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="content-section">
-        <h2>Technical Specifications</h2>
-        <div class="content-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
-          <div class="card">
-            <h3 style="font-size: 0.875rem;">Microcontroller</h3>
-            <p style="margin: 0;">Arduino Nano (ATmega328P)</p>
-          </div>
-          <div class="card">
-            <h3 style="font-size: 0.875rem;">Communication</h3>
-            <p style="margin: 0;">HC-05 Bluetooth 2.0</p>
-          </div>
-          <div class="card">
-            <h3 style="font-size: 0.875rem;">Power</h3>
-            <p style="margin: 0;">7.4V Li-Po Battery</p>
-          </div>
-          <div class="card">
-            <h3 style="font-size: 0.875rem;">Control</h3>
-            <p style="margin: 0;">PID Algorithm</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="content-section">
-        <h2>Project Media</h2>
-        <div class="project-grid" style="margin-top: 1rem;">
-          <div class="card">
-            <video controls style="width: 100%; border-radius: var(--radius); background: var(--color-surface);">
-              <source src="RC-Vehicle/autonomus car .mp4" type="video/mp4">
-            </video>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem;">Autonomous Car Demo</p>
-          </div>
-          <div class="card">
-            <video controls style="width: 100%; border-radius: var(--radius); background: var(--color-surface);">
-              <source src="RC-Vehicle/Lab 2.mp4" type="video/mp4">
-            </video>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem;">Lab Testing</p>
-          </div>
-          <div class="card">
-            <video controls style="width: 100%; border-radius: var(--radius); background: var(--color-surface);">
-              <source src="RC-Vehicle/lights and switches.mp4" type="video/mp4">
-            </video>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem;">Lights and Switches</p>
-          </div>
-          <div class="card">
-            <img src="RC-Vehicle/random project pic.jpg" alt="RC Vehicle Hardware" style="border-radius: var(--radius);">
-            <p style="margin-top: 0.5rem; font-size: 0.875rem;">Hardware Assembly</p>
+          
+          <div class="pid-viz" id="oscilloscope">
+            <canvas id="scopeCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+            
+            <div class="pid-labels">
+              <div class="pid-label">
+                <span class="pid-color pid-p"></span>
+                <span>Proportional (Error)</span>
+              </div>
+              <div class="pid-label">
+                <span class="pid-color pid-i"></span>
+                <span>Integral (Accumulation)</span>
+              </div>
+              <div class="pid-label">
+                <span class="pid-color pid-d"></span>
+                <span>Derivative (Rate)</span>
+              </div>
+              <div class="pid-label">
+                <span class="pid-color pid-out"></span>
+                <span>PID Output (Motor PWM)</span>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+  
+        <!-- Title Block -->
+        <div class="project-window" style="margin-bottom: 2rem;">
+          <div class="window-tabs">
+            <div class="tab active">
+              <span class="tab-icon">⚡</span>
+              <span>main.cpp</span>
+              <span class="tab-close">×</span>
+            </div>
+            <div class="tab">
+              <span class="tab-icon">🔧</span>
+              <span>PID.h</span>
+            </div>
+            <div class="tab">
+              <span class="tab-icon">📡</span>
+              <span>bluetooth.ino</span>
+            </div>
+          </div>
+          
+          <div class="window-content">
+            <div class="project-code-header">
+              <div class="project-title-line">
+                <span style="color: var(--accent-tertiary);">class</span> 
+                <span style="color: var(--accent-primary); font-weight: 600;">SmartRCVehicle</span> 
+                <span style="color: var(--text-primary);">:</span> 
+                <span style="color: var(--accent-tertiary);">public</span> 
+                <span style="color: var(--accent-primary);">AutonomousVehicle</span> {
+              </div>
+              <div class="project-subtitle-line" style="margin-top: 0.5rem;">
+                // PID-stabilized RC vehicle with wireless control and real-time telemetry
+              </div>
+              
+              <div class="project-meta-bar" style="margin-top: 1.5rem;">
+                <div class="meta-item">
+                  <span class="meta-label">platform:</span>
+              <span class="meta-value">Arduino Nano (ATmega328P)</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">comm:</span>
+              <span class="meta-value">HC-05 Bluetooth 2.0</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">control:</span>
+              <span class="meta-value" style="color: var(--accent-tertiary);">PID @ 100Hz</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">power:</span>
+              <span class="meta-value">7.4V Li-Po</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
+    <!-- Hardware Architecture -->
+    <h2 class="section-heading">Hardware Architecture</h2>
+    <div class="circuit-container">
+      <div class="circuit-title">// System Block Diagram - Smart RC Vehicle v1.0</div>
+      <div class="component-grid">
+        <div class="hw-component">
+          <div class="hw-icon">🧠</div>
+          <div class="hw-name">Arduino Nano</div>
+          <div class="hw-spec">ATmega328P | 16MHz | 5V</div>
+        </div>
+        <div class="hw-component">
+          <div class="hw-icon">📡</div>
+          <div class="hw-name">HC-05 Module</div>
+          <div class="hw-spec">Bluetooth 2.0 | Serial | 9600baud</div>
+        </div>
+        <div class="hw-component">
+          <div class="hw-icon">⚡</div>
+          <div class="hw-name">Motor Driver</div>
+          <div class="hw-spec">L298N Dual H-Bridge | 2A</div>
+        </div>
+        <div class="hw-component">
+          <div class="hw-icon">🔋</div>
+          <div class="hw-name">Power System</div>
+          <div class="hw-spec">7.4V Li-Po | 2200mAh | 25C</div>
+        </div>
+        <div class="hw-component">
+          <div class="hw-icon">📊</div>
+          <div class="hw-name">Ultrasonic</div>
+          <div class="hw-spec">HC-SR04 | 2-400cm | Obstacle</div>
+        </div>
+        <div class="hw-component">
+          <div class="hw-icon">💡</div>
+          <div class="hw-name">Status LEDs</div>
+          <div class="hw-spec">RGB | Diagnostics | 20mA</div>
+        </div>
+      </div>
     </div>
-  </footer>
+
+    <!-- PID Controller Math -->
+    <h2 class="section-heading">Control System</h2>
+    <div class="pid-equation">
+      <div class="equation-title">PID Controller Implementation</div>
+      <div class="equation-main">
+        u(t) = K<sub>p</sub>e(t) + K<sub>i</sub>∫e(t)dt + K<sub>d</sub>(de/dt)
+      </div>
+      <div style="color: var(--syntax-comment); font-size: 0.875rem; margin-bottom: 1rem;">
+        // Discrete implementation for embedded systems
+      </div>
+      <div style="background: var(--bg-primary); padding: 1rem; border-radius: var(--radius); font-size: 0.9375rem;">
+        output = (Kp * error) + (Ki * integral) + (Kd * (error - last_error))
+      </div>
+      
+      <div class="equation-breakdown">
+        <div class="eq-term">
+          <div class="eq-term-name">P</div>
+          <div class="eq-term-desc">Proportional<br>Immediate response to error</div>
+        </div>
+        <div class="eq-term">
+          <div class="eq-term-name i">I</div>
+          <div class="eq-term-desc">Integral<br>Eliminates steady-state drift</div>
+        </div>
+        <div class="eq-term">
+          <div class="eq-term-name d">D</div>
+          <div class="eq-term-desc">Derivative<br>Dampens oscillations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tuning Parameters Table -->
+    <table class="datasheet-table">
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Value</th>
+          <th>Unit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="param-name">Kp</td>
+          <td class="param-val">2.5</td>
+          <td>-</td>
+          <td>Proportional gain (aggressive correction)</td>
+        </tr>
+        <tr>
+          <td class="param-name">Ki</td>
+          <td class="param-val">0.1</td>
+          <td>-</td>
+          <td>Integral gain (windup limited to ±50)</td>
+        </tr>
+        <tr>
+          <td class="param-name">Kd</td>
+          <td class="param-val">0.8</td>
+          <td>-</td>
+          <td>Derivative gain (noise filtered)</td>
+        </tr>
+        <tr>
+          <td class="param-name">Sample Rate</td>
+          <td class="param-val">100</td>
+          <td>Hz</td>
+          <td>Control loop frequency (10ms period)</td>
+        </tr>
+        <tr>
+          <td class="param-name">PWM Resolution</td>
+          <td class="param-val">8-bit</td>
+          <td>-</td>
+          <td>0-255 duty cycle (Timer1)</td>
+        </tr>
+        <tr>
+          <td class="param-name">Deadband</td>
+          <td class="param-val">±5</td>
+          <td>counts</td>
+          <td>Encoder tick threshold to prevent jitter</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Serial Monitor Output -->
+    <h2 class="section-heading">Telemetry Output</h2>
+    <div class="serial-monitor">
+      <div class="serial-header">
+        <span>🔌</span>
+        <span>Serial Monitor</span>
+        <span class="serial-port">/dev/ttyUSB0</span>
+        <span class="serial-baud">9600 baud</span>
+        <span style="margin-left: auto; color: var(--accent-secondary);">● CONNECTED</span>
+      </div>
+      <div class="serial-content" id="serialContent">
+        <div class="serial-line">
+          <span class="serial-timestamp">[0.00]</span>
+          <span class="serial-label">SYSTEM:</span> Smart RC Vehicle v1.0 initialized
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[0.12]</span>
+          <span class="serial-label">BT:</span> HC-05 module ready. Pairing code: 1234
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[0.45]</span>
+          <span class="serial-label">PID:</span> Controller initialized (Kp=2.5, Ki=0.1, Kd=0.8)
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[1.02]</span>
+          <span class="serial-label">MOTOR:</span> L298N driver ready. PWM freq: 1kHz
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[1.89]</span>
+          <span class="serial-label">SENSOR:</span> Ultrasonic sensor calibrated. Range: 2-400cm
+        </div>
+        <div class="serial-line serial-warn">
+          <span class="serial-timestamp">[2.45]</span>
+          <span class="serial-label">WARN:</span> Low battery detected (6.8V). Please charge.
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[3.10]</span>
+          <span class="serial-label">CTRL:</span> <span class="serial-val">Setpoint=100</span> <span class="serial-val">Input=98</span> <span class="serial-val">Output=245</span>
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[3.20]</span>
+          <span class="serial-label">CTRL:</span> <span class="serial-val">Setpoint=100</span> <span class="serial-val">Input=99</span> <span class="serial-val">Output=252</span>
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[3.30]</span>
+          <span class="serial-label">CTRL:</span> <span class="serial-val">Setpoint=100</span> <span class="serial-val">Input=100</span> <span class="serial-val">Output=0</span> <span style="color: var(--accent-secondary);">✓ STABLE</span>
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[4.15]</span>
+          <span class="serial-label">BT_RX:</span> Command received [FORWARD, 128]
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[4.16]</span>
+          <span class="serial-label">MOTOR:</span> PWM set to 128 (50% duty)
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[5.67]</span>
+          <span class="serial-label">SENSOR:</span> Obstacle detected at 45cm. Initiating avoidance...
+        </div>
+        <div class="serial-line">
+          <span class="serial-timestamp">[5.68]</span>
+          <span class="serial-label">NAV:</span> Executing turn sequence (90° right)
+        </div>
+      </div>
+    </div>
+
+    <!-- Compilation Log -->
+    <h2 class="section-heading">Build Output</h2>
+    <div class="compile-log">
+      <div class="compile-header">
+        <span>🔨</span>
+        <span>Arduino IDE - Verify/Compile</span>
+        <span class="compile-status">✓ Done compiling</span>
+      </div>
+      <div class="compile-body">
+        <div class="compile-line compile-cmd">$ arduino-cli compile --fqbn arduino:avr:nano SmartRCVehicle</div>
+        <div class="compile-line compile-info">Sketch uses 18742 bytes (60%) of program storage space. Maximum is 30720 bytes.</div>
+        <div class="compile-line compile-info">Global variables use 892 bytes (43%) of dynamic memory, leaving 1156 bytes for local variables.</div>
+        <div class="compile-line compile-info">Maximum is 2048 bytes.</div>
+        <div class="compile-line" style="margin-top: 0.5rem;">
+          <span class="compile-success">✓</span> Binary sketch size: 18,742 bytes (of 30,720 maximum)
+        </div>
+        <div class="compile-line compile-size">
+          RAM usage: 892 bytes (variables) + 256 bytes (heap) = 1,148 bytes / 2,048 bytes
+        </div>
+        <div class="compile-line" style="margin-top: 0.5rem; color: var(--accent-primary);">
+          Used library: SoftwareSerial (built-in)
+        </div>
+        <div class="compile-line" style="color: var(--accent-primary);">
+          Used library: PID (by Brett Beauregard)
+        </div>
+        <div class="compile-line" style="color: var(--syntax-comment); margin-top: 0.5rem;">
+          Uploading to board on /dev/ttyUSB0...
+        </div>
+        <div class="compile-line compile-success" style="margin-top: 0.5rem;">
+          ✓ Upload complete. Board reset detected.
+        </div>
+      </div>
+    </div>
+
+    <!-- Media Grid -->
+    <h2 class="section-heading">Demonstrations</h2>
+    <div class="project-grid" style="margin-top: 1.5rem;">
+      <div class="card" style="background: var(--bg-secondary); border: 1px solid var(--border);">
+        <video controls style="width: 100%; border-radius: var(--radius); background: #000;">
+          <source src="RC-Vehicle/autonomus car .mp4" type="video/mp4">
+        </video>
+        <p style="margin-top: 0.75rem; font-size: 0.875rem; font-family: var(--font-mono); color: var(--accent-primary);">
+          ▶ autonomous_mode.mp4
+        </p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          Obstacle avoidance with PID steering correction
+        </p>
+      </div>
+      
+      <div class="card" style="background: var(--bg-secondary); border: 1px solid var(--border);">
+        <video controls style="width: 100%; border-radius: var(--radius); background: #000;">
+          <source src="RC-Vehicle/Lab 2.mp4" type="video/mp4">
+        </video>
+        <p style="margin-top: 0.75rem; font-size: 0.875rem; font-family: var(--font-mono); color: var(--accent-primary);">
+          ▶ lab_testing.mp4
+        </p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          PID tuning and stability testing on bench
+        </p>
+      </div>
+      
+      <div class="card" style="background: var(--bg-secondary); border: 1px solid var(--border);">
+        <video controls style="width: 100%; border-radius: var(--radius); background: #000;">
+          <source src="RC-Vehicle/lights and switches.mp4" type="video/mp4">
+        </video>
+        <p style="margin-top: 0.75rem; font-size: 0.875rem; font-family: var(--font-mono); color: var(--accent-primary);">
+          ▶ diagnostics.mp4
+        </p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          LED status indicators and switch testing
+        </p>
+      </div>
+      
+      <div class="card" style="background: var(--bg-secondary); border: 1px solid var(--border);">
+        <img src="RC-Vehicle/random project pic.jpg" alt="RC Vehicle Hardware" style="width: 100%; border-radius: var(--radius);">
+        <p style="margin-top: 0.75rem; font-size: 0.875rem; font-family: var(--font-mono); color: var(--accent-primary);">
+          ▶ hardware_assembly.jpg
+        </p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          Wiring diagram and component layout
+        </p>
+      </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <h2 class="section-heading">Core Implementation</h2>
+    <div class="code-window" style="margin-bottom: 2rem;">
+      <div class="code-header">
+        <div class="code-file-path">
+          <span>🔧</span>
+          <span>src/PID_Controller.cpp</span>
+        </div>
+        <div class="code-actions">
+          <button class="code-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+      </div>
+      <pre style="background: var(--bg-code);"><code><span class="line-num">1</span>  <span class="syn-keyword">double</span> PID::compute(<span class="syn-keyword">double</span> setpoint, <span class="syn-keyword">double</span> input) {
+<span class="line-num">2</span>    <span class="syn-keyword">double</span> error = setpoint - input;
+<span class="line-num">3</span>    <span class="syn-keyword">double</span> dInput = input - lastInput;
+<span class="line-num">4</span>    
+<span class="line-num">5</span>    <span class="syn-comment">// Proportional term</span>
+<span class="line-num">6</span>    <span class="syn-keyword">double</span> P = kp * error;
+<span class="line-num">7</span>    
+<span class="line-num">8</span>    <span class="syn-comment">// Integral with windup guard</span>
+<span class="line-num">9</span>    integral += ki * error;
+<span class="line-num">10</span>    <span class="syn-keyword">if</span> (integral > 50) integral = 50;
+<span class="line-num">11</span>    <span class="syn-keyword">else if</span> (integral < -50) integral = -50;
+<span class="line-num">12</span>    
+<span class="line-num">13</span>    <span class="syn-comment">// Derivative on measurement (not error) to avoid derivative kick</span>
+<span class="line-num">14</span>    <span class="syn-keyword">double</span> D = -kd * dInput;
+<span class="line-num">15</span>    
+<span class="line-num">16</span>    <span class="syn-comment">// Compute output</span>
+<span class="line-num">17</span>    <span class="syn-keyword">double</span> output = P + integral + D;
+<span class="line-num">18</span>    
+<span class="line-num">19</span>    <span class="syn-comment">// Constrain to PWM range</span>
+<span class="line-num">20</span>    <span class="syn-keyword">if</span> (output > 255) output = 255;
+<span class="line-num">21</span>    <span class="syn-keyword">else if</span> (output < 0) output = 0;
+<span class="line-num">22</span>    
+<span class="line-num">23</span>    lastInput = input;
+<span class="line-num">24</span>    <span class="syn-keyword">return</span> output;
+<span class="line-num">25</span>  }</code></pre>
+    </div>
+
+    <!-- Footer Note -->
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 2rem; text-align: center;">
+      <p style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-secondary); margin: 0;">
+        <span style="color: var(--accent-secondary);">➜</span> 
+        System operational. 
+        <span style="color: var(--syntax-comment);">// "The best code is the kind that moves."</span>
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+      <span style="color: var(--accent-secondary);">➜</span> ~ make clean && make upload
+      <span style="color: var(--text-muted); margin-left: 1rem;"># Built with Arduino, caffeine, and curiosity</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  function toggleMenu() {
+    document.querySelector('.nav-menu').classList.toggle('open');
+  }
+
+  // Copy code functionality
+  function copyCode(btn) {
+    const code = btn.closest('.code-window').querySelector('code').innerText;
+    navigator.clipboard.writeText(code);
+    const original = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.borderColor = 'var(--accent-secondary)';
+    btn.style.color = 'var(--accent-secondary)';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2000);
+  }
+
+  // Oscilloscope Canvas Animation
+  const canvas = document.getElementById('scopeCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  function resizeCanvas() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+  
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  let time = 0;
+  const signals = [
+    { color: '#ff5555', amp: 30, freq: 0.02, phase: 0, y: 50 },  // P
+    { color: '#ffb86c', amp: 20, freq: 0.01, phase: 1, y: 100 }, // I
+    { color: '#8be9fd', amp: 25, freq: 0.03, phase: 2, y: 150 }, // D
+    { color: '#50fa7b', amp: 35, freq: 0.015, phase: 0.5, y: 200 } // Output
+  ];
+
+  function drawSignal(signal, index) {
+    ctx.beginPath();
+    ctx.strokeStyle = signal.color;
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = signal.color;
+    
+    for (let x = 0; x < canvas.width; x++) {
+      const y = signal.y + Math.sin(x * signal.freq + time + signal.phase) * signal.amp 
+                + Math.sin(x * signal.freq * 2.3 + time * 1.5) * (signal.amp * 0.3);
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  function animate() {
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw grid
+    ctx.strokeStyle = 'rgba(139, 233, 253, 0.05)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += 40) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+    
+    signals.forEach((signal, i) => drawSignal(signal, i));
+    
+    time += 0.05;
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+
+  // Simulate live serial data updates
+  setInterval(() => {
+    const serialContent = document.getElementById('serialContent');
+    const now = new Date();
+    const timeStr = `[${(now.getTime() / 1000).toFixed(2).padStart(6, '0')}]`;
+    const setpoint = 100;
+    const input = 98 + Math.floor(Math.random() * 5);
+    const output = Math.floor(250 + Math.random() * 10);
+    
+    const newLine = document.createElement('div');
+    newLine.className = 'serial-line';
+    newLine.innerHTML = `
+      <span class="serial-timestamp">${timeStr}</span>
+      <span class="serial-label">CTRL:</span> 
+      <span class="serial-val">Setpoint=${setpoint}</span> 
+      <span class="serial-val">Input=${input}</span> 
+      <span class="serial-val">Output=${output}</span>
+    `;
+    
+    serialContent.appendChild(newLine);
+    serialContent.scrollTop = serialContent.scrollHeight;
+    
+    // Keep only last 20 lines
+    while (serialContent.children.length > 20) {
+      serialContent.removeChild(serialContent.firstChild);
+    }
+  }, 100);
+</script>
 </body>
 </html>

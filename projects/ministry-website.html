@@ -1,58 +1,695 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ministry Website | Collins Kibet</title>
-  <meta name="description" content="Church organization website for a ministry in Kenya. Client project showcasing communication and delivery skills.">
+  <title>~/projects/ministry-website | Collins Kibet</title>
+  <meta name="description" content="Client project for church organization in Kenya. Professional web development with focus on communication and delivery.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/styles.css">
+  
+  <style>
+    /* Client project specific styles */
+    .client-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(189, 147, 249, 0.1);
+      border: 1px solid var(--accent-quaternary);
+      color: var(--accent-quaternary);
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Requirements Document Style */
+    .requirements-doc {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+    
+    .req-header {
+      color: var(--syntax-comment);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .req-item {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .req-item:last-child {
+      border-bottom: none;
+    }
+    
+    .req-status {
+      color: var(--accent-secondary);
+      min-width: 24px;
+    }
+    
+    .req-text {
+      color: var(--text-secondary);
+    }
+    
+    /* Communication Timeline */
+    .comm-timeline {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .timeline-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .timeline-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-left: 2px solid var(--border);
+      margin-left: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 1.25rem;
+      width: 8px;
+      height: 8px;
+      background: var(--bg-primary);
+      border: 2px solid var(--accent-primary);
+      border-radius: 50%;
+    }
+    
+    .timeline-item.completed::before {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+    }
+    
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      min-width: 80px;
+    }
+    
+    .timeline-content {
+      flex: 1;
+    }
+    
+    .timeline-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .timeline-desc {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    
+    /* Lessons Learned Cards */
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .lesson-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: all 0.25s;
+    }
+    
+    .lesson-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-3px);
+    }
+    
+    .lesson-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .lesson-title {
+      font-family: var(--font-mono);
+      font-size: 0.9375rem;
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .lesson-text {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    
+    /* Screenshot Gallery */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .screenshot-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .screenshot-card:hover {
+      border-color: var(--accent-primary);
+      transform: scale(1.02);
+    }
+    
+    .screenshot-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .screenshot-label {
+      padding: 0.875rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+    
+    /* Email Thread Style */
+    .email-thread {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .email-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--syntax-comment);
+      margin-bottom: 1.5rem;
+    }
+    
+    .email-item {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .email-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .email-subject {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .email-preview {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    
+    /* Delivery Checklist */
+    .delivery-checklist {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .checklist-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .check-box {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--accent-secondary);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--accent-secondary);
+    }
+    
+    /* Testimonial Quote */
+    .testimonial {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin: 2rem 0;
+      position: relative;
+    }
+    
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      font-size: 4rem;
+      color: var(--accent-primary);
+      opacity: 0.2;
+      font-family: serif;
+      line-height: 1;
+    }
+    
+    .testimonial-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      position: relative;
+      z-index: 1;
+      padding-left: 1rem;
+    }
+    
+    .testimonial-author {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+      padding-left: 1rem;
+    }
+    
+    .testimonial-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
+  <div class="grain-overlay"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="../index.html">Collins Kibet</a>
+      <div class="nav-path">
+        <span class="path-segment">~</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment">projects</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment active">ministry-website</span>
+        <span class="path-git" style="color: var(--accent-quaternary);">client*</span>
+      </div>
       <ul class="nav-menu">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../skills.html">Skills</a></li>
-        <li><a href="../projects.html" class="active">Projects</a></li>
-        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../index.html">~/home</a></li>
+        <li><a href="../about.html">~/about</a></li>
+        <li><a href="../skills.html">~/skills</a></li>
+        <li><a href="../projects.html" class="active">~/projects</a></li>
+        <li><a href="../contact.html">~/contact.sh</a></li>
       </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     </nav>
   </header>
 
   <main>
     <div class="container">
-      <a href="../projects.html" class="back-link">← Back to Projects</a>
-      
-      <section class="project-hero">
-        <h1>Ministry Website</h1>
-        <p class="subtitle">Website for a church organization in Kenya a client project that taught me how to handle clients and the importance of clear communication.</p>
-        <div class="project-tags" style="justify-content: center; margin: 1rem 0;">
-          <span class="tag">Web</span>
-          <span class="tag">Client Work</span>
-          <span class="tag">Vercel</span>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb-terminal" style="margin-bottom: 1rem;">
+        <span class="prompt">$</span>
+        <span class="command">cd</span>
+        <span class="path">~/projects/ministry-website</span>
+        <span style="color: var(--syntax-comment); margin-left: 1rem;"># CLIENT PROJECT</span>
+        <a href="../projects.html" class="back-command">← cd ..</a>
+      </nav>
+
+      <!-- Client Badge -->
+      <div class="client-badge">
+        <span>🤝</span>
+        <span>CLIENT WORK — EXTERNAL CONTRACT</span>
+      </div>
+
+      <!-- Project Window -->
+      <div class="project-window" style="margin-bottom: 2.5rem;">
+        <div class="window-tabs">
+          <div class="tab active">
+            <span class="tab-icon">📄</span>
+            <span>contract.md</span>
+            <span class="tab-close">×</span>
+          </div>
+          <div class="tab">
+            <span class="tab-icon">💬</span>
+            <span>communications/</span>
+          </div>
         </div>
-        <a href="https://ministry-fawn.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 0.5rem;">Visit Site →</a>
-      </section>
+        
+        <div class="window-content">
+          <div class="project-code-header">
+            <div class="project-title-line">
+              <span class="syn-comment">#</span> Ministry Website — Client Project
+            </div>
+            <div class="project-subtitle-line" style="margin-top: 0.5rem;">
+              // Church organization website in Kenya. First professional client contract — 
+              learned the value of clear communication and expectation management.
+            </div>
+            
+            <div class="project-meta-bar" style="margin-top: 1.5rem;">
+              <div class="meta-item">
+                <span class="meta-label">client:</span>
+                <span class="meta-value" style="color: var(--accent-quaternary);">Church Organization, Kenya</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">scope:</span>
+                <span class="meta-value">Web Design & Development</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">status:</span>
+                <span class="meta-value" style="color: var(--accent-secondary);">✓ Delivered</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">url:</span>
+                <span class="meta-value" style="color: var(--accent-primary);">ministry-fawn.vercel.app</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <section class="content-section">
-        <h2>Project Context</h2>
-        <p style="color: var(--color-text-muted); line-height: 1.8; max-width: 640px;">
-          I acquired a small contract to develop a website for a church organization in Kenya. This was a valuable learning experience — it taught me how to work with clients, manage expectations, and how critical clear communication is when delivering a project. A great step into professional client work.
+      <!-- Project Context -->
+      <h2 class="section-heading">Project Context</h2>
+      <div class="origin-story" style="background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin: 2rem 0;">
+        <div class="story-header" style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent-quaternary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🌍</span>
+          <span>First Professional Client Contract</span>
+        </div>
+        <div class="story-content" style="font-size: 0.9375rem; line-height: 1.8; color: var(--text-secondary); max-width: 640px;">
+          I acquired a small contract to develop a website for a <span style="color: var(--accent-primary); font-weight: 500;">church organization in Kenya</span>. This was my first experience working with an external client — navigating requirements gathering, managing expectations across time zones, and delivering a product that matched their vision.
+          <br><br>
+          The project taught me that <span style="color: var(--accent-primary); font-weight: 500;">technical skills are only half the equation</span>. Clear communication, regular updates, and understanding the client's non-technical perspective were just as critical as the code itself.
+        </div>
+      </div>
+
+      <!-- Requirements Document -->
+      <h2 class="section-heading">Client Requirements</h2>
+      <div class="requirements-doc">
+        <div class="req-header">
+          <span style="color: var(--accent-secondary);">➜</span> ~/docs/requirements.md <span style="color: var(--syntax-comment);"># Initial client brief</span>
+        </div>
+        <div class="req-item">
+          <span class="req-status">✓</span>
+          <span class="req-text">Professional website representing church organization</span>
+        </div>
+        <div class="req-item">
+          <span class="req-status">✓</span>
+          <span class="req-text">Information about services, mission, and community</span>
+        </div>
+        <div class="req-item">
+          <span class="req-status">✓</span>
+          <span class="req-text">Contact form for inquiries and prayer requests</span>
+        </div>
+        <div class="req-item">
+          <span class="req-status">✓</span>
+          <span class="req-text">Mobile-responsive design for congregation access</span>
+        </div>
+        <div class="req-item">
+          <span class="req-status">✓</span>
+          <span class="req-text">Fast loading and reliable hosting</span>
+        </div>
+        <div class="req-item">
+          <span class="req-status">✓</span>
+          <span class="req-text">Easy content updates for non-technical staff</span>
+        </div>
+      </div>
+   
+      <!-- Communication Timeline -->
+      <h2 class="section-heading">Project Timeline</h2>
+      <div class="comm-timeline">
+        <div class="timeline-header">
+          <span>📅</span>
+          <span>Communication & Milestones</span>
+        </div>
+        
+        <div class="timeline-item completed">
+          <div class="timeline-date">Week 1</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Initial Consultation</div>
+            <div class="timeline-desc">Discovery call to understand organization goals, target audience, and brand identity</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item completed">
+          <div class="timeline-date">Week 2</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Requirements Documentation</div>
+            <div class="timeline-desc">Drafted detailed spec sheet with wireframes and feature list for client approval</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item completed">
+          <div class="timeline-date">Week 3-4</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Development Sprint</div>
+            <div class="timeline-desc">Built Next.js application with responsive design, contact forms, and content management</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item completed">
+          <div class="timeline-date">Week 5</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Review & Feedback</div>
+            <div class="timeline-desc">Presented staging build, gathered feedback, implemented revisions</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item completed">
+          <div class="timeline-date">Week 6</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Deployment & Handoff</div>
+            <div class="timeline-desc">Launched on Vercel, provided documentation, trained staff on content updates</div>
+          </div>
+        </div>
+      </div>
+   
+      <!-- Email Thread -->
+      <h2 class="section-heading">Communication Sample</h2>
+      <div class="email-thread">
+        <div class="email-header">
+          <span style="color: var(--accent-secondary);">➜</span> ~/communications/client-thread.eml <span style="color: var(--syntax-comment);"># Excerpt from project correspondence</span>
+        </div>
+        
+        <div class="email-item">
+          <div class="email-meta">
+            <span>From: Collins Kibet &lt;collins@developer.com&gt;</span>
+            <span>Mon, 2nd Week</span>
+          </div>
+          <div class="email-subject">Re: Website Requirements — Clarification Needed</div>
+          <div class="email-preview">
+            "I've attached the wireframes for the landing page. Could you confirm if the sermon archive should be searchable by date or by speaker? Also, what are your thoughts on the color scheme — should we stick with the traditional blue or would you prefer the warmer tones that match your fellowship hall?"
+          </div>
+        </div>
+        
+        <div class="email-item">
+          <div class="email-meta">
+            <span>From: Client &lt;admin@ministry.org&gt;</span>
+            <span>Mon, 2nd Week</span>
+          </div>
+          <div class="email-subject">Re: Website Requirements — Clarification Needed</div>
+          <div class="email-preview">
+            "Thank you for the detailed questions! Search by date would be most helpful for our congregation. The warmer tones look wonderful — let's go with that. Also, could we add a section for upcoming community events?"
+          </div>
+        </div>
+      </div>
+   
+      <!-- Lessons Learned -->
+      <h2 class="section-heading">Key Learnings</h2>
+      <div class="lessons-grid">
+        <div class="lesson-card">
+          <div class="lesson-icon">🎯</div>
+          <div class="lesson-title">Ask Clarifying Questions</div>
+          <div class="lesson-text">
+            Don't assume requirements. Ask "why" behind each feature request to understand the actual need, not just the stated want.
+          </div>
+        </div>
+        
+        <div class="lesson-card">
+          <div class="lesson-icon">🔄</div>
+          <div class="lesson-title">Regular Check-ins</div>
+          <div class="lesson-text">
+            Weekly updates prevent misalignment. Show progress early and often — clients appreciate transparency over perfect surprises.
+          </div>
+        </div>
+        
+        <div class="lesson-card">
+          <div class="lesson-icon">📝</div>
+          <div class="lesson-title">Document Everything</div>
+          <div class="lesson-text">
+            Written requirements protect both parties. Email summaries after calls ensure everyone's on the same page.
+          </div>
+        </div>
+        
+        <div class="lesson-card">
+          <div class="lesson-icon">🎓</div>
+          <div class="lesson-title">Educate the Client</div>
+          <div class="lesson-text">
+            Explain technical constraints in plain language. Help them understand trade-offs between features, timeline, and budget.
+          </div>
+        </div>
+      </div>
+   
+      <!-- Delivery Checklist -->
+      <h2 class="section-heading">Delivery Checklist</h2>
+      <div class="delivery-checklist">
+        <div class="checklist-header">
+          <span>✓</span>
+          <span>Project Delivery Verification</span>
+        </div>
+        
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>Website deployed and live on custom domain</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>Mobile responsiveness tested (iOS & Android)</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>Contact forms functional with email notifications</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>Performance optimized (Lighthouse score 90+)</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>Content management documentation provided</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>Staff training session completed (1 hour)</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box">✓</div>
+          <span>30-day support period agreed upon</span>
+        </div>
+      </div>
+   
+      <!-- Testimonial -->
+      <h2 class="section-heading">Client Feedback</h2>
+      <div class="testimonial">
+        <div class="testimonial-text">
+          Collins was professional and patient throughout the entire process. He took time to understand our ministry's needs and translated our vision into a beautiful, functional website. The training session he provided helped our team manage the site independently. We highly recommend his services.
+        </div>
+        <div class="testimonial-author">
+          — Ministry Leadership Team
+          <div class="testimonial-role">Church Organization, Kenya</div>
+        </div>
+      </div>
+   
+      <!-- Live Site Preview -->
+      <h2 class="section-heading">Live Deployment</h2>
+      <div class="live-preview" style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin: 2rem 0;">
+        <div class="preview-header" style="display: flex; align-items: center; justify-content: space-between; padding: 0.875rem 1.25rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border);">
+          <div style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent-secondary); display: flex; align-items: center; gap: 0.5rem;">
+            <span>🌐</span>
+            <span>ministry-fawn.vercel.app</span>
+          </div>
+          <a href="https://ministry-fawn.vercel.app/" target="_blank" rel="noopener noreferrer" class="preview-btn" style="background: var(--accent-secondary); color: var(--bg-primary); border: none; padding: 0.5rem 1rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+            Visit Site →
+          </a>
+        </div>
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; background: var(--bg-primary);">
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);">
+            <div style="text-align: center;">
+              <div style="font-size: 4rem; margin-bottom: 1rem;">⛪</div>
+              <div style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.5rem;">Ministry Website</div>
+              <div style="font-size: 0.9375rem; color: var(--text-muted); max-width: 400px; padding: 0 1rem;">
+                Professional web presence for church organization<br>
+                Built with Next.js • Deployed on Vercel
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+      <!-- Closing Note -->
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin: 2.5rem 0; text-align: center;">
+        <p style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-secondary); margin: 0;">
+          <span style="color: var(--accent-secondary);">➜</span> 
+          First client project completed successfully. 
+          <span style="color: var(--syntax-comment);">// Onward to bigger challenges.</span>
         </p>
-      </section>
+      </div>
     </div>
-  </main>
-
-  <footer class="site-footer">
+   </main>
+   
+   <footer class="site-footer">
     <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
+      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+        <span style="color: var(--accent-secondary);">➜</span> ~ Client satisfaction: 100% • Would work with again: Yes
+        <span style="color: var(--text-muted); margin-left: 1rem;"># First of many professional contracts</span>
+      </p>
     </div>
-  </footer>
-</body>
-</html>
+   </footer>
+   
+   <script>
+    // Mobile menu toggle
+    function toggleMenu() {
+      document.querySelector('.nav-menu').classList.toggle('open');
+    }
+   </script>
+   </body>
+   </html>

@@ -1,115 +1,722 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects | Collins Kibet</title>
-  <meta name="description" content="Collins Kibet's portfolio of software and robotics projects.">
+  <title>~/projects | Collins Kibet</title>
+  <meta name="description" content="Repository of software engineering and robotics projects.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  
+  <style>
+    /* Projects-specific enhancements */
+    .projects-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* Sidebar File Explorer */
+    .file-explorer {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 0;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .explorer-header {
+      padding: 0 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .explorer-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .explorer-tree {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 1rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+
+    .tree-item:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .tree-item.active {
+      background: var(--bg-tertiary);
+      color: var(--accent-primary);
+      border-left-color: var(--accent-primary);
+    }
+
+    .tree-icon {
+      font-size: 0.875rem;
+    }
+
+    .tree-count {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-tertiary);
+      padding: 0.125rem 0.375rem;
+      border-radius: 2px;
+    }
+
+    /* Main Content Area */
+    .projects-main {
+      min-width: 0;
+    }
+
+    /* Terminal-style Filter Bar */
+    .filter-terminal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+
+    .filter-prompt {
+      color: var(--accent-secondary);
+      white-space: nowrap;
+    }
+
+    .filter-input {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: inherit;
+      width: 100%;
+      outline: none;
+    }
+
+    .filter-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .filter-hint {
+      color: var(--syntax-comment);
+      font-size: 0.75rem;
+      white-space: nowrap;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .filter-hint {
+        display: block;
+      }
+    }
+
+    /* View Toggle */
+    .view-toggle {
+      display: flex;
+      gap: 0.25rem;
+      margin-left: 1rem;
+    }
+
+    .view-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .view-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .view-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: var(--bg-primary);
+    }
+
+    /* Project Grid Enhanced */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-grid.list-view {
+      grid-template-columns: 1fr;
+    }
+
+    .project-grid.list-view .project-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .project-grid.list-view .project-card-header {
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+      padding-right: 1rem;
+    }
+
+    .project-grid.list-view .project-card-body {
+      padding: 0.75rem 0;
+    }
+
+    .project-grid.list-view .blurb {
+      display: none;
+    }
+
+    /* Project Card Enhancements - FIXED ANIMATIONS */
+    .project-card {
+      position: relative;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Only hide when explicitly filtered out */
+    .project-card.hidden {
+      display: none !important;
+    }
+
+    /* Hover effects */
+    .project-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(139, 233, 253, 0.08);
+    }
+
+    /* Git Status Badges */
+    .file-status {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      padding: 0.125rem 0.375rem;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    .file-status.committed {
+      color: var(--accent-secondary);
+      border: 1px solid var(--accent-secondary);
+    }
+
+    .file-status.modified {
+      color: var(--accent-tertiary);
+      border: 1px solid var(--accent-tertiary);
+    }
+
+    .file-status.untracked {
+      color: var(--text-muted);
+      border: 1px solid var(--text-muted);
+    }
+
+    .file-status.live {
+      color: var(--accent-primary);
+      background: rgba(139, 233, 253, 0.1);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .file-status.optimized {
+      color: var(--accent-quaternary);
+      border: 1px solid var(--accent-quaternary);
+    }
+
+    .file-status.added {
+      color: var(--accent-secondary);
+      border: 1px solid var(--accent-secondary);
+    }
+
+    .file-status.hardware {
+      color: var(--accent-tertiary);
+      border: 1px solid var(--accent-tertiary);
+    }
+
+    /* Category Headers */
+    .category-header {
+      grid-column: 1 / -1;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--syntax-comment);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .category-header::before {
+      content: '//';
+      color: var(--accent-primary);
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .empty-state-command {
+      color: var(--accent-primary);
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .projects-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .file-explorer {
+        display: none;
+      }
+      
+      .filter-hint {
+        display: none;
+      }
+    }
+
+    /* Selection */
+    .project-card:focus {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 2px;
+    }
+
+    /* Fade-in animation (simpler, more reliable) */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .project-card.animate-in {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+  </style>
 </head>
 <body>
+  <div class="grain-overlay"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="index.html">Collins Kibet</a>
+      <div class="nav-path">
+        <span class="path-segment">~</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment active">projects</span>
+      </div>
       <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="skills.html">Skills</a></li>
-        <li><a href="projects.html" class="active">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="index.html">~/home</a></li>
+        <li><a href="about.html">~/about</a></li>
+        <li><a href="skills.html">~/skills</a></li>
+        <li><a href="projects.html" class="active">~/projects</a></li>
+        <li><a href="contact.html">~/contact.sh</a></li>
       </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     </nav>
   </header>
 
   <main>
     <section class="section">
       <div class="container">
-        <h1 class="section-title">Projects</h1>
-        <p class="section-subtitle">Live apps, client work, and solutions spanning full-stack web, mobile, and embedded systems.</p>
-        
-        <div class="project-grid">
-          <a href="projects/thletiq.html" class="project-card">
-            <h3>ThletIQ</h3>
-            <div class="project-tags">
-              <span class="tag">Next.js</span>
-              <span class="tag">TypeScript</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">Live</span>
+        <!-- Header with live stats -->
+        <div class="section-header" style="margin-bottom: 1.5rem;">
+          <h1 class="section-title">
+            <span class="syn-keyword">ls</span> -la <span class="syn-string">"projects/"</span>
+          </h1>
+          <p class="section-subtitle" style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-secondary);">
+            <span style="color: var(--accent-secondary);">6 directories</span>, 
+            <span style="color: var(--accent-primary);">5 deployed</span>, 
+            <span style="color: var(--accent-tertiary);">2 in development</span>
+          </p>
+        </div>
+
+        <div class="projects-layout">
+          <!-- Sidebar: File Explorer -->
+          <aside class="file-explorer">
+            <div class="explorer-header">
+              <div class="explorer-title">Explorer</div>
             </div>
-            <p class="blurb">AI-powered fitness platform (thletiq.com) — personalized workout programs, 200+ exercises, progress tracking. Free for everyone.</p>
-          </a>
-          <a href="projects/east-african-bites.html" class="project-card">
-            <h3>East African Bites</h3>
-            <div class="project-tags">
-              <span class="tag">Next.js</span>
-              <span class="tag">Supabase</span>
-              <span class="tag">Twilio</span>
-              <span class="tag">Live</span>
+            <div class="explorer-tree">
+              <div class="tree-item active" onclick="filterProjects('all', event)">
+                <span class="tree-icon">📁</span>
+                <span>projects</span>
+                <span class="tree-count">7</span>
+              </div>
+              <div class="tree-item" onclick="filterProjects('web', event)">
+                <span class="tree-icon">🌐</span>
+                <span>web-apps</span>
+                <span class="tree-count">3</span>
+              </div>
+              <div class="tree-item" onclick="filterProjects('mobile', event)">
+                <span class="tree-icon">📱</span>
+                <span>mobile</span>
+                <span class="tree-count">1</span>
+              </div>
+              <div class="tree-item" onclick="filterProjects('embedded', event)">
+                <span class="tree-icon">⚡</span>
+                <span>embedded</span>
+                <span class="tree-count">1</span>
+              </div>
+              <div class="tree-item" onclick="filterProjects('ml', event)">
+                <span class="tree-icon">🧠</span>
+                <span>machine-learning</span>
+                <span class="tree-count">1</span>
+              </div>
+              <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                <div class="tree-item" style="color: var(--syntax-comment);">
+                  <span class="tree-icon">⚙️</span>
+                  <span>.gitignore</span>
+                </div>
+                <div class="tree-item" style="color: var(--syntax-comment);">
+                  <span class="tree-icon">📄</span>
+                  <span>README.md</span>
+                </div>
+              </div>
             </div>
-            <p class="blurb">Full-stack food ordering platform for chapatis & mandazis. Multi-step checkout, zone-based delivery, SMS notifications, admin dashboard.</p>
-          </a>
-          <a href="projects/diaspora-link.html" class="project-card">
-            <h3>Diaspora Link</h3>
-            <div class="project-tags">
-              <span class="tag">React Native</span>
-              <span class="tag">Firebase</span>
-              <span class="tag">Google APIs</span>
-              <span class="tag">Closed Testing</span>
+          </aside>
+
+          <!-- Main Content -->
+          <div class="projects-main">
+            <!-- Filter Bar -->
+            <div class="filter-terminal">
+              <span class="filter-prompt">$ grep --tech</span>
+              <input type="text" class="filter-input" id="projectFilter" placeholder="Filter by technology (e.g., 'React', 'Python')..." autocomplete="off">
+              <span class="filter-hint">Press / to focus • ESC to clear</span>
+              <div class="view-toggle">
+                <button class="view-btn active" onclick="setView('grid', event)" title="Grid View">⊞</button>
+                <button class="view-btn" onclick="setView('list', event)" title="List View">☰</button>
+              </div>
             </div>
-            <p class="blurb">Community networking app connecting diaspora communities worldwide. Location-based chat, Housing/Jobs/Rides marketplace. iOS & Android.</p>
-          </a>
-          <a href="projects/ministry-website.html" class="project-card">
-            <h3>Ministry Website</h3>
-            <div class="project-tags">
-              <span class="tag">Client Work</span>
-              <span class="tag">Vercel</span>
-              <span class="tag">Live</span>
+
+            <!-- Project Grid -->
+            <div class="project-grid" id="projectGrid">
+              <!-- Web Projects -->
+              <div class="category-header">Full-Stack Web Applications</div>
+              
+              <a href="projects/thletiq.html" class="project-card" data-category="web" data-tech="Next.js TypeScript PostgreSQL AI">
+                <span class="file-status live">● LIVE</span>
+                <div class="project-card-header">
+                  <div class="project-card-dots"><span></span><span></span><span></span></div>
+                  <span class="project-card-filename">thletiq.tsx</span>
+                </div>
+                <div class="project-card-body">
+                  <h3>ThletIQ</h3>
+                  <div class="project-tags">
+                    <span class="tag">Next.js</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">PostgreSQL</span>
+                  </div>
+                  <p class="blurb">AI-powered fitness platform with personalized workout programs and ML-driven progress tracking.</p>
+                  <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--accent-secondary); font-family: var(--font-mono);">
+                    ⚡ 200+ exercises • 🎯 Production
+                  </div>
+                </div>
+              </a>
+
+              <a href="projects/east-african-bites.html" class="project-card" data-category="web" data-tech="Next.js Supabase Twilio">
+                <span class="file-status live">● LIVE</span>
+                <div class="project-card-header">
+                  <div class="project-card-dots"><span></span><span></span><span></span></div>
+                  <span class="project-card-filename">east-african-bites.tsx</span>
+                </div>
+                <div class="project-card-body">
+                  <h3>East African Bites</h3>
+                  <div class="project-tags">
+                    <span class="tag">Next.js</span>
+                    <span class="tag">Supabase</span>
+                    <span class="tag">Twilio</span>
+                  </div>
+                  <p class="blurb">Full-stack food ordering with real-time SMS notifications and zone-based delivery logistics.</p>
+                  <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--accent-secondary); font-family: var(--font-mono);">
+                    📍 Geo-location • 💬 SMS Integration
+                  </div>
+                </div>
+              </a>
+
+              <a href="projects/ministry-website.html" class="project-card" data-category="web" data-tech="Next.js Vercel Client">
+                <span class="file-status live">● LIVE</span>
+                <div class="project-card-header">
+                  <div class="project-card-dots"><span></span><span></span><span></span></div>
+                  <span class="project-card-filename">ministry-website.tsx</span>
+                </div>
+                <div class="project-card-body">
+                  <h3>Ministry Website</h3>
+                  <div class="project-tags">
+                    <span class="tag">Client Work</span>
+                    <span class="tag">Vercel</span>
+                    <span class="tag">Next.js</span>
+                  </div>
+                  <p class="blurb">Church organization website in Kenya. Learned client handling, requirements gathering, and clear communication.</p>
+                  <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--accent-secondary); font-family: var(--font-mono);">
+                    🤝 Client Project • 🌍 Kenya-based
+                  </div>
+                </div>
+              </a>
+ 
+              <!-- Mobile Projects -->
+              <div class="category-header">Mobile Applications</div>
+ 
+              <a href="projects/diaspora-link.html" class="project-card" data-category="mobile" data-tech="React Native Firebase iOS Android">
+                <span class="file-status modified">M</span>
+                <div class="project-card-header">
+                  <div class="project-card-dots"><span></span><span></span><span></span></div>
+                  <span class="project-card-filename">diaspora-link.tsx</span>
+                </div>
+                <div class="project-card-body">
+                  <h3>Diaspora Link</h3>
+                  <div class="project-tags">
+                    <span class="tag">React Native</span>
+                    <span class="tag">Firebase</span>
+                    <span class="tag">Google APIs</span>
+                  </div>
+                  <p class="blurb">Community networking app connecting diaspora communities. Location-based chat, Housing/Jobs/Rides marketplace.</p>
+                  <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--accent-tertiary); font-family: var(--font-mono);">
+                    🧪 Closed Beta • 📱 iOS & Android
+                  </div>
+                </div>
+              </a>
+ 
+              <!-- Embedded Systems -->
+              <div class="category-header">Embedded Systems & Robotics</div>
+ 
+              <a href="projects/smart-rc-vehicle.html" class="project-card" data-category="embedded" data-tech="Arduino C++ PID Control">
+                <span class="file-status committed">✓</span>
+                <div class="project-card-header">
+                  <div class="project-card-dots"><span></span><span></span><span></span></div>
+                  <span class="project-card-filename">smart-rc-vehicle.cpp</span>
+                </div>
+                <div class="project-card-body">
+                  <h3>Smart RC Vehicle</h3>
+                  <div class="project-tags">
+                    <span class="tag">Arduino</span>
+                    <span class="tag">PID Control</span>
+                    <span class="tag">Embedded C++</span>
+                  </div>
+                  <p class="blurb">Autonomous vehicle with PID stabilization, wireless control, and real-time sensor feedback systems.</p>
+                  <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--accent-secondary); font-family: var(--font-mono);">
+                    ⚡ Real-time • 🎮 Wireless control
+                  </div>
+                </div>
+              </a>
+ 
+              <!-- Machine Learning -->
+              <div class="category-header">Machine Learning</div>
+ 
+              <a href="projects/ai-fruit-classifier.html" class="project-card" data-category="ml" data-tech="Python TensorFlow CNN Computer Vision">
+                <span class="file-status optimized">★</span>
+                <div class="project-card-header">
+                  <div class="project-card-dots"><span></span><span></span><span></span></div>
+                  <span class="project-card-filename">ai-fruit-classifier.py</span>
+                </div>
+                <div class="project-card-body">
+                  <h3>AI Fruit Classifier</h3>
+                  <div class="project-tags">
+                    <span class="tag">TensorFlow</span>
+                    <span class="tag">CNN</span>
+                    <span class="tag">Python</span>
+                  </div>
+                  <p class="blurb">Deep learning CNN achieving 94%+ accuracy on 15-class fruit classification with comprehensive evaluation.</p>
+                  <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--accent-secondary); font-family: var(--font-mono);">
+                    🎯 94.2% accuracy • 🧠 15 classes
+                  </div>
+                </div>
+              </a>
+ 
+              <!-- Empty State (Hidden by default) -->
+              <div class="empty-state" id="emptyState" style="display: none;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+                <div>No matches found for "<span id="emptyQuery"></span>"</div>
+                <div class="empty-state-command">
+                  $ git checkout -- . && git clean -fd<br>
+                  <span style="color: var(--text-muted);">// Reset filters to see all projects</span>
+                </div>
+              </div>
             </div>
-            <p class="blurb">Website for a church organization in Kenya. Client project — learned client handling and clear communication.</p>
-          </a>
-          <a href="projects/smart-rc-vehicle.html" class="project-card">
-            <h3>Smart RC Vehicle</h3>
-            <div class="project-tags">
-              <span class="tag">Arduino</span>
-              <span class="tag">PID Control</span>
-              <span class="tag">Bluetooth</span>
-              <span class="tag">Embedded C++</span>
-            </div>
-            <p class="blurb">Advanced autonomous vehicle with PID stabilization, wireless control, and real-time feedback systems. Custom mobile app for control.</p>
-          </a>
-          <a href="projects/event-hive.html" class="project-card">
-            <h3>Event-Hive</h3>
-            <div class="project-tags">
-              <span class="tag">React Native</span>
-              <span class="tag">Firestore</span>
-              <span class="tag">Real-time</span>
-              <span class="tag">Social</span>
-            </div>
-            <p class="blurb">Social events platform featuring event discovery, networking, and community engagement. Built with React Native and real-time sync.</p>
-          </a>
-          <a href="projects/ai-fruit-classifier.html" class="project-card">
-            <h3>AI Fruit Classifier</h3>
-            <div class="project-tags">
-              <span class="tag">TensorFlow</span>
-              <span class="tag">CNN</span>
-              <span class="tag">Python</span>
-              <span class="tag">Computer Vision</span>
-            </div>
-            <p class="blurb">Deep learning image classification using Convolutional Neural Networks. 94%+ accuracy, comprehensive model evaluation.</p>
-          </a>
+          </div>
         </div>
       </div>
     </section>
   </main>
-
+ 
   <footer class="site-footer">
     <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
+      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+        <span style="color: var(--accent-secondary);">➜</span> ~ git status: <span style="color: var(--accent-primary);">6 commits ahead of origin/master</span>
+      </p>
     </div>
   </footer>
-</body>
-</html>
+ 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterInput = document.getElementById('projectFilter');
+      const projectGrid = document.getElementById('projectGrid');
+      const projectCards = document.querySelectorAll('.project-card');
+      const emptyState = document.getElementById('emptyState');
+      const emptyQuery = document.getElementById('emptyQuery');
+      const categoryHeaders = document.querySelectorAll('.category-header');
+      
+      let currentCategory = 'all';
+      
+      projectCards.forEach(card => {
+        card.classList.remove('hidden');
+      });
+      
+      function filterProjects(category, evt) {
+        currentCategory = category;
+        
+        document.querySelectorAll('.tree-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        if (evt && evt.currentTarget) {
+          evt.currentTarget.classList.add('active');
+        } else {
+          const allItem = document.querySelector('.tree-item');
+          if (allItem) allItem.classList.add('active');
+        }
+        
+        filterInput.value = '';
+        emptyState.style.display = 'none';
+        applyFilters();
+      }
+      
+      window.filterProjects = filterProjects;
+      
+      function applyFilters() {
+        const query = filterInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+        
+        projectCards.forEach(card => {
+          const matchesCategory = currentCategory === 'all' || card.dataset.category === currentCategory;
+          const matchesText = query === '' || 
+            card.dataset.tech.toLowerCase().includes(query) || 
+            card.querySelector('h3').textContent.toLowerCase().includes(query) || 
+            card.querySelector('.blurb').textContent.toLowerCase().includes(query);
+          
+          if (matchesCategory && matchesText) {
+            card.classList.remove('hidden');
+            card.style.display = '';
+            card.style.animationPlayState = 'running';
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+        
+        updateCategoryHeaders();
+        
+        if (visibleCount === 0) {
+          emptyState.style.display = 'block';
+          emptyQuery.textContent = query || currentCategory;
+        } else {
+          emptyState.style.display = 'none';
+        }
+      }
+      
+      function updateCategoryHeaders() {
+        categoryHeaders.forEach(header => {
+          let nextEl = header.nextElementSibling;
+          let hasVisibleCards = false;
+          
+          while (nextEl && !nextEl.classList.contains('category-header') && !nextEl.classList.contains('empty-state')) {
+            if (!nextEl.classList.contains('hidden') && nextEl.classList.contains('project-card')) {
+              hasVisibleCards = true;
+              break;
+            }
+            nextEl = nextEl.nextElementSibling;
+          }
+          
+          header.style.display = hasVisibleCards ? 'flex' : 'none';
+        });
+      }
+      
+      filterInput.addEventListener('input', applyFilters);
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== filterInput) {
+          e.preventDefault();
+          filterInput.focus();
+        }
+        if (e.key === 'Escape') {
+          filterInput.value = '';
+          filterInput.blur();
+          currentCategory = 'all';
+          document.querySelectorAll('.tree-item').forEach(item => item.classList.remove('active'));
+          const firstTreeItem = document.querySelector('.tree-item');
+          if (firstTreeItem) firstTreeItem.classList.add('active');
+          applyFilters();
+        }
+      });
+      
+      function setView(view, evt) {
+        const btns = document.querySelectorAll('.view-btn');
+        btns.forEach(btn => btn.classList.remove('active'));
+        const target = (evt && evt.target) ? evt.target : btns[view === 'list' ? 1 : 0];
+        if (target) target.classList.add('active');
+        
+        if (view === 'list') {
+          projectGrid.classList.add('list-view');
+        } else {
+          projectGrid.classList.remove('list-view');
+        }
+      }
+      
+      window.setView = setView;
+      
+      function toggleMenu() {
+        document.querySelector('.nav-menu').classList.toggle('open');
+      }
+      
+      window.toggleMenu = toggleMenu;
+    });
+  </script>
+ </body>
+ </html>

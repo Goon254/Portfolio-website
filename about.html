@@ -1,52 +1,673 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | Collins Kibet</title>
-  <meta name="description" content="Learn about Collins Kibet's journey from Eldama Ravine to software engineering and robotics.">
+  <title>~/about | Collins Kibet</title>
+  <meta name="description" content="From Eldama Ravine to NCAA to software. The actual story.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  
+  <style>
+    /* [Same CSS as before - keeping the design, just changing content] */
+    .about-layout {
+      display: grid;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+    
+    .specs-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    
+    .specs-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    
+    .specs-content {
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.8;
+    }
+    
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.375rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .spec-row:last-child {
+      border-bottom: none;
+    }
+    
+    .spec-label {
+      color: var(--syntax-keyword);
+    }
+    
+    .spec-value {
+      color: var(--syntax-string);
+    }
+    
+    .spec-value.warning {
+      color: var(--accent-tertiary);
+    }
+    
+    .spec-value.error {
+      color: var(--error);
+    }
+    
+    .spec-value.success {
+      color: var(--accent-secondary);
+    }
+    
+    .resource-bar {
+      display: inline-block;
+      width: 100px;
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      margin-left: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .resource-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+    
+    .resource-fill.running {
+      width: 60%;
+      background: var(--accent-tertiary);
+    }
+    
+    .resource-fill.coding {
+      width: 95%;
+      background: var(--accent-secondary);
+    }
+    
+    .resource-fill.pubg {
+      width: 78%;
+      background: var(--accent-primary);
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    .readme-content {
+      font-size: 0.9375rem;
+      line-height: 1.9;
+      color: var(--text-secondary);
+    }
+    
+    .readme-content p {
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    
+    .inline-comment {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--syntax-comment);
+      margin-left: 0.5rem;
+      font-style: italic;
+      opacity: 0.8;
+    }
+    
+    .bugs-section {
+      background: rgba(255, 85, 85, 0.05);
+      border: 1px solid rgba(255, 85, 85, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .bugs-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--error);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .bugs-header::before {
+      content: '🐛';
+    }
+    
+    .bug-list {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      list-style: none;
+    }
+    
+    .bug-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 85, 85, 0.1);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    
+    .bug-item:last-child {
+      border-bottom: none;
+    }
+    
+    .bug-id {
+      color: var(--error);
+      font-weight: 600;
+      min-width: 60px;
+    }
+    
+    .bug-desc {
+      color: var(--text-secondary);
+      flex: 1;
+    }
+    
+    .bug-status {
+      color: var(--accent-tertiary);
+      font-size: 0.75rem;
+    }
+    
+    .bug-status.wontfix {
+      color: var(--syntax-comment);
+    }
+    
+    .changelog {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    
+    .changelog-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .changelog-header::before {
+      content: '📝';
+    }
+    
+    .version-entry {
+      margin-bottom: 1.25rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--border);
+    }
+    
+    .version-entry:last-child {
+      margin-bottom: 0;
+      border-left-color: var(--accent-secondary);
+    }
+    
+    .version-num {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .version-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    
+    .version-changes {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    .version-changes li {
+      margin-bottom: 0.25rem;
+      list-style-type: none;
+      position: relative;
+      padding-left: 1rem;
+    }
+    
+    .version-changes li::before {
+      content: '+';
+      position: absolute;
+      left: 0;
+      color: var(--accent-secondary);
+    }
+    
+    .version-changes li.breaking::before {
+      content: '!';
+      color: var(--error);
+    }
+    
+    .deps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .dep-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .dep-item:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+    
+    .dep-icon {
+      font-size: 1rem;
+    }
+    
+    .debug-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    
+    .debug-toggle:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    
+    .debug-comment {
+      display: none;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-tertiary);
+      background: rgba(255, 184, 108, 0.1);
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+    
+    body.debug-mode .debug-comment {
+      display: block;
+    }
+    
+    body.debug-mode .inline-comment {
+      color: var(--accent-tertiary);
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
+  <div class="grain-overlay"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="index.html">Collins Kibet</a>
+      <div class="nav-path">
+        <span class="path-segment">~</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment active">README.md</span>
+        <span class="path-git">main*</span>
+      </div>
       <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html" class="active">About</a></li>
-        <li><a href="skills.html">Skills</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="index.html">~/home</a></li>
+        <li><a href="about.html" class="active">~/about</a></li>
+        <li><a href="skills.html">~/skills</a></li>
+        <li><a href="projects.html">~/projects</a></li>
+        <li><a href="contact.html">~/contact.sh</a></li>
       </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     </nav>
   </header>
 
   <main>
     <section class="section">
       <div class="container">
-        <h1 class="section-title">About Me</h1>
-        <p class="section-subtitle">From village innovation to cutting-edge robotics — where endurance meets engineering.</p>
-        
-        <div class="about-content">
-          <p>
-            Growing up in Eldama Ravine, a small Kenyan village where resourcefulness wasn't optional, I learned that the best solutions come from combining persistence with creativity. Daily runs through rural landscapes taught me more than fitness; they taught me how to pace for the long haul and push through when it matters most.
+        <!-- Header -->
+        <div style="margin-bottom: 2rem;">
+          <h1 class="section-title" style="font-size: 1.5rem;">
+            <span class="syn-comment">#</span> README.md
+          </h1>
+          <p style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">
+            <span style="color: var(--accent-secondary);">➜</span> cat about.txt | grep "real_story"
           </p>
-          <p>
-            As a software engineer specializing in robotics, I bring that same marathon mindset to every system I build. My work spans from community platforms like Event-Hive and Diaspora Link to the precise world of embedded systems and machine intelligence.
-          </p>
-          <p>
-            Whether I'm programming PID controllers for autonomous vehicle stabilization, implementing computer vision for real-time object recognition, or designing interfaces that make complex robotics feel intuitive, I'm driven by one goal: creating technology that doesn't just compute — it responds, adapts, and enhances human experience.
-          </p>
-          <p>
-            What sets me apart isn't just versatility across the full stack — from embedded C++ to modern web frameworks — it's my builder's philosophy: treating every challenge like a marathon, balancing calculated persistence with creative problem-solving.
-          </p>
-          <p>
-            Every project I tackle, from village innovation to cutting-edge robotics, reinforces my belief that the most powerful technology emerges when endurance meets engineering — always crossing the finish line with solutions that work in the real world.
-          </p>
+        </div>
+
+        <div class="about-layout">
+          <!-- System Specs Sidebar -->
+          <div class="specs-card">
+            <div class="specs-header">
+              <span>⚡</span>
+              <span>system_specs.json</span>
+            </div>
+            <div class="specs-content">
+              <div class="spec-row">
+                <span class="spec-label">Origin:</span>
+                <span class="spec-value">Eldama Ravine, KE</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Current Location:</span>
+                <span class="spec-value">Manchester, NH</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Runtime:</span>
+                <span class="spec-value">~24 years</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">First Code:</span>
+                <span class="spec-value">cout &lt;&lt; "Hello World";</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Graduated:</span>
+                <span class="spec-value success">Nov 2025 (CS, SNHU)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Running (NCAA D-II):</span>
+                <span class="spec-value warning">
+                  50-60 mi/week (retired)
+                  <span class="resource-bar"><span class="resource-fill running"></span></span>
+                </span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Coding Activity:</span>
+                <span class="spec-value success">
+                  Daily
+                  <span class="resource-bar"><span class="resource-fill coding"></span></span>
+                </span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">PUBG Addiction:</span>
+                <span class="spec-value warning">
+                  High
+                  <span class="resource-bar"><span class="resource-fill pubg"></span></span>
+                </span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Sleep Priority:</span>
+                <span class="spec-value success">CRITICAL</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Dark Mode:</span>
+                <span class="spec-value">Like my skin baby</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main README Content -->
+          <div class="readme-content">
+            <p>
+              <span style="color: var(--accent-primary); font-weight: 600;">## The Actual Origin Story</span>
+              <span class="inline-comment">// Snake Xenzia to Next.js</span>
+            </p>
+            
+            <p>
+              Grew up in <strong>Eldama Ravine</strong>, Kenya. Childhood was soccer with cousins, herding livestock, helping my parents on the farm, and playing <strong>Snake Xenzia on my dad's Nokia</strong>. I was 6 when I touched a phone for the first time. I was hooked.
+            </p>
+            
+            <p>
+              First real computer experience: my dad brought his work laptop home. We watched our first movie through VLC player. I played video games. That moment I knew<strong>computers and software were my thing</strong>.
+            </p>
+
+            <p>
+              People assume I learned to code in Kenya with slow internet. Nope. By 2021, Kenya had <strong>5G</strong>—faster than parts of the US. I moved to Manchester, NH in December 2021 for university, and that's where I wrote my first line of code: <code>cout &lt;&lt; "Hello World" &lt;&lt; endl;</code> in January 2022.
+              <span class="inline-comment">// Intro to Programming, SNHU</span>
+            </p>
+
+            <p>
+              <span style="color: var(--accent-primary); font-weight: 600;">## Running & Breaking</span>
+              <span class="inline-comment">// 26:30 8K to hip injuries</span>
+            </p>
+            
+            <p>
+              Started running seriously in <strong>2018</strong> in high school, then joined <strong>Solian Training Camp</strong> where I realized I was actually good at this. Made it to <strong>NCAA Division II Cross-Country at SNHU</strong>, running 50-60 miles per week despite injuries.
+            </p>
+
+            <p>
+              Best race: <strong>26:30 for 8K</strong>. Worst race: <strong>33:30 for 10K at regionals with a hip and knee injury</strong>. Running teaches you endurance applies to everything—debugging included. Now I'm retired from competitive running (injuries), focused on lifting, swimming, and shipping code.
+            </p>
+
+            <p>
+              <span style="color: var(--accent-primary); font-weight: 600;">## Why I Built What I Built</span>
+              <span class="inline-comment">// The real project origin stories</span>
+            </p>
+            
+            <p>
+              <strong>ThletIQ</strong>: My friend Allan asked me to make him a workout plan. Instead of writing one, I built an entire platform. The opportunity cost was simple—pay $20/month for a subscription or gain experience building my own tool. I needed structure for the gym anyway. Win-win.
+            </p>
+
+            <p>
+              <strong>East African Bites</strong>: I love cooking chapati. People always compliment me on it. Most people work and don't have time to cook. I saw the opportunity—cook for them, deliver to them. People pay for convenience.
+            </p>
+
+            <p>
+              <strong>Diaspora Link</strong>: I'm an immigrant. Finding housing, jobs, rides, and people from home was <strong>really hard</strong> when I got here. WhatsApp groups are too cluttered. Diaspora Link unifies everything so immigrants can settle into society without the chaos. This was a personal need that turned into something others needed too.
+            </p>
+
+            <p>
+              <strong>Heaven Targeter Ministries</strong>: Met the client at church. They saw my East African Bites website and asked if I could build something for their organization. Learned a lot about client work: be organized, pay attention to details, be patient, be consistent, and <strong>deliver what you promise</strong>.
+            </p>
+
+            <!-- Known Bugs Section -->
+            <div class="bugs-section">
+              <div class="bugs-header">
+                Known Bugs (Actual Character Flaws)
+              </div>
+              <ul class="bug-list">
+                <li class="bug-item">
+                  <span class="bug-id">#001</span>
+                  <span class="bug-desc">Drives fast (objectively bad, won't change)</span>
+                  <span class="bug-status wontfix">WONTFIX</span>
+                </li>
+                <li class="bug-item">
+                  <span class="bug-id">#101</span>
+                  <span class="bug-desc">Introvert. Too quiet. Takes time to open up.</span>
+                  <span class="bug-status wontfix">FEATURE</span>
+                </li>
+                <li class="bug-item">
+                  <span class="bug-id">#404</span>
+                  <span class="bug-desc">When code breaks at 2 AM: plays PUBG mobile, sleeps, debugs fresh the next day</span>
+                  <span class="bug-status">WORKS AS INTENDED</span>
+                </li>
+                <li class="bug-item">
+                  <span class="bug-id">#418</span>
+                  <span class="bug-desc">Forgets C++ semicolons. Every. Single. Time.</span>
+                  <span class="bug-status">ANNOYING</span>
+                </li>
+                <li class="bug-item">
+                  <span class="bug-id">#500</span>
+                  <span class="bug-desc">"I should be coding but instead..." → PUBG or Netflix</span>
+                  <span class="bug-status">CRITICAL</span>
+                </li>
+                <li class="bug-item">
+                  <span class="bug-id">#∞</span>
+                  <span class="bug-desc">Crazy mind but takes time to open up. Friends joke about this.</span>
+                  <span class="bug-status wontfix">BY DESIGN</span>
+                </li>
+              </ul>
+            </div>
+
+            <p>
+              <span style="color: var(--accent-primary); font-weight: 600;">## What I Actually Do When Things Break</span>
+              <span class="inline-comment">// Sleep > all-nighters</span>
+            </p>
+            
+            <p>
+              I <strong>never</strong> pull all-nighters. Sleep is too important. When code breaks at 2 AM, I play PUBG mobile, sleep, then come back to it with a fresh mind. I use AI a lot to debug—it's been incredibly useful.
+            </p>
+
+            <p>
+              My learning style: <strong>Use AI to learn, then build stuff until it works</strong>. I have a CS degree from SNHU, but most of my real learning came from breaking things and fixing them. YouTube, docs, and trial-and-error.
+            </p>
+
+            <div class="debug-comment">
+              DEBUG: If you're seeing this, you found debug mode. Easter egg: Try typing "nakucheki" in the console. Also, we love hills. If you know, you know.
+            </div>
+          </div>
+
+          <!-- Changelog -->
+          <div class="changelog">
+            <div class="changelog-header">
+              CHANGELOG.md
+            </div>
+            
+            <div class="version-entry">
+              <div class="version-num">v3.0.0 (Current Build)</div>
+              <div class="version-date">2025-11-30</div>
+              <ul class="version-changes">
+                <li>Graduated with BS in Computer Science from SNHU</li>
+                <li>Shipped ThletIQ, East African Bites, Diaspora Link to production</li>
+                <li>Completed Heaven Targeter Ministries client project</li>
+                <li>Won SETA Challenge Cup (1st place, 2024)</li>
+                <li class="breaking">BREAKING: Retired from NCAA running (injuries)</li>
+                <li>Now lifting, swimming, and coding full-time</li>
+              </ul>
+            </div>
+
+            <div class="version-entry">
+              <div class="version-num">v2.0.0</div>
+              <div class="version-date">2021-12-15</div>
+              <ul class="version-changes">
+                <li>Major migration: Moved to Manchester, NH from Kenya</li>
+                <li>Joined NCAA D-II Cross-Country (50-60 mi/week)</li>
+                <li>Culture shock: Halloween haunted houses almost made me pee my pants</li>
+                <li>Discovered fiber internet (life-changing upgrade from Kenya's 5G)</li>
+                <li class="breaking">BREAKING: Admitted to SNHU for Computer Science</li>
+              </ul>
+            </div>
+
+            <div class="version-entry">
+              <div class="version-num">v1.5.0</div>
+              <div class="version-date">2024-03-10</div>
+              <ul class="version-changes">
+                <li>First Arduino project: light bulbs (embedded systems course)</li>
+                <li>Started using AI for debugging (game-changer)</li>
+                <li>Deployed first project to production (2025)</li>
+                <li>Learned Next.js, TypeScript, PostgreSQL, Supabase</li>
+              </ul>
+            </div>
+
+            <div class="version-entry">
+              <div class="version-num">v1.0.0</div>
+              <div class="version-date">2022-01-10</div>
+              <ul class="version-changes">
+                <li>First line of code: cout &lt;&lt; "Hello World" &lt;&lt; endl;</li>
+                <li>First project: Country guessing game (team class project)</li>
+                <li>Discovered the job market is tough → got serious about coding</li>
+                <li>Learned to leverage AI tools</li>
+              </ul>
+            </div>
+
+            <div class="version-entry">
+              <div class="version-num">v0.5.0</div>
+              <div class="version-date">2018-08-01</div>
+              <ul class="version-changes">
+                <li>Started running seriously (high school)</li>
+                <li>Joined Solian Training Camp (realized I was actually good)</li>
+                <li>First exposure to VLC player and video games on dad's laptop</li>
+              </ul>
+            </div>
+
+            <div class="version-entry">
+              <div class="version-num">v0.1.0</div>
+              <div class="version-date">2006 (Age 6)</div>
+              <ul class="version-changes">
+                <li>Played Snake Xenzia on dad's Nokia phone</li>
+                <li>Decided technology was cool</li>
+                <li>Also: herding livestock, playing soccer, helping on the farm</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Dependencies -->
+          <div style="margin-top: 2rem;">
+            <h3 style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--syntax-comment); margin-bottom: 1rem;">
+              <span style="color: var(--accent-primary);">$</span> npm list --depth=0
+            </h3>
+            <div class="deps-grid">
+              <div class="dep-item">
+                <span class="dep-icon">💤</span>
+                <span>sleep@required</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🎮</span>
+                <span>pubg@stress-relief</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🤖</span>
+                <span>ai-debugging@life-saver</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🎵</span>
+                <span>edm-pop-naija@coding-fuel</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🏋️</span>
+                <span>gym-swimming@post-injury</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🍳</span>
+                <span>chapati@signature-dish</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🌙</span>
+                <span>dark-mode@requirement</span>
+              </div>
+              <div class="dep-item">
+                <span class="dep-icon">🇰🇪</span>
+                <span>kenya@eventual-return</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <div style="margin-top: 3rem; padding: 1.5rem; border-left: 3px solid var(--accent-primary); background: var(--bg-secondary); font-style: italic; color: var(--text-secondary);">
+            "It wouldn't be Collins if he didn't care about other people's feelings and wellbeing."
+            <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-muted); font-style: normal; font-family: var(--font-mono);">
+              — What my friends say about me
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -54,8 +675,41 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
+      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+        <span style="color: var(--accent-secondary);">➜</span> ~ echo "Hakuna Matata" && exit 0
+      </p>
     </div>
   </footer>
+
+  <!-- Debug Mode Toggle (Easter Egg) -->
+  <button class="debug-toggle" onclick="toggleDebug()" title="Toggle Debug Mode">
+    DEBUG_MODE=false
+  </button>
+
+  <script>
+    function toggleDebug() {
+      document.body.classList.toggle('debug-mode');
+      const btn = document.querySelector('.debug-toggle');
+      const isDebug = document.body.classList.contains('debug-mode');
+      btn.textContent = `DEBUG_MODE=${isDebug}`;
+      btn.style.opacity = isDebug ? '1' : '0.5';
+      
+      if (isDebug) {
+        console.log('%c 🔍 Debug Mode Activated', 'color: #8be9fd; font-weight: bold;');
+        console.log('%c Nakucheki! You found the debug mode.', 'color: #6272a4; font-style: italic;');
+        console.log('%c Fire moto dragon testing 🐉', 'color: #ff5555;');
+      }
+    }
+
+    function toggleMenu() {
+      document.querySelector('.nav-menu').classList.toggle('open');
+    }
+
+    // Easter eggs in console
+    console.log('%c 👋 Jambo! Niaje?', 'color: #50fa7b; font-size: 14px; font-weight: bold;');
+    console.log('%c Fun fact: I retired from running 50-60 mi/week to code full-time.', 'color: #f8f8f2;');
+    console.log('%c Also: We love hills. IYKYK.', 'color: #bd93f9; font-style: italic;');
+    console.log('%c ~ Collins', 'color: #8be9fd;');
+  </script>
 </body>
 </html>

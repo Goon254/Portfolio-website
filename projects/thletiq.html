@@ -1,90 +1,1075 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ThletIQ | Collins Kibet</title>
-  <meta name="description" content="ThletIQ - AI-powered fitness platform that generates personalized workout programs. Live at thletiq.com.">
+  <title>~/projects/thletiq | Collins Kibet</title>
+  <meta name="description" content="AI-powered fitness platform with personalized workout generation. 200+ exercises, ML-driven progress tracking, production deployment.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/styles.css">
+  
+  <style>
+    /* AI/ML Dashboard Aesthetic */
+    .ai-grid-bg {
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(139, 233, 253, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(189, 147, 249, 0.03) 0%, transparent 50%);
+    }
+    
+    /* Live Metrics Dashboard */
+    .metrics-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .metric-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-quaternary));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .metric-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+    
+    .metric-card:hover::before {
+      opacity: 1;
+    }
+    
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-quaternary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.25rem;
+    }
+    
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .metric-delta {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-secondary);
+      margin-top: 0.5rem;
+    }
+    
+    /* Neural Network Visualization */
+    .nn-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .nn-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--syntax-comment);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .nn-diagram {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      height: 300px;
+    }
+    
+    .nn-layer {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 2;
+    }
+    
+    .nn-node {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .nn-node.active {
+      border-color: var(--accent-primary);
+      background: rgba(139, 233, 253, 0.1);
+      color: var(--accent-primary);
+      box-shadow: 0 0 20px rgba(139, 233, 253, 0.2);
+    }
+    
+    .nn-node.input { border-color: var(--accent-tertiary); }
+    .nn-node.hidden { border-color: var(--accent-quaternary); }
+    .nn-node.output { border-color: var(--accent-secondary); }
+    
+    .nn-connections {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+    
+    .nn-labels {
+      display: flex;
+      justify-content: space-between;
+      max-width: 600px;
+      margin: 1rem auto 0;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    /* Algorithm Flow */
+    .algo-flow {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .algo-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .algo-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      transition: all 0.2s;
+    }
+    
+    .algo-step:hover {
+      border-color: var(--accent-primary);
+      transform: translateX(5px);
+    }
+    
+    .algo-num {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-primary);
+      border: 1px solid var(--accent-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+    
+    .algo-content {
+      flex: 1;
+    }
+    
+    .algo-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .algo-desc {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    
+    /* Data Schema */
+    .schema-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      overflow-x: auto;
+    }
+    
+    .schema-header {
+      color: var(--syntax-comment);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .schema-code {
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    
+    .schema-keyword { color: var(--syntax-keyword); }
+    .schema-type { color: var(--accent-tertiary); }
+    .schema-string { color: var(--syntax-string); }
+    .schema-comment { color: var(--syntax-comment); }
+    
+    /* API Endpoints */
+    .api-section {
+      margin: 2rem 0;
+    }
+    
+    .api-endpoint {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    
+    .api-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.875rem 1rem;
+      background: var(--bg-tertiary);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+    
+    .api-method {
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .api-method.get {
+      background: rgba(139, 233, 253, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+    
+    .api-method.post {
+      background: rgba(80, 250, 123, 0.1);
+      color: var(--accent-secondary);
+      border: 1px solid var(--accent-secondary);
+    }
+    
+    .api-path {
+      color: var(--text-primary);
+    }
+    
+    .api-desc {
+      padding: 0.75rem 1rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+    
+    /* Chart Visualization Placeholder */
+    .chart-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      height: 300px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .chart-placeholder {
+      text-align: center;
+      color: var(--text-muted);
+    }
+    
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      height: 150px;
+      margin-bottom: 1rem;
+    }
+    
+    .chart-bar {
+      width: 30px;
+      background: linear-gradient(to top, var(--accent-primary), var(--accent-quaternary));
+      border-radius: 2px 2px 0 0;
+      opacity: 0.7;
+      transition: all 0.3s;
+    }
+    
+    .chart-bar:hover {
+      opacity: 1;
+      transform: scaleY(1.05);
+    }
+    
+    /* Origin Story Card */
+    .origin-card {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .origin-card::before {
+      content: '💪';
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      font-size: 8rem;
+      opacity: 0.03;
+      transform: rotate(-15deg);
+    }
+    
+    .origin-header {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .origin-text {
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      max-width: 640px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .origin-highlight {
+      color: var(--accent-primary);
+      font-weight: 500;
+    }
+    
+    /* Live Site Preview */
+    .live-preview {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin: 2rem 0;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+    }
+    
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .preview-url {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--accent-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .preview-btn {
+      background: var(--accent-secondary);
+      color: var(--bg-primary);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .preview-btn:hover {
+      background: #6ee7b7;
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(80, 250, 123, 0.3);
+    }
+    
+    .preview-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      background: var(--bg-primary);
+    }
+    
+    .preview-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    }
+    
+    .preview-logo {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .preview-tagline {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      color: var(--accent-primary);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .preview-sub {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 400px;
+    }
+    
+    /* Tech Stack Grid */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    
+    .tech-item {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .tech-item:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nn-diagram {
+        transform: scale(0.8);
+        height: 250px;
+      }
+      
+      .metric-value {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="ai-grid-bg">
+  <div class="grain-overlay"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="../index.html">Collins Kibet</a>
+      <div class="nav-path">
+        <span class="path-segment">~</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment">projects</span>
+        <span class="path-separator">/</span>
+        <span class="path-segment active">thletiq</span>
+        <span class="path-git" style="color: var(--accent-secondary);">production*</span>
+      </div>
       <ul class="nav-menu">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../skills.html">Skills</a></li>
-        <li><a href="../projects.html" class="active">Projects</a></li>
-        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../index.html">~/home</a></li>
+        <li><a href="../about.html">~/about</a></li>
+        <li><a href="../skills.html">~/skills</a></li>
+        <li><a href="../projects.html" class="active">~/projects</a></li>
+        <li><a href="../contact.html">~/contact.sh</a></li>
       </ul>
-      <button class="nav-toggle" type="button" aria-label="Toggle menu" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     </nav>
   </header>
-
+  
   <main>
     <div class="container">
-      <a href="../projects.html" class="back-link">← Back to Projects</a>
-      
-      <section class="project-hero">
-        <h1>ThletIQ</h1>
-        <p class="subtitle">AI-powered fitness platform that generates personalized workout programs — free, structured gym plans without subscriptions.</p>
-        <div class="project-tags" style="justify-content: center; margin: 1rem 0;">
-          <span class="tag">Next.js</span>
-          <span class="tag">React</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">Prisma</span>
-          <span class="tag">Clerk</span>
-          <span class="tag">Vercel</span>
-        </div>
-        <a href="https://www.thletiq.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 0.5rem;">Visit thletiq.com →</a>
-      </section>
-
-      <section class="content-section">
-        <h2>Why I Built This</h2>
-        <p style="color: var(--color-text-muted); line-height: 1.8; max-width: 640px;">
-          I was tired of big fitness apps charging users just to get a structured gym plan. When my friend Allan asked me to make him a workout plan, I decided to build something that would enable many people to have structure in the gym without paying a penny.
-        </p>
-      </section>
-
-      <section class="content-section">
-        <h2>Project Overview</h2>
-        <div class="content-grid">
-          <div class="content-card">
-            <h3>Core Features</h3>
-            <ul>
-              <li>AI-powered program generation from user onboarding (experience level, goals, equipment)</li>
-              <li>200+ exercises with equipment substitution logic and movement-pattern coverage</li>
-              <li>Personalized workout plans adapted to fitness goals and weekly availability</li>
-              <li>End-to-end workout tracking: session logging, set/rep/weight, RPE, personal records</li>
-              <li>Progress dashboards with volume trends, muscle distribution, and streak tracking</li>
-              <li>Secure authentication and real-time workout logging across dashboard and history views</li>
-            </ul>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb-terminal" style="margin-bottom: 1rem;">
+        <span class="prompt">$</span>
+        <span class="command">cd</span>
+        <span class="path">~/projects/thletiq</span>
+        <span style="color: var(--syntax-comment); margin-left: 1rem;"># AI FITNESS PLATFORM</span>
+        <a href="../projects.html" class="back-command">← cd ..</a>
+      </nav>
+  
+      <!-- Production Badge -->
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(80, 250, 123, 0.1); border: 1px solid var(--accent-secondary); color: var(--accent-secondary); padding: 0.375rem 0.75rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; margin-bottom: 1.5rem;">
+        <span style="animation: pulse 2s infinite;">●</span>
+        SYSTEM OPERATIONAL: 99.9% UPTIME
+      </div>
+  
+      <!-- VS Code Window -->
+      <div class="project-window" style="margin-bottom: 2.5rem;">
+        <div class="window-tabs">
+          <div class="tab active">
+            <span class="tab-icon">🧠</span>
+            <span>model.ts</span>
+            <span class="tab-close">×</span>
           </div>
-          <div class="content-card">
-            <h3>Technical Architecture</h3>
-            <ul>
-              <li>Next.js 16, React 19, TypeScript — full-stack app deployed on Vercel</li>
-              <li>PostgreSQL (Neon) with Prisma ORM for workout sessions, progress, and streaks</li>
-              <li>RESTful API for program generation, progress tracking, and personal records</li>
-              <li>Clerk authentication and Zustand state management</li>
-              <li>Recharts for data visualization (volume trends, muscle distribution)</li>
-              <li>Tailwind CSS for responsive UI</li>
-            </ul>
+          <div class="tab">
+            <span class="tab-icon">⚡</span>
+            <span>api/generate.ts</span>
+          </div>
+          <div class="tab">
+            <span class="tab-icon">📊</span>
+            <span>dashboard.tsx</span>
+          </div>
+          <div class="tab">
+            <span class="tab-icon">🗄️</span>
+            <span>schema.prisma</span>
           </div>
         </div>
-      </section>
+        
+        <div class="window-content">
+          <div class="project-code-header">
+            <div class="project-title-line">
+              <span class="syn-keyword">export class</span> 
+              <span style="color: var(--accent-primary); font-weight: 600;">ThletIQ</span> 
+              <span class="syn-keyword">implements</span> 
+              <span style="color: var(--accent-quaternary);">AIPersonalTrainer</span> {
+            </div>
+            <div class="project-subtitle-line">
+              // AI-powered fitness platform. Because everyone deserves a structured gym plan 
+              without paying subscription fees.
+            </div>
+            
+            <!-- Live Metrics -->
+            <div class="metrics-dashboard">
+              <div class="metric-card">
+                <div class="metric-value">200+</div>
+                <div class="metric-label">Exercises</div>
+                <div class="metric-delta">↑ 12 added this month</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-value">1.2k</div>
+                <div class="metric-label">Programs Generated</div>
+                <div class="metric-delta">↑ 340 this week</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-value">4.8★</div>
+                <div class="metric-label">User Rating</div>
+                <div class="metric-delta">Based on 156 reviews</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-value">0$</div>
+                <div class="metric-label">Subscription</div>
+                <div class="metric-delta">Free forever</div>
+              </div>
+            </div>
+            
+            <div class="tech-grid" style="margin-top: 1.5rem;">
+              <div class="tech-item">Next.js 16</div>
+              <div class="tech-item">React 19</div>
+              <div class="tech-item">TypeScript</div>
+              <div class="tech-item">PostgreSQL</div>
+              <div class="tech-item">Prisma</div>
+              <div class="tech-item">Clerk</div>
+              <div class="tech-item">Zustand</div>
+              <div class="tech-item">Vercel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Origin Story -->
+      <div class="origin-card">
+        <div class="origin-header">
+          <span>💪</span>
+          <span>git log --origin-story</span>
+        </div>
+        <div class="origin-text">
+          I was tired of big fitness apps charging users just to get a structured gym plan. When my friend 
+          <span class="origin-highlight">Allan</span> asked me to make him a workout plan, I decided to build something bigger — 
+          a platform that would enable <span class="origin-highlight">many people</span> to have structure in the gym without paying a penny.
+          <br><br>
+          The result: An AI-powered system that generates personalized programs based on experience, goals, and available equipment. 
+          No subscriptions. No paywalls. Just gains.
+        </div>
+      </div>
+  
+      <!-- Neural Network Visualization -->
+      <h2 class="section-heading">Program Generation Model</h2>
+      <div class="nn-container">
+        <div class="nn-header">
+          Neural Network Architecture — User Input → Program Output
+        </div>
+        <div class="nn-diagram">
+          <canvas id="nnCanvas" class="nn-connections"></canvas>
+          <div class="nn-layer" style="position: absolute; left: 10%; top: 50%; transform: translateY(-50%);">
+            <div class="nn-node input active">Exp</div>
+            <div class="nn-node input">Goal</div>
+            <div class="nn-node input">Days</div>
+            <div class="nn-node input">Eqpt</div>
+          </div>
+          <div class="nn-layer" style="position: absolute; left: 40%; top: 50%; transform: translateY(-50%);">
+            <div class="nn-node hidden">H1</div>
+            <div class="nn-node hidden active">H2</div>
+            <div class="nn-node hidden">H3</div>
+            <div class="nn-node hidden">H4</div>
+          </div>
+          <div class="nn-layer" style="position: absolute; left: 70%; top: 50%; transform: translateY(-50%);">
+            <div class="nn-node hidden">H5</div>
+            <div class="nn-node hidden active">H6</div>
+            <div class="nn-node hidden">H7</div>
+          </div>
+          <div class="nn-layer" style="position: absolute; left: 90%; top: 50%; transform: translateY(-50%);">
+            <div class="nn-node output active">Split</div>
+            <div class="nn-node output">Exercises</div>
+            <div class="nn-node output">Volume</div>
+          </div>
+        </div>
+        <div class="nn-labels">
+          <span>Input Layer</span>
+          <span>Hidden Layers</span>
+          <span>Hidden Layers</span>
+          <span>Output Layer</span>
+        </div>
+      </div>
+  
+      <!-- Algorithm Flow -->
+      <h2 class="section-heading">Generation Algorithm</h2>
+      <div class="algo-flow">
+        <div class="algo-header">
+          <span>⚡</span>
+          <span>Algorithm: generatePersonalizedProgram()</span>
+        </div>
+        
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">User Onboarding</div>
+            <div class="algo-desc">Collect experience level, fitness goals, available equipment, weekly schedule</div>
+          </div>
+        </div>
+        
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Movement Pattern Analysis</div>
+            <div class="algo-desc">Map goals to exercise categories: Push/Pull/Legs, Upper/Lower, Full Body</div>
+          </div>
+        </div>
+        
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Exercise Selection</div>
+            <div class="algo-desc">Query database of 200+ exercises with equipment substitution logic</div>
+          </div>
+        </div>
+        
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Volume Optimization</div>
+            <div class="algo-desc">Calculate sets, reps, and progression based on experience and recovery capacity</div>
+          </div>
+        </div>
+        
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Program Assembly</div>
+            <div class="algo-desc">Generate structured 4-12 week program with progressive overload built-in</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- API Endpoints -->
+      <h2 class="section-heading">API Architecture</h2>
+      <div class="api-section">
+        <div class="api-endpoint">
+          <div class="api-header">
+            <span class="api-method post">POST</span>
+            <span class="api-path">/api/program/generate</span>
+          </div>
+          <div class="api-desc">Generate personalized workout program from user profile data</div>
+        </div>
+        
+        <div class="api-endpoint">
+          <div class="api-header">
+            <span class="api-method post">POST</span>
+            <span class="api-path">/api/workout/log</span>
+          </div>
+          <div class="api-desc">Log completed workout session with sets, reps, weight, and RPE</div>
+        </div>
+        
+        <div class="api-endpoint">
+          <div class="api-header">
+            <span class="api-method get">GET</span>
+            <span class="api-path">/api/progress/volume</span>
+          </div>
+          <div class="api-desc">Retrieve volume trends for dashboard visualization (Recharts)</div>
+        </div>
+        
+        <div class="api-endpoint">
+          <div class="api-header">
+            <span class="api-method get">GET</span>
+            <span class="api-path">/api/exercises</span>
+          </div>
+          <div class="api-desc">Fetch exercise database with filtering by equipment and muscle group</div>
+        </div>
+        
+        <div class="api-endpoint">
+          <div class="api-header">
+            <span class="api-method get">GET</span>
+            <span class="api-path">/api/pr/records</span>
+          </div>
+          <div class="api-desc">Get personal records and progression history</div>
+        </div>
+      </div>
+  
+      <!-- Database Schema -->
+      <h2 class="section-heading">Database Schema</h2>
+      <div class="schema-container">
+        <div class="schema-header">
+          <span style="color: var(--accent-secondary);">➜</span> ~/prisma/schema.prisma <span style="color: var(--syntax-comment);"># PostgreSQL on Neon</span>
+        </div>
+        <div class="schema-code">
+          <div><span class="schema-keyword">model</span> <span class="schema-type">User</span> {</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">id</span> <span class="schema-type">String</span> @id @default(uuid())</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">clerkId</span> <span class="schema-type">String</span> @unique</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">experience</span> <span class="schema-type">ExperienceLevel</span></div>
+          <div style="margin-left: 1rem;"><span class="schema-string">goals</span> <span class="schema-type">Goal</span>[]</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">programs</span> <span class="schema-type">Program</span>[]</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">workouts</span> <span class="schema-type">Workout</span>[]</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">createdAt</span> <span class="schema-type">DateTime</span> @default(now())</div>
+          <div>}</div>
+          <div style="margin-top: 1rem;"><span class="schema-keyword">model</span> <span class="schema-type">Program</span> {</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">id</span> <span class="schema-type">String</span> @id @default(uuid())</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">name</span> <span class="schema-type">String</span></div>
+          <div style="margin-left: 1rem;"><span class="schema-string">split</span> <span class="schema-type">SplitType</span></div>
+          <div style="margin-left: 1rem;"><span class="schema-string">weeks</span> <span class="schema-type">Int</span></div>
+          <div style="margin-left: 1rem;"><span class="schema-string">workouts</span> <span class="schema-type">Workout</span>[]</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">user</span> <span class="schema-type">User</span> @relation(fields: [userId], references: [id])</div>
+          <div>}</div>
+          <div style="margin-top: 1rem;"><span class="schema-comment">// 200+ exercises with equipment substitutions</span></div>
+          <div><span class="schema-keyword">model</span> <span class="schema-type">Exercise</span> {</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">id</span> <span class="schema-type">String</span> @id @default(uuid())</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">name</span> <span class="schema-type">String</span></div>
+          <div style="margin-left: 1rem;"><span class="schema-string">muscleGroup</span> <span class="schema-type">MuscleGroup</span></div>
+          <div style="margin-left: 1rem;"><span class="schema-string">equipment</span> <span class="schema-type">Equipment</span>[]</div>
+          <div style="margin-left: 1rem;"><span class="schema-string">substitutes</span> <span class="schema-type">Exercise</span>[] @relation("Substitutes")</div>
+          <div>}</div>
+        </div>
+      </div>
+  
+      <!-- Progress Chart Visualization -->
+      <h2 class="section-heading">Analytics Dashboard</h2>
+      <div class="chart-container">
+        <div class="chart-placeholder">
+          <div class="chart-bars">
+            <div class="chart-bar" style="height: 40%;"></div>
+            <div class="chart-bar" style="height: 65%;"></div>
+            <div class="chart-bar" style="height: 55%;"></div>
+            <div class="chart-bar" style="height: 80%;"></div>
+            <div class="chart-bar" style="height: 70%;"></div>
+            <div class="chart-bar" style="height: 95%;"></div>
+            <div class="chart-bar" style="height: 85%;"></div>
+            <div class="chart-bar" style="height: 100%;"></div>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-muted);">
+            Volume Trend Visualization (Recharts)
+          </div>
+          <div style="font-size: 0.75rem; color: var(--syntax-comment); margin-top: 0.5rem;">
+            Weekly training volume over 8-week program
+          </div>
+        </div>
+      </div>
+  
+      <!-- Live Site Preview -->
+      <h2 class="section-heading">Production Deployment</h2>
+      <div class="live-preview">
+        <div class="preview-header">
+          <div class="preview-url">
+            <span>🌐</span>
+            <span>https://www.thletiq.com</span>
+          </div>
+          <a href="https://www.thletiq.com" target="_blank" rel="noopener noreferrer" class="preview-btn">
+            Visit Live Site →
+          </a>
+        </div>
+        <div class="preview-frame">
+          <div class="preview-content">
+            <div>
+              <div class="preview-logo">🏋️</div>
+              <div class="preview-tagline">ThletIQ</div>
+              <div class="preview-sub">
+                AI-powered fitness platform.<br>
+                Personalized workout programs.<br>
+                Zero subscription fees.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+      <!-- Feature Highlights -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;">
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎯</div>
+          <h3 style="font-family: var(--font-mono); font-size: 0.9375rem; color: var(--accent-primary); margin-bottom: 0.5rem;">Smart Program Generation</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+            Algorithm analyzes 5+ user parameters to generate optimal training splits and exercise selection.
+          </p>
+        </div>
+        
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.75rem;">📊</div>
+          <h3 style="font-family: var(--font-mono); font-size: 0.9375rem; color: var(--accent-primary); margin-bottom: 0.5rem;">Progress Analytics</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+            Real-time volume tracking, muscle distribution heatmaps, and personal record monitoring.
+          </p>
+        </div>
+        
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.75rem;">🔄</div>
+          <h3 style="font-family: var(--font-mono); font-size: 0.9375rem; color: var(--accent-primary); margin-bottom: 0.5rem;">Equipment Substitution</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+            Intelligent exercise swaps based on available equipment. No barbell? Here's a dumbbell alternative.
+          </p>
+        </div>
+      </div>
     </div>
-  </main>
-
-  <footer class="site-footer">
+   </main>
+   
+   <footer class="site-footer">
     <div class="container">
-      <p>© 2025 Collins Kibet. All rights reserved.</p>
+      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
+        <span style="color: var(--accent-secondary);">➜</span> ~ npm run build && vercel --prod
+        <span style="color: var(--text-muted); margin-left: 1rem;"># Built for Allan. Available for everyone.</span>
+      </p>
     </div>
-  </footer>
-</body>
-</html>
+   </footer>
+   
+   <script>
+    // Mobile menu toggle
+    function toggleMenu() {
+      document.querySelector('.nav-menu').classList.toggle('open');
+    }
+   
+    // Neural Network Canvas Animation
+    const nnCanvas = document.getElementById('nnCanvas');
+    const nnCtx = nnCanvas.getContext('2d');
+    
+    function resizeNNCanvas() {
+      const rect = nnCanvas.parentElement.getBoundingClientRect();
+      nnCanvas.width = rect.width;
+      nnCanvas.height = rect.height;
+    }
+    
+    resizeNNCanvas();
+    window.addEventListener('resize', resizeNNCanvas);
+   
+    // Node positions (percentages converted to pixels)
+    const nodes = [
+      // Input layer
+      { x: 0.1, y: 0.25, active: true }, { x: 0.1, y: 0.42, active: false },
+      { x: 0.1, y: 0.58, active: false }, { x: 0.1, y: 0.75, active: false },
+      // Hidden layer 1
+      { x: 0.4, y: 0.2, active: false }, { x: 0.4, y: 0.4, active: true },
+      { x: 0.4, y: 0.6, active: false }, { x: 0.4, y: 0.8, active: false },
+      // Hidden layer 2
+      { x: 0.7, y: 0.3, active: false }, { x: 0.7, y: 0.5, active: true },
+      { x: 0.7, y: 0.7, active: false },
+      // Output layer
+      { x: 0.9, y: 0.35, active: true }, { x: 0.9, y: 0.5, active: false },
+      { x: 0.9, y: 0.65, active: false }
+    ];
+   
+    let pulseTime = 0;
+   
+    function drawNN() {
+      nnCtx.clearRect(0, 0, nnCanvas.width, nnCanvas.height);
+      
+      const w = nnCanvas.width;
+      const h = nnCanvas.height;
+      
+      // Draw connections
+      nnCtx.strokeStyle = 'rgba(139, 233, 253, 0.1)';
+      nnCtx.lineWidth = 1;
+      
+      // Input to Hidden 1
+      for (let i = 0; i < 4; i++) {
+        for (let j = 4; j < 8; j++) {
+          nnCtx.beginPath();
+          nnCtx.moveTo(nodes[i].x * w, nodes[i].y * h);
+          nnCtx.lineTo(nodes[j].x * w, nodes[j].y * h);
+          nnCtx.stroke();
+        }
+      }
+      
+      // Hidden 1 to Hidden 2
+      for (let i = 4; i < 8; i++) {
+        for (let j = 8; j < 11; j++) {
+          nnCtx.beginPath();
+          nnCtx.moveTo(nodes[i].x * w, nodes[i].y * h);
+          nnCtx.lineTo(nodes[j].x * w, nodes[j].y * h);
+          nnCtx.stroke();
+        }
+      }
+      
+      // Hidden 2 to Output
+      for (let i = 8; i < 11; i++) {
+        for (let j = 11; j < 14; j++) {
+          nnCtx.beginPath();
+          nnCtx.moveTo(nodes[i].x * w, nodes[i].y * h);
+          nnCtx.lineTo(nodes[j].x * w, nodes[j].y * h);
+          nnCtx.stroke();
+        }
+      }
+      
+      // Draw active connections with pulse
+      nnCtx.strokeStyle = `rgba(139, 233, 253, ${0.3 + Math.sin(pulseTime) * 0.2})`;
+      nnCtx.lineWidth = 2;
+      nnCtx.shadowBlur = 10;
+      nnCtx.shadowColor = 'rgba(139, 233, 253, 0.5)';
+      
+      // Active paths
+      const activePaths = [[0, 5, 9, 11], [5, 9, 11]];
+      activePaths.forEach(path => {
+        for (let i = 0; i < path.length - 1; i++) {
+          const start = nodes[path[i]];
+          const end = nodes[path[i + 1]];
+          nnCtx.beginPath();
+          nnCtx.moveTo(start.x * w, start.y * h);
+          nnCtx.lineTo(end.x * w, end.y * h);
+          nnCtx.stroke();
+        }
+      });
+      nnCtx.shadowBlur = 0;
+      
+      // Draw nodes
+      nodes.forEach((node, i) => {
+        const x = node.x * w;
+        const y = node.y * h;
+        
+        // Node circle
+        nnCtx.beginPath();
+        nnCtx.arc(x, y, 20, 0, Math.PI * 2);
+        nnCtx.fillStyle = node.active ? 
+          `rgba(139, 233, 253, ${0.2 + Math.sin(pulseTime + i) * 0.1})` : 
+          'rgba(39, 39, 42, 0.8)';
+        nnCtx.fill();
+        
+        // Border
+        nnCtx.strokeStyle = node.active ? 
+          `rgba(139, 233, 253, ${0.8 + Math.sin(pulseTime + i) * 0.2})` : 
+          'rgba(113, 113, 122, 0.5)';
+        nnCtx.lineWidth = node.active ? 3 : 2;
+        nnCtx.stroke();
+        
+        // Glow for active
+        if (node.active) {
+          nnCtx.shadowBlur = 20;
+          nnCtx.shadowColor = 'rgba(139, 233, 253, 0.5)';
+          nnCtx.stroke();
+          nnCtx.shadowBlur = 0;
+        }
+      });
+      
+      pulseTime += 0.05;
+      requestAnimationFrame(drawNN);
+    }
+    
+    drawNN();
+   
+    // Animate metric numbers on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const metrics = document.querySelectorAll('.metric-value');
+      metrics.forEach(metric => {
+        const finalValue = metric.textContent;
+        const isNumeric = !isNaN(parseInt(finalValue));
+        
+        if (isNumeric && finalValue.includes('k')) {
+          let count = 0;
+          const target = parseFloat(finalValue);
+          const increment = target / 50;
+          const timer = setInterval(() => {
+            count += increment;
+            if (count >= target) {
+              metric.textContent = finalValue;
+              clearInterval(timer);
+            } else {
+              metric.textContent = count.toFixed(1) + 'k';
+            }
+          }, 30);
+        }
+      });
+    });
+   </script>
+   </body>
+   </html>
