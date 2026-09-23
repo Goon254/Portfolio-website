@@ -1,799 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>~/projects/east-african-bites | Collins Kibet</title>
-  <meta name="description" content="Production food ordering platform for East African cuisine. Real business, real customers, real chapatis.">
-  
+  <title>East African Bites — Collins Kibet</title>
+  <meta name="description" content="East African Bites: a food ordering platform for a home kitchen by Collins Kibet. Next.js, Supabase, Twilio SMS, zone-based delivery.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/styles.css">
-  
-  <style>
-    /* Production-specific styles */
-    .production-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(80, 250, 123, 0.1);
-      border: 1px solid var(--accent-secondary);
-      color: var(--accent-secondary);
-      padding: 0.375rem 0.75rem;
-      border-radius: var(--radius);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-    
-    .production-badge::before {
-      content: '●';
-      animation: pulse 2s infinite;
-    }
-    
-    /* Live Metrics Dashboard */
-    .metrics-dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    
-    .metric-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
-      text-align: center;
-      transition: all 0.2s;
-    }
-    
-    .metric-card:hover {
-      border-color: var(--accent-primary);
-      transform: translateY(-2px);
-    }
-    
-    .metric-value {
-      font-family: var(--font-mono);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-primary);
-      margin-bottom: 0.25rem;
-    }
-    
-    .metric-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .metric-delta {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--accent-secondary);
-      margin-top: 0.25rem;
-    }
-    
-    /* Origin Story Block */
-    .origin-story {
-      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      margin: 2rem 0;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .origin-story::before {
-      content: '🍞';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      font-size: 8rem;
-      opacity: 0.05;
-      transform: rotate(-15deg);
-    }
-    
-    .story-header {
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      color: var(--accent-tertiary);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .story-content {
-      font-size: 0.9375rem;
-      line-height: 1.8;
-      color: var(--text-secondary);
-      max-width: 640px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .story-highlight {
-      color: var(--accent-primary);
-      font-weight: 500;
-    }
-    
-    /* Database Schema Visualization */
-    .schema-container {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      margin: 2rem 0;
-      font-family: var(--font-mono);
-      font-size: 0.8125rem;
-    }
-    
-    .schema-header {
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .table-def {
-      margin-bottom: 1.5rem;
-    }
-    
-    .table-name {
-      color: var(--accent-primary);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    
-    .table-row {
-      display: flex;
-      gap: 1rem;
-      padding: 0.25rem 0;
-      padding-left: 1rem;
-      color: var(--text-secondary);
-    }
-    
-    .field-name {
-      color: var(--syntax-keyword);
-      min-width: 120px;
-    }
-    
-    .field-type {
-      color: var(--accent-tertiary);
-      min-width: 100px;
-    }
-    
-    .field-constraint {
-      color: var(--syntax-comment);
-    }
-    
-    /* Order Flow Diagram */
-    .order-flow {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin: 1.5rem 0;
-      max-width: 700px;
-    }
-    
-    .flow-step {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      position: relative;
-    }
-    
-    .flow-step::after {
-      content: '↓';
-      position: absolute;
-      bottom: -1.25rem;
-      left: 2rem;
-      color: var(--syntax-comment);
-      font-size: 1rem;
-    }
-    
-    .flow-step:last-child::after {
-      display: none;
-    }
-    
-    .step-num {
-      width: 32px;
-      height: 32px;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      color: var(--accent-primary);
-      font-weight: 600;
-    }
-    
-    .step-content {
-      flex: 1;
-    }
-    
-    .step-title {
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.25rem;
-    }
-    
-    .step-tech {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--syntax-comment);
-    }
-    
-    /* SMS Log Terminal */
-    .sms-terminal {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      margin: 2rem 0;
-    }
-    
-    .sms-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      background: var(--bg-tertiary);
-      border-bottom: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-    }
-    
-    .sms-log {
-      padding: 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.8125rem;
-      line-height: 1.6;
-    }
-    
-    .sms-entry {
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .sms-entry:last-child {
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
-    
-    .sms-time {
-      color: var(--text-muted);
-      font-size: 0.75rem;
-    }
-    
-    .sms-to {
-      color: var(--accent-primary);
-    }
-    
-    .sms-body {
-      color: var(--text-secondary);
-      margin-top: 0.25rem;
-      padding-left: 1rem;
-      border-left: 2px solid var(--border);
-    }
-    
-    /* Git Commit History (Business Timeline) */
-    .commit-history {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      margin: 2rem 0;
-    }
-    
-    .commit-item {
-      display: flex;
-      gap: 1rem;
-      padding: 0.875rem 0;
-      border-bottom: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 0.8125rem;
-    }
-    
-    .commit-item:last-child {
-      border-bottom: none;
-    }
-    
-    .commit-hash {
-      color: var(--accent-primary);
-      min-width: 70px;
-    }
-    
-    .commit-msg {
-      color: var(--text-primary);
-      flex: 1;
-    }
-    
-    .commit-tag {
-      font-size: 0.625rem;
-      padding: 0.125rem 0.375rem;
-      border-radius: 2px;
-      height: fit-content;
-    }
-    
-    .commit-tag.feature {
-      background: rgba(139, 233, 253, 0.1);
-      color: var(--accent-primary);
-      border: 1px solid var(--accent-primary);
-    }
-    
-    .commit-tag.fix {
-      background: rgba(255, 85, 85, 0.1);
-      color: var(--error);
-      border: 1px solid var(--error);
-    }
-    
-    .commit-tag.hotfix {
-      background: rgba(255, 184, 108, 0.1);
-      color: var(--accent-tertiary);
-      border: 1px solid var(--accent-tertiary);
-    }
-    
-    /* Live Site Preview */
-    .live-preview {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      margin: 2rem 0;
-    }
-    
-    .preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      background: var(--bg-tertiary);
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .preview-url {
-      font-family: var(--font-mono);
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .preview-btn {
-      background: var(--accent-secondary);
-      color: var(--bg-primary);
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .preview-btn:hover {
-      background: #6ee7b7;
-      transform: translateY(-1px);
-    }
-    
-    .preview-frame {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      background: var(--bg-primary);
-    }
-    
-    .preview-frame iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    
-    .preview-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(15, 15, 18, 0.9);
-      backdrop-filter: blur(4px);
-    }
-    
-    .preview-cta {
-      text-align: center;
-    }
-    
-    .preview-cta p {
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-      font-size: 0.9375rem;
-    }
-  </style>
 </head>
 <body>
-  <div class="grain-overlay"></div>
-
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="../index.html">Collins Kibet</a>
-      <div class="nav-path">
-        <span class="path-segment">~</span>
-        <span class="path-separator">/</span>
-        <span class="path-segment">projects</span>
-        <span class="path-separator">/</span>
-        <span class="path-segment active">east-african-bites</span>
-        <span class="path-git" style="color: var(--accent-secondary);">production*</span>
-      </div>
-      <ul class="nav-menu">
-        <li><a href="../index.html">~/home</a></li>
-        <li><a href="../about.html">~/about</a></li>
-        <li><a href="../skills.html">~/skills</a></li>
-        <li><a href="../projects.html" class="active">~/projects</a></li>
-        <li><a href="../contact.html">~/contact.sh</a></li>
+      <ul class="nav-menu" id="menu">
+        <li><a href="../projects.html" class="active">Work</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
       </ul>
-      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu" onclick="toggleMenu(this)">Menu</button>
     </nav>
   </header>
 
   <main>
-    <div class="container">
-      <!-- Breadcrumb -->
-      <nav class="breadcrumb-terminal" style="margin-bottom: 1rem;">
-        <span class="prompt">$</span>
-        <span class="command">cd</span>
-        <span class="path">~/projects/east-african-bites</span>
-        <span style="color: var(--syntax-comment); margin-left: 1rem;"># LIVE PRODUCTION</span>
-        <a href="../projects.html" class="back-command">← cd ..</a>
-      </nav>
-
-      <!-- Production Badge -->
-      <div class="production-badge">
-        ● SYSTEM STATUS: OPERATIONAL
+    <section class="project-head">
+      <div class="container">
+        <a href="../projects.html" class="back">← All work</a>
+        <p class="eyebrow">Web · Solo</p>
+        <h1>East African Bites</h1>
+        <p class="lede">An ordering platform for my own cottage kitchen. Customers order chapati and mandazi, capacity is checked per delivery zone, and they get SMS updates from confirmed to ready.</p>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Owner, engineering and operations</dd></div>
+          <div><dt>Stack</dt><dd>Next.js, Supabase (PostgreSQL), Twilio, Zustand, Zod, Vercel</dd></div>
+          <div><dt>Status</dt><dd>Live</dd></div>
+          <div><dt>Link</dt><dd><a href="https://east-african-bites-ggni.vercel.app/" target="_blank" rel="noopener">east-african-bites.vercel.app</a></dd></div>
+        </dl>
       </div>
+    </section>
 
-      <!-- Project Window -->
-      <div class="project-window" style="margin-bottom: 2rem;">
-        <div class="window-tabs">
-          <div class="tab active">
-            <span class="tab-icon">📄</span>
-            <span>README.md</span>
-            <span class="tab-close">×</span>
-          </div>
-          <div class="tab">
-            <span class="tab-icon">🛒</span>
-            <span>order.tsx</span>
-          </div>
-          <div class="tab">
-            <span class="tab-icon">🗄️</span>
-            <span>schema.sql</span>
-          </div>
-          <div class="tab">
-            <span class="tab-icon">📱</span>
-            <span>sms.ts</span>
+    <section class="container project-body">
+        <div class="project-section reveal">
+          <p class="eyebrow">Why</p>
+          <div class="prose">
+            <p>After graduation, job hunting as an international student meant visa waiting periods. I bake well, people kept saying so, and most people around me were too busy to cook. So I built a way for them to order and for me to pay the bills. It became a real production system handling real orders and deliveries.</p>
           </div>
         </div>
-        
-        <div class="window-content">
-          <div class="project-code-header">
-            <div class="project-title-line">
-              <span class="syn-keyword">export const</span> 
-              <span style="color: var(--accent-primary); font-weight: 600;">EastAfricanBites</span> 
-              <span class="syn-keyword">=</span> {
-            </div>
-            <div class="project-subtitle-line">
-              // Full-stack food ordering platform for a cottage food business.
-              // Because when life gives you visa restrictions, make chapatis.
-            </div>
-            
-            <!-- Live Metrics -->
-            <div class="metrics-dashboard">
-              <div class="metric-card">
-                <div class="metric-value">147</div>
-                <div class="metric-label">Orders</div>
-                <div class="metric-delta">↑ 12% this week</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-value">98%</div>
-                <div class="metric-label">On Time</div>
-                <div class="metric-delta">↑ 3% vs last month</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-value">4.9★</div>
-                <div class="metric-label">Rating</div>
-                <div class="metric-delta">Based on 32 reviews</div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-value">0</div>
-                <div class="metric-label">Downtime</div>
-                <div class="metric-delta">99.9% uptime</div>
-              </div>
-            </div>
-            
-            <div class="project-meta-bar">
-              <div class="meta-item">
-                <span class="meta-label">stack:</span>
-               <span class="meta-value">Next.js 16 + Supabase</span>
-             </div>
-             <div class="meta-item">
-               <span class="meta-label">status:</span>
-               <span class="meta-value" style="color: var(--accent-secondary);">● Live</span>
-             </div>
-             <div class="meta-item">
-               <span class="meta-label">url:</span>
-               <span class="meta-value" style="color: var(--accent-quaternary);">east-african-bites-ggni.vercel.app</span>
-             </div>
-             <div class="meta-item">
-               <span class="meta-label">payment:</span>
-               <span class="meta-value">Cash/Venmo/Zelle</span>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
+        <div class="project-section reveal">
+          <p class="eyebrow">What it does</p>
+          <div class="prose">
+            <ul>
+              <li><strong>Ordering.</strong> Menu, cart and checkout with React Hook Form and Zod validation, persisted locally so a refresh does not lose a basket.</li>
+              <li><strong>Capacity by zone.</strong> A Supabase RPC checks the daily limit for each delivery zone before an order is accepted, and zone fees are applied automatically.</li>
+              <li><strong>SMS updates.</strong> Twilio messages at confirmed, preparing and ready, plus phone verification for order lookup.</li>
+              <li><strong>Admin dashboard.</strong> Real-time order management and financial tracking for the kitchen side.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project-section reveal">
+          <p class="eyebrow">What I learned</p>
+          <div class="prose">
+            <p>Operating your own product teaches things a class cannot. The first weekend sold out faster than the capacity limit allowed, which became a hotfix. A timezone bug moved delivery slots by an hour. Every fix came from a customer, which is the fastest feedback loop there is.</p>
+          </div>
+        </div>
+    </section>
 
-     <!-- Origin Story -->
-     <div class="origin-story">
-       <div class="story-header">
-         <span>🍞</span>
-         <span>git log --origin-story</span>
-       </div>
-       <div class="story-content">
-         I love baking — especially <span class="story-highlight">chapatis</span> (flatbread) and <span class="story-highlight">mandazis</span> (East African donuts). After graduation, job hunting as an international student meant visa complexities and waiting periods. Instead of waiting, I got creative.
-         <br><br>
-         This platform started as a solution to a real problem: <em>"How do I pay bills while sharing the food I love?"</em> It evolved into a production-grade e-commerce system handling real orders, real customers, and real delivery logistics.
-         <span class="inline-comment" style="display: block; margin-top: 1rem; color: var(--syntax-comment); font-family: var(--font-mono); font-size: 0.8125rem;">
-           // Sometimes the best side projects are the ones that pay rent
-         </span>
-       </div>
-     </div>
+    <section class="next-project">
+      <div class="container">
+        <a href="ministry-website.html">
+          <span><span class="eyebrow">Next project</span><h3>Ministry Website</h3></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
 
-     <!-- Database Schema -->
-     <h2 class="section-heading">Database Schema</h2>
-     <div class="schema-container">
-       <div class="schema-header">
-         <span style="color: var(--accent-secondary);">➜</span> ~/supabase/schema.sql <span style="color: var(--syntax-comment);"># PostgreSQL</span>
-       </div>
-       
-       <div class="table-def">
-         <div class="table-name">CREATE TABLE orders (</div>
-         <div class="table-row">
-           <span class="field-name">id</span>
-           <span class="field-type">UUID</span>
-           <span class="field-constraint">PRIMARY KEY DEFAULT gen_random_uuid()</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">order_number</span>
-           <span class="field-type">SERIAL</span>
-           <span class="field-constraint">UNIQUE</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">customer_phone</span>
-           <span class="field-type">VARCHAR</span>
-           <span class="field-constraint">NOT NULL</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">items</span>
-           <span class="field-type">JSONB</span>
-           <span class="field-constraint">NOT NULL</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">delivery_zone</span>
-           <span class="field-type">VARCHAR</span>
-           <span class="field-constraint">REFERENCES zones(name)</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">status</span>
-           <span class="field-type">ENUM</span>
-           <span class="field-constraint">DEFAULT 'pending'</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">created_at</span>
-           <span class="field-type">TIMESTAMP</span>
-           <span class="field-constraint">DEFAULT NOW()</span>
-         </div>
-         <div style="color: var(--text-secondary);">);</div>
-       </div>
-
-       <div class="table-def">
-         <div class="table-name">CREATE TABLE delivery_zones (</div>
-         <div class="table-row">
-           <span class="field-name">name</span>
-           <span class="field-type">VARCHAR</span>
-           <span class="field-constraint">PRIMARY KEY</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">fee</span>
-           <span class="field-type">DECIMAL</span>
-           <span class="field-constraint">NOT NULL</span>
-         </div>
-         <div class="table-row">
-           <span class="field-name">max_orders_per_day</span>
-           <span class="field-type">INTEGER</span>
-           <span class="field-constraint">DEFAULT 10</span>
-         </div>
-         <div style="color: var(--text-secondary);">);</div>
-       </div>
-     </div>
-
-     <!-- Order Flow -->
-     <h2 class="section-heading">Order Flow Architecture</h2>
-     <div class="order-flow">
-       <div class="flow-step">
-         <div class="step-num">1</div>
-         <div class="step-content">
-           <div class="step-title">Customer places order</div>
-           <div class="step-tech">Next.js App Router + React Hook Form + Zod validation</div>
-         </div>
-       </div>
-       <div class="flow-step">
-         <div class="step-num">2</div>
-         <div class="step-content">
-           <div class="step-title">Capacity check</div>
-           <div class="step-tech">Supabase RPC function checks daily limits per zone</div>
-         </div>
-       </div>
-       <div class="flow-step">
-         <div class="step-num">3</div>
-         <div class="step-content">
-           <div class="step-title">Payment & Confirmation</div>
-           <div class="step-tech">Zustand state management + localStorage persistence</div>
-         </div>
-       </div>
-       <div class="flow-step">
-         <div class="step-num">4</div>
-         <div class="step-content">
-           <div class="step-title">SMS Notifications</div>
-           <div class="step-tech">Twilio API → Order confirmed → Preparing → Ready for pickup</div>
-         </div>
-       </div>
-       <div class="flow-step">
-         <div class="step-num">5</div>
-         <div class="step-content">
-           <div class="step-title">Admin Dashboard</div>
-           <div class="step-tech">Real-time order management + financial tracking</div>
-         </div>
-       </div>
-     </div>
-
-     <!-- SMS Terminal -->
-     <h2 class="section-heading">SMS Integration Log</h2>
-     <div class="sms-terminal">
-       <div class="sms-header">
-         <span>📱</span>
-         <span>twilio.log</span>
-         <span style="margin-left: auto; color: var(--accent-secondary);">● Connected</span>
-       </div>
-       <div class="sms-log">
-         <div class="sms-entry">
-           <div class="sms-time">[2025-01-15 14:32:01]</div>
-           <div><span class="sms-to">TO:</span> +1 (603) 555-0123</div>
-           <div class="sms-body">
-             "Hi! Your East African Bites order #142 is confirmed. 
-             Estimated ready: Today 6:00 PM. Reply STOP to cancel."
-           </div>
-         </div>
-         <div class="sms-entry">
-           <div class="sms-time">[2025-01-15 17:45:22]</div>
-           <div><span class="sms-to">TO:</span> +1 (603) 555-0123</div>
-           <div class="sms-body">
-             "Good news! Your chapatis are fresh off the pan. 
-             Ready for pickup at 123 Main St. See you soon! 🍞"
-           </div>
-         </div>
-         <div class="sms-entry">
-           <div class="sms-time">[2025-01-15 18:30:00]</div>
-           <div><span class="sms-to">TO:</span> +1 (603) 555-0199</div>
-           <div class="sms-body">
-             "Order #143: Your mandazis are being prepared. 
-             Delivery to West Side estimated 7:15 PM."
-           </div>
-         </div>
-       </div>
-     </div>
-
-     <!-- Commit History / Business Timeline -->
-     <h2 class="section-heading">Development Timeline</h2>
-     <div class="commit-history">
-       <div class="commit-item">
-         <span class="commit-hash">a3f7d2e</span>
-         <span class="commit-msg">feat: Add Twilio SMS for order confirmations</span>
-         <span class="commit-tag feature">feature</span>
-       </div>
-       <div class="commit-item">
-         <span class="commit-hash">b8c9e1a</span>
-         <span class="commit-msg">fix: Resolve timezone issue in delivery scheduling</span>
-         <span class="commit-tag fix">bugfix</span>
-       </div>
-       <div class="commit-item">
-         <span class="commit-hash">d4e5f6g</span>
-         <span class="commit-msg">feat: Implement zone-based delivery fees</span>
-         <span class="commit-tag feature">feature</span>
-       </div>
-       <div class="commit-item">
-         <span class="commit-hash">h7i8j9k</span>
-         <span class="commit-msg">hotfix: Increase daily capacity limits (sold out too fast)</span>
-         <span class="commit-tag hotfix">hotfix</span>
-       </div>
-       <div class="commit-item">
-         <span class="commit-hash">l0m1n2o</span>
-         <span class="commit-msg">feat: Add phone verification for order lookup</span>
-         <span class="commit-tag feature">feature</span>
-       </div>
-       <div class="commit-item">
-         <span class="commit-hash">p3q4r5s</span>
-         <span class="commit-msg">Initial commit: Scaffold Next.js project with Supabase</span>
-         <span class="commit-tag feature">init</span>
-       </div>
-     </div>
-
-     <!-- Live Preview -->
-     <h2 class="section-heading">Live Site</h2>
-     <div class="live-preview">
-       <div class="preview-header">
-         <div class="preview-url">
-           <span>🌐</span>
-           <span>east-african-bites-ggni.vercel.app</span>
-         </div>
-         <a href="https://east-african-bites-ggni.vercel.app/" target="_blank" rel="noopener noreferrer" class="preview-btn">
-           Visit Site →
-         </a>
-       </div>
-       <div class="preview-frame">
-         <div class="preview-overlay">
-           <div class="preview-cta">
-             <p>Preview not available in iframe<br>(Click to visit live site)</p>
-             <a href="https://east-african-bites-ggni.vercel.app/" target="_blank" rel="noopener noreferrer" class="preview-btn">
-               Open east-african-bites-ggni.vercel.app
-             </a>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
- </main>
-
- <footer class="site-footer">
-   <div class="container">
-     <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
-       <span style="color: var(--accent-secondary);">➜</span> ~ npm run build && npm start
-       <span style="color: var(--text-muted); margin-left: 1rem;"># Baking code and chapatis since 2024</span>
-     </p>
-   </div>
- </footer>
-
- <script>
-   // Mobile menu toggle
-   function toggleMenu() {
-     document.querySelector('.nav-menu').classList.toggle('open');
-   }
- </script>
+  <footer class="site-footer">
+    <div class="inner">
+      <span>© 2026 Collins Kibet</span>
+      <span><a href="mailto:collins.kibet@snhu.edu">collins.kibet@snhu.edu</a> &nbsp;·&nbsp; <a href="https://github.com/Goon254" target="_blank" rel="noopener">GitHub</a></span>
+    </div>
+  </footer>
+  <script src="../assets/js/site.js"></script>
 </body>
 </html>

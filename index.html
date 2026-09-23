@@ -1,381 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Collins Kibet | Software Engineer & Robotics</title>
-  <meta name="description" content="Collins Kibet - Software engineer specializing in robotics, embedded systems, and full-stack development.">
-  
-  <!-- Preload critical fonts -->
+  <title>Collins Kibet — Software Engineer</title>
+  <meta name="description" content="Collins Kibet is a software engineer in Manchester, NH building full-stack and mobile products, from a diaspora community app on the App Store to on-chain market intelligence APIs.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <style>
-    /* Critical CSS for instant render */
-    .grain-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
-    
-    /* Selection styling */
-    ::selection {
-      background: var(--accent-primary);
-      color: var(--bg-primary);
-    }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-primary);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--bg-tertiary);
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-primary);
-    }
-    
-    /* Smooth reveal animation classes */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), 
-                  transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    /* Stagger delays for project cards */
-    .project-card:nth-child(1) { transition-delay: 0.05s; }
-    .project-card:nth-child(2) { transition-delay: 0.1s; }
-    .project-card:nth-child(3) { transition-delay: 0.15s; }
-    .project-card:nth-child(4) { transition-delay: 0.2s; }
-    .project-card:nth-child(5) { transition-delay: 0.25s; }
-    .project-card:nth-child(6) { transition-delay: 0.3s; }
-    .project-card:nth-child(7) { transition-delay: 0.35s; }
-    
-    /* Hero background subtle gradient */
-    .hero {
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 50% 50%, 
-        rgba(139, 233, 253, 0.03) 0%, 
-        transparent 50%);
-      pointer-events: none;
-    }
-    
-    /* Git status indicator in nav */
-    .git-status {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--accent-secondary);
-      margin-left: auto;
-      margin-right: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .git-status::before {
-      content: '●';
-      color: var(--accent-secondary);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
-    /* Enhanced mobile menu */
-    @media (max-width: 768px) {
-      .nav-menu {
-        background: var(--bg-primary);
-        border-bottom: 1px solid var(--border);
-      }
-      .nav-menu a {
-        border-bottom: 1px solid var(--border);
-        border-radius: 0;
-      }
-      .nav-menu a:last-child {
-        border-bottom: none;
-      }
-    }
-  </style>
 </head>
 <body>
-  <!-- Film grain overlay for texture -->
-  <div class="grain-overlay"></div>
-
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="index.html">Collins Kibet</a>
-      <div class="nav-path">
-        <span class="path-segment">~</span>
-        <span class="path-separator">/</span>
-        <span class="path-segment active">home</span>
-        <span class="path-git">main*</span>
-      </div>
-      <ul class="nav-menu">
-        <li><a href="index.html" class="active">~/home</a></li>
-        <li><a href="about.html">~/about</a></li>
-        <li><a href="skills.html">~/skills</a></li>
-        <li><a href="projects.html">~/projects</a></li>
-        <li><a href="contact.html">~/contact.sh</a></li>
+      <ul class="nav-menu" id="menu">
+        <li><a href="projects.html">Work</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
-      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu" onclick="toggleMenu(this)">Menu</button>
     </nav>
   </header>
 
   <main>
     <section class="hero">
-      <div class="container">
-        <div class="hero-inner">
-          <!-- Terminal Window -->
-          <div class="hero-terminal reveal active">
-            <div class="hero-terminal-bar">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="terminal-title">zsh — 80×24</span>
-            </div>
-            <div class="hero-terminal-content">
-              <div class="hero-terminal-line">
-                <span class="prompt">collins@portfolio</span>
-                <span class="command">:~$ whoami</span>
-              </div>
-              <div class="hero-terminal-line output-line">
-                <span class="output">Collins Kibet — Software Engineer & Robotics</span>
-              </div>
-              
-              <div class="hero-terminal-line">
-                <span class="prompt">collins@portfolio</span>
-                <span class="command">:~$ cat expertise.txt</span>
-              </div>
-              <div class="hero-terminal-line output-line">
-                <span class="output">Robotics • Embedded Systems • Full-Stack • ML</span>
-              </div>
-              
-              <div class="hero-terminal-line">
-                <span class="prompt">collins@portfolio</span>
-                <span class="command">:~$ ./status --current</span>
-              </div>
-              <div class="hero-terminal-line output-line">
-                <span class="output" style="color: var(--accent-secondary);">● Available for opportunities</span>
-              </div>
-              
-              <div class="hero-terminal-line">
-                <span class="prompt">collins@portfolio</span>
-                <span class="command">:~$ <span id="typed-text"></span><span class="hero-cursor" id="cursor"></span></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Profile Photo with hover effect -->
-          <div class="hero-meta reveal active">
-            <div class="photo-container">
-              <img src="assets/images/collins.jpeg" alt="Collins Kibet" class="hero-photo">
-              <div class="photo-overlay">
-                <span class="photo-caption">CS Graduate '25</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="hero-buttons reveal active">
-            <a href="projects.html" class="btn btn-primary">
-              <span class="btn-icon">▶</span>
-              <span>./view-projects</span>
-            </a>
-            <a href="contact.html" class="btn btn-secondary">
-              <span class="btn-icon">✉</span>
-              <span>./contact.sh</span>
-            </a>
+      <div class="container hero-grid">
+        <div>
+          <span class="status">Open to full-time roles</span>
+          <h1>Software engineer who ships <em>real products.</em></h1>
+          <p class="lede">I build full-stack and mobile software end to end: a diaspora community app live on both app stores, an on-chain intelligence API with paying tiers, and production sites for real customers. Based in Manchester, New Hampshire.</p>
+          <div class="btn-row">
+            <a href="projects.html" class="btn btn-primary">See the work</a>
+            <a href="contact.html" class="btn">Get in touch</a>
           </div>
         </div>
+        <img src="assets/images/collins.jpeg" alt="Collins Kibet" class="hero-photo">
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="section-header reveal">
-          <h2 class="section-title">
-            <span class="syn-comment">//</span> Featured Projects
-          </h2>
-          <p class="section-subtitle">Live deployments and selected work. Click any card to view source and documentation.</p>
+        <div class="section-head reveal">
+          <h2>Selected work</h2>
+          <a href="projects.html" class="link">All projects →</a>
         </div>
+        <ul class="work-list">
+          <li class="reveal"><a class="work-row" href="projects/diaspora-link.html">
+            <span class="index">01</span>
+            <span><h3>Diaspora Link</h3><span class="sub">React Native · Firebase · Live on iOS and Android</span></span>
+            <span class="desc">Community, encrypted messaging, calls, savings circles and a marketplace for people living abroad.</span>
+            <span class="arrow">→</span>
+          </a></li>
+          <li class="reveal"><a class="work-row" href="projects/daytrader.html">
+            <span class="index">02</span>
+            <span><h3>Daytrader &amp; Tripwire</h3><span class="sub">TypeScript · Rust · Postgres · Live API</span></span>
+            <span class="desc">Solana on-chain research system and the early-warning risk API sold on top of it.</span>
+            <span class="arrow">→</span>
+          </a></li>
+          <li class="reveal"><a class="work-row" href="projects/thletiq.html">
+            <span class="index">03</span>
+            <span><h3>ThletIQ</h3><span class="sub">Next.js · PostgreSQL · Live</span></span>
+            <span class="desc">Free training platform that generates personalised gym programs and tracks progress.</span>
+            <span class="arrow">→</span>
+          </a></li>
+          <li class="reveal"><a class="work-row" href="projects/east-african-bites.html">
+            <span class="index">04</span>
+            <span><h3>East African Bites</h3><span class="sub">Next.js · Supabase · Twilio · Live</span></span>
+            <span class="desc">Food ordering for a cottage kitchen, with SMS updates and zone-based delivery capacity.</span>
+            <span class="arrow">→</span>
+          </a></li>
+          <li class="reveal"><a class="work-row" href="projects/smart-rc-vehicle.html">
+            <span class="index">05</span>
+            <span><h3>Smart RC Vehicle</h3><span class="sub">Arduino · Embedded C++ · PID</span></span>
+            <span class="desc">PID-stabilised vehicle with Bluetooth control, obstacle avoidance and live telemetry.</span>
+            <span class="arrow">→</span>
+          </a></li>
+        </ul>
+      </div>
+    </section>
 
-        <div class="project-grid">
-          <!-- Project cards with enhanced hover states -->
-          <a href="projects/thletiq.html" class="project-card reveal">
-            <div class="project-card-header">
-              <div class="project-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="project-card-filename">thletiq.tsx</span>
-              <span class="file-status modified">M</span>
-            </div>
-            <div class="project-card-body">
-              <h3>ThletIQ</h3>
-              <div class="project-tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">PostgreSQL</span>
-                <span class="tag live">● Live</span>
-              </div>
-              <p class="blurb">AI-powered fitness platform with personalized workout programs and progress tracking.</p>
-              <div class="project-stats">
-                <span class="stat">⚡ 200+ exercises</span>
-                <span class="stat">📈 ML-powered</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="projects/east-african-bites.html" class="project-card reveal">
-            <div class="project-card-header">
-              <div class="project-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="project-card-filename">east-african-bites.tsx</span>
-              <span class="file-status added">A</span>
-            </div>
-            <div class="project-card-body">
-              <h3>East African Bites</h3>
-              <div class="project-tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">Supabase</span>
-                <span class="tag">Twilio</span>
-                <span class="tag live">● Live</span>
-              </div>
-              <p class="blurb">Full-stack food ordering with real-time SMS notifications and zone-based delivery.</p>
-            </div>
-          </a>
-
-          <a href="projects/diaspora-link.html" class="project-card reveal">
-            <div class="project-card-header">
-              <div class="project-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="project-card-filename">diaspora-link.tsx</span>
-              <span class="file-status untracked">U</span>
-            </div>
-            <div class="project-card-body">
-              <h3>Diaspora Link</h3>
-              <div class="project-tags">
-                <span class="tag">React Native</span>
-                <span class="tag">Firebase</span>
-                <span class="tag">iOS/Android</span>
-              </div>
-              <p class="blurb">Community networking app connecting diaspora communities. Closed beta testing.</p>
-            </div>
-          </a>
-
-          <a href="projects/ministry-website.html" class="project-card reveal">
-            <div class="project-card-header">
-              <div class="project-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="project-card-filename">ministry-website.tsx</span>
-              <span class="file-status committed">✓</span>
-            </div>
-            <div class="project-card-body">
-              <h3>Ministry Website</h3>
-              <div class="project-tags">
-                <span class="tag">Client Work</span>
-                <span class="tag">Vercel</span>
-                <span class="tag live">● Live</span>
-              </div>
-              <p class="blurb">Church organization website built with emphasis on client communication.</p>
-            </div>
-          </a>
-
-          <a href="projects/smart-rc-vehicle.html" class="project-card reveal">
-            <div class="project-card-header">
-              <div class="project-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="project-card-filename">smart-rc-vehicle.cpp</span>
-              <span class="file-status hardware">⚡</span>
-            </div>
-            <div class="project-card-body">
-              <h3>Smart RC Vehicle</h3>
-              <div class="project-tags">
-                <span class="tag">Arduino</span>
-                <span class="tag">PID Control</span>
-                <span class="tag">Embedded C++</span>
-              </div>
-              <p class="blurb">Autonomous vehicle with PID stabilization and real-time sensor feedback.</p>
-            </div>
-          </a>
-
-          <a href="projects/ai-fruit-classifier.html" class="project-card reveal">
-            <div class="project-card-header">
-              <div class="project-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="project-card-filename">ai-fruit-classifier.py</span>
-              <span class="file-status optimized">★</span>
-            </div>
-            <div class="project-card-body">
-              <h3>AI Fruit Classifier</h3>
-              <div class="project-tags">
-                <span class="tag">TensorFlow</span>
-                <span class="tag">CNN</span>
-                <span class="tag">Python</span>
-              </div>
-              <p class="blurb">Deep learning CNN achieving 94%+ accuracy on 15-class fruit classification.</p>
-              <div class="project-stats">
-                <span class="stat">🎯 94.2% acc</span>
-                <span class="stat">🧠 15 classes</span>
-              </div>
-            </div>
-          </a>
+    <section class="section">
+      <div class="container split reveal">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2>Briefly</h2>
         </div>
-
-        <div class="section-footer reveal" style="text-align: center; margin-top: 3rem;">
-          <a href="projects.html" class="btn btn-secondary">
-            <span>View All Projects →</span>
-          </a>
+        <div class="prose">
+          <p>I grew up in Eldama Ravine, Kenya, moved to New Hampshire in 2021, and graduated with a BS in Computer Science from Southern New Hampshire University in 2025. I ran NCAA Division II cross-country there until injuries retired me.</p>
+          <p>Most of what I know came from building things that had to work for other people: an app with users on two continents, a payments and API business, and client sites. I care about the details that make software feel finished.</p>
+          <p><a href="about.html">More about me →</a></p>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
-        <span style="color: var(--accent-secondary);">➜</span> ~ whoami
-        <span style="color: var(--text-muted); margin-left: 1rem;"># Collins Kibet — Software Engineer & Robotics</span>
-      </p>
+    <div class="inner">
+      <span>© 2026 Collins Kibet</span>
+      <span><a href="mailto:collins.kibet@snhu.edu">collins.kibet@snhu.edu</a> &nbsp;·&nbsp; <a href="https://github.com/Goon254" target="_blank" rel="noopener">GitHub</a></span>
     </div>
   </footer>
-
-  <script>
-    // Mobile menu toggle
-    function toggleMenu() {
-      document.querySelector('.nav-menu').classList.toggle('open');
-    }
-  </script>
+  <script src="assets/js/site.js"></script>
 </body>
 </html>

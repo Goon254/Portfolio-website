@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daytrader & Tripwire — Collins Kibet</title>
+  <meta name="description" content="Daytrader: a Solana on-chain research and trading system in TypeScript and Rust, and Tripwire, the rug and dump early-warning API built on it. By Collins Kibet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="../index.html">Collins Kibet</a>
+      <ul class="nav-menu" id="menu">
+        <li><a href="../projects.html" class="active">Work</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu" onclick="toggleMenu(this)">Menu</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="project-head">
+      <div class="container">
+        <a href="../projects.html" class="back">← All work</a>
+        <p class="eyebrow">On-chain data · Solo</p>
+        <h1>Daytrader &amp; Tripwire</h1>
+        <p class="lede">A Solana on-chain research and trading system, and Tripwire, the early-warning risk API sold on top of its data. Tripwire watches pump.fun launches in real time and flags rugs, insider dumps, smart-money moves and coordinated bundles.</p>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Design, engineering, deployment</dd></div>
+          <div><dt>Stack</dt><dd>TypeScript (Node 20), Rust via napi-rs, PostgreSQL on Neon, Redis, Python ML, Next.js</dd></div>
+          <div><dt>Status</dt><dd>Tripwire live · free and paid tiers</dd></div>
+          <div><dt>Link</dt><dd><a href="https://tripware.info/" target="_blank" rel="noopener">tripware.info</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="container project-body">
+        <div class="project-section reveal">
+          <p class="eyebrow">The system</p>
+          <div class="prose">
+            <p>Daytrader started as a pair of execution bots and grew into a four-layer platform. A swarm of worker bots watches the chain through Helius: a pump.fun launch watcher, a token lifecycle tracker, a creator wallet profiler and a whale indexer that reconstructs per-wallet, per-token profit and loss from raw transactions. Each writes to its own Postgres tables.</p>
+            <p>ML nodes read only that observer data and score wallets on traits like good launcher, rug, smart money and longevity. A governor sets risk thresholds from the closed-trade history. Execution bots sit at the top with a Rust trade engine compiled as a Node addon for the latency-sensitive path, plus a backtesting framework over historical candles ingested from Binance and Solana DEX sources.</p>
+            <p>The rule that made it maintainable: reads cross layers, writes never do, and bot outputs never feed model training.</p>
+          </div>
+        </div>
+        <div class="project-section reveal">
+          <p class="eyebrow">Tripwire, the product</p>
+          <div class="prose">
+            <p>The same intelligence turned out to be more valuable as data than as trades, so I productised it as Tripwire: early-warning intelligence for Solana token launches.</p>
+            <ul>
+              <li><strong>Rug radar.</strong> Creator history, mint and freeze authority, holder concentration and sybil-funded launches.</li>
+              <li><strong>Dump early-warning.</strong> Fingerprints the developer and insider dump before it lands, using pre-entry bundle buyers and live holder concentration.</li>
+              <li><strong>Smart-money feed.</strong> Vetted wallets with forensic per-token PnL.</li>
+              <li><strong>Bundle and farmer map.</strong> Coordinated launches and wash clusters.</li>
+            </ul>
+            <p>Delivered over REST, WebSocket and webhooks as JSON with a threat class and confidence score. Signup is a self-custodial Solana Pay checkout that issues an API key, with a free Recon tier and paid Operator and Syndicate tiers.</p>
+          </div>
+        </div>
+        <div class="project-section reveal">
+          <p class="eyebrow">By the numbers</p>
+          <div class="prose">
+            <div class="stat-row">
+              <div class="stat"><b>1,300+</b><span>launches monitored per hour</span></div>
+              <div class="stat"><b>16k</b><span>whale trades tracked per hour</span></div>
+              <div class="stat"><b>8 s</b><span>median time to flag a dev dump</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-section reveal">
+          <p class="eyebrow">Engineering notes</p>
+          <div class="prose">
+            <p>Hardening took as much work as the signals. Public rate limits, a least-privilege database role, secrets separated per process, tiered and masked rosters with watermarking to resist bulk extraction, and an access log. The API runs containerised behind Traefik with automatic TLS, the bots under PM2, and Redis handles hot state.</p>
+            <p>Risk lives inside the trading side too: a hard real-balance drawdown halt, profit-protect trailing on realised PnL, conviction-based position sizing and a roster feedback loop that prunes wallets proven negative.</p>
+          </div>
+        </div>
+    </section>
+
+    <section class="next-project">
+      <div class="container">
+        <a href="thletiq.html">
+          <span><span class="eyebrow">Next project</span><h3>ThletIQ</h3></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <span>© 2026 Collins Kibet</span>
+      <span><a href="mailto:collins.kibet@snhu.edu">collins.kibet@snhu.edu</a> &nbsp;·&nbsp; <a href="https://github.com/Goon254" target="_blank" rel="noopener">GitHub</a></span>
+    </div>
+  </footer>
+  <script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,331 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Fruit Classifier | Collins Kibet</title>
-  <meta name="description" content="Deep learning image classification using Convolutional Neural Networks.">
+  <title>Fruit Classifier — Collins Kibet</title>
+  <meta name="description" content="A convolutional neural network classifying 15 fruit types, built in TensorFlow and Keras by Collins Kibet.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
-  <!-- Grain overlay -->
-  <div class="grain-overlay"></div>
-
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="../index.html">Collins Kibet</a>
-      <div class="nav-path">
-        <span class="path-segment">~</span>
-        <span class="path-separator">/</span>
-        <span class="path-segment">projects</span>
-        <span class="path-separator">/</span>
-        <span class="path-segment active">fruit-classifier</span>
-        <span class="path-git" style="color: var(--accent-secondary);">optimized*</span>
-      </div>
-      <ul class="nav-menu">
-        <li><a href="../index.html">~/home</a></li>
-        <li><a href="../about.html">~/about</a></li>
-        <li><a href="../skills.html">~/skills</a></li>
-        <li><a href="../projects.html" class="active">~/projects</a></li>
-        <li><a href="../contact.html">~/contact.sh</a></li>
+      <ul class="nav-menu" id="menu">
+        <li><a href="../projects.html" class="active">Work</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
       </ul>
-      <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu" onclick="toggleMenu(this)">Menu</button>
     </nav>
   </header>
 
-  <main class="project-detail">
-    <div class="container">
-      <!-- Breadcrumb as terminal path -->
-      <nav class="breadcrumb-terminal">
-        <span class="prompt">$</span>
-        <span class="command">cd</span>
-        <span class="path">~/projects/fruit-classifier</span>
-        <a href="../projects.html" class="back-command">← cd ..</a>
-      </nav>
+  <main>
+    <section class="project-head">
+      <div class="container">
+        <a href="../projects.html" class="back">← All work</a>
+        <p class="eyebrow">Machine learning</p>
+        <h1>Fruit Classifier</h1>
+        <p class="lede">A convolutional neural network that classifies images into 15 fruit categories, with a data augmentation pipeline and a full evaluation report.</p>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Model design, training, evaluation</dd></div>
+          <div><dt>Stack</dt><dd>Python, TensorFlow 2, Keras, NumPy, OpenCV</dd></div>
+          <div><dt>Data</dt><dd>15 classes · ~10k training images · 2k test images</dd></div>
+          <div><dt>Result</dt><dd>94% test accuracy</dd></div>
+        </dl>
+      </div>
+    </section>
 
-      <!-- Hero as Code Header -->
-      <header class="project-header">
-        <div class="file-header">
-          <div class="file-tabs">
-            <div class="tab active">
-              <span class="tab-icon">📄</span>
-              <span class="tab-name">README.md</span>
-              <button class="tab-close">×</button>
-            </div>
-            <div class="tab">
-              <span class="tab-icon">🐍</span>
-              <span class="tab-name">model.py</span>
-            </div>
-            <div class="tab">
-              <span class="tab-icon">📊</span>
-              <span class="tab-name">results.ipynb</span>
-            </div>
-          </div>
-          <div class="window-controls">
-            <button class="win-btn minimize">−</button>
-            <button class="win-btn maximize">□</button>
-            <button class="win-btn close">×</button>
+    <section class="container project-body">
+        <div class="project-section reveal">
+          <p class="eyebrow">Approach</p>
+          <div class="prose">
+            <p>Images are resized to 224×224 and augmented with flips, rotations and brightness shifts in a preprocessing pipeline. The network stacks two convolutional blocks (32 and 64 filters, 3×3, ReLU) with batch normalisation, max pooling and dropout, then a 128-unit dense layer and a 15-way softmax.</p>
           </div>
         </div>
-
-        <div class="project-title-block">
-          <h1 class="project-title">
-            <span class="syn-keyword">class</span> 
-            <span class="syn-class-name">FruitClassifier</span>
-            <span class="syn-paren">(</span><span class="syn-params">CNN</span><span class="syn-paren">)</span>:
-          </h1>
-          <p class="project-subtitle">
-            <span class="syn-string">"""</span>
-            Deep learning image classification using Convolutional Neural Networks 
-            with comprehensive model evaluation and optimization
-            <span class="syn-string">"""</span>
-          </p>
-          
-          <div class="project-meta-bar">
-            <div class="meta-item">
-              <span class="meta-label">status:</span>
-              <span class="meta-value success">optimized ✓</span>
+        <div class="project-section reveal">
+          <p class="eyebrow">Evaluation</p>
+          <div class="prose">
+            <div class="stat-row">
+              <div class="stat"><b>94.2%</b><span>accuracy</span></div>
+              <div class="stat"><b>92.8%</b><span>precision</span></div>
+              <div class="stat"><b>93.5%</b><span>recall</span></div>
             </div>
-            <div class="meta-item">
-              <span class="meta-label">framework:</span>
-              <span class="meta-value">TensorFlow 2.x</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">accuracy:</span>
-              <span class="meta-value highlight">94.2%</span>
-            </div>
-          </div>
-
-          <div class="tech-stack-inline">
-            <span class="syn-keyword">import</span>
-            <span class="syn-import">{</span>
-            <span class="syn-module">TensorFlow</span>,
-            <span class="syn-module">Keras</span>,
-            <span class="syn-module">NumPy</span>,
-            <span class="syn-module">OpenCV</span>
-            <span class="syn-import">}</span>
-            <span class="syn-keyword">from</span>
-            <span class="syn-string">'deep-learning'</span>
+            <p style="margin-top:1.25rem">Evaluated on a held-out set of 2,000 images with a confusion matrix per class. Most remaining errors were between visually similar pairs, which the augmentation pass narrowed but did not remove.</p>
           </div>
         </div>
-      </header>
-
-      <!-- Repository Structure -->
-      <section class="project-section">
-        <h2 class="section-heading">
-          <span class="section-icon">📁</span>
-          <span class="section-title">Project Structure</span>
-        </h2>
-        
-        <div class="file-tree">
-          <div class="tree-line">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">📁</span>
-            <span class="tree-name">data/</span>
-            <span class="tree-comment"># Training & validation datasets</span>
-          </div>
-          <div class="tree-line indent">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">🖼️</span>
-            <span class="tree-name">train/</span>
-            <span class="tree-meta">15 classes, 10k images</span>
-          </div>
-          <div class="tree-line indent">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">🖼️</span>
-            <span class="tree-name">test/</span>
-            <span class="tree-meta">2k images</span>
-          </div>
-          <div class="tree-line">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">📁</span>
-            <span class="tree-name">models/</span>
-            <span class="tree-comment"># Saved model checkpoints</span>
-          </div>
-          <div class="tree-line">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">🐍</span>
-            <span class="tree-name highlight">cnn_model.py</span>
-            <span class="tree-meta">Core architecture</span>
-          </div>
-          <div class="tree-line">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">🐍</span>
-            <span class="tree-name">preprocess.py</span>
-            <span class="tree-meta">Data augmentation pipeline</span>
-          </div>
-          <div class="tree-line">
-            <span class="tree-branch">├──</span>
-            <span class="tree-icon">🐍</span>
-            <span class="tree-name">evaluate.py</span>
-            <span class="tree-meta">Metrics & visualization</span>
-          </div>
-          <div class="tree-line">
-            <span class="tree-branch">└──</span>
-            <span class="tree-icon">📓</span>
-            <span class="tree-name">train.ipynb</span>
-            <span class="tree-meta">Training notebook</span>
+        <div class="project-section reveal">
+          <p class="eyebrow">Structure</p>
+          <div class="prose">
+            <ul>
+              <li><strong>cnn_model.py</strong> — model definition.</li>
+              <li><strong>preprocess.py</strong> — augmentation and dataset loading.</li>
+              <li><strong>evaluate.py</strong> — metrics, confusion matrix and plots.</li>
+              <li><strong>train.ipynb</strong> — training runs and checkpoints.</li>
+            </ul>
           </div>
         </div>
-      </section>
+    </section>
 
-      <!-- Architecture Visualization -->
-      <section class="project-section">
-        <h2 class="section-heading">
-          <span class="section-icon">🏗️</span>
-          <span class="section-title">Model Architecture</span>
-        </h2>
-        
-        <div class="architecture-diagram">
-          <div class="arch-layer input">
-            <div class="layer-label">Input</div>
-            <div class="layer-shape">(224, 224, 3)</div>
-          </div>
-          <div class="arch-arrow">↓</div>
-          
-          <div class="arch-layer conv">
-            <div class="layer-label">Conv2D</div>
-            <div class="layer-details">32 filters, 3×3, ReLU</div>
-            <div class="layer-shape">BatchNorm + MaxPool</div>
-          </div>
-          <div class="arch-arrow">↓</div>
-          
-          <div class="arch-layer conv">
-            <div class="layer-label">Conv2D</div>
-            <div class="layer-details">64 filters, 3×3, ReLU</div>
-            <div class="layer-shape">Dropout(0.25)</div>
-          </div>
-          <div class="arch-arrow">↓</div>
-          
-          <div class="arch-layer flatten">
-            <div class="layer-label">Flatten</div>
-            <div class="layer-shape">→ Dense(128)</div>
-          </div>
-          <div class="arch-arrow">↓</div>
-          
-          <div class="arch-layer output">
-            <div class="layer-label">Output</div>
-            <div class="layer-shape">Dense(15, softmax)</div>
-            <div class="layer-details">15 fruit classes</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Code Implementation -->
-      <section class="project-section">
-        <h2 class="section-heading">
-          <span class="section-icon">🐍</span>
-          <span class="section-title">Core Implementation</span>
-        </h2>
-        
-        <div class="code-window">
-          <div class="code-header">
-            <div class="code-file-path">
-              <span class="path-icon">🐍</span>
-              <span>models/cnn_model.py</span>
-            </div>
-            <button class="code-action" onclick="copyCode(this)">
-              <span class="action-icon">📋</span>
-              <span class="action-text">Copy</span>
-            </button>
-          </div>
-          <pre class="code-block"><code><span class="line-num">1</span>  <span class="syn-keyword">import</span> tensorflow <span class="syn-keyword">as</span> tf
-<span class="line-num">2</span>  <span class="syn-keyword">from</span> tensorflow.keras <span class="syn-keyword">import</span> layers, models
-<span class="line-num">3</span>  
-<span class="line-num">4</span>  <span class="syn-keyword">class</span> <span class="syn-class-name">FruitClassifier</span>(models.Model):
-<span class="line-num">5</span>      <span class="syn-string">"""CNN for multi-class fruit classification"""</span>
-<span class="line-num">6</span>      
-<span class="line-num">7</span>      <span class="syn-keyword">def</span> <span class="syn-function">__init__</span>(<span class="syn-keyword">self</span>, num_classes=<span class="syn-number">15</span>):
-<span class="line-num">8</span>          <span class="syn-keyword">super</span>().<span class="syn-function">__init__</span>()
-<span class="line-num">9</span>          <span class="syn-keyword">self</span>.conv1 = layers.Conv2D(<span class="syn-number">32</span>, (<span class="syn-number">3</span>, <span class="syn-number">3</span>), activation=<span class="syn-string">'relu'</span>)
-<span class="line-num">10</span>         <span class="syn-keyword">self</span>.pool = layers.MaxPooling2D((<span class="syn-number">2</span>, <span class="syn-number">2</span>))
-<span class="line-num">11</span>         <span class="syn-keyword">self</span>.flatten = layers.Flatten()
-<span class="line-num">12</span>         <span class="syn-keyword">self</span>.fc = layers.Dense(<span class="syn-number">128</span>, activation=<span class="syn-string">'relu'</span>)
-<span class="line-num">13</span>         <span class="syn-keyword">self</span>.dropout = layers.Dropout(<span class="syn-number">0.5</span>)
-<span class="line-num">14</span>         <span class="syn-keyword">self</span>.output = layers.Dense(num_classes, activation=<span class="syn-string">'softmax'</span>)
-<span class="line-num">15</span>     
-<span class="line-num">16</span>     <span class="syn-keyword">def</span> <span class="syn-function">call</span>(<span class="syn-keyword">self</span>, inputs):
-<span class="line-num">17</span>         x = <span class="syn-keyword">self</span>.conv1(inputs)
-<span class="line-num">18</span>         x = <span class="syn-keyword">self</span>.pool(x)
-<span class="line-num">19</span>         x = <span class="syn-keyword">self</span>.flatten(x)
-<span class="line-num">20</span>         x = <span class="syn-keyword">self</span>.fc(x)
-<span class="line-num">21</span>         x = <span class="syn-keyword">self</span>.dropout(x)
-<span class="line-num">22</span>         <span class="syn-keyword">return</span> <span class="syn-keyword">self</span>.output(x)</code></pre>
-        </div>
-      </section>
-
-      <!-- Terminal Output: Performance Metrics -->
-      <section class="project-section">
-        <h2 class="section-heading">
-          <span class="section-icon">📊</span>
-          <span class="section-title">Model Evaluation</span>
-        </h2>
-        
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-dots">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="terminal-title">evaluate.py — 80×24</div>
-          </div>
-          <div class="terminal-body">
-            <div class="term-line">
-              <span class="term-prompt">$</span>
-              <span class="term-command">python evaluate.py --model=fruit_cnn.h5</span>
-            </div>
-            <div class="term-output">
-              <div class="term-line output-header">Loading model from checkpoint...</div>
-              <div class="term-line success">✓ Model loaded successfully</div>
-              <div class="term-line">Evaluating on test dataset (2000 samples)</div>
-              <div class="term-line spacer"></div>
-              
-              <div class="metrics-grid">
-                <div class="metric-box">
-                  <div class="metric-value" id="accuracy-counter">0%</div>
-                  <div class="metric-label">Accuracy</div>
-                  <div class="metric-bar">
-                    <div class="metric-fill" style="width: 94.2%"></div>
-                  </div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-value">92.8%</div>
-                  <div class="metric-label">Precision</div>
-                  <div class="metric-bar">
-                    <div class="metric-fill" style="width: 92.8%"></div>
-                  </div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-value">93.5%</div>
-                  <div class="metric-label">Recall</div>
-                  <div class="metric-bar">
-                    <div class="metric-fill" style="width: 93.5%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <section class="next-project">
+      <div class="container">
+        <a href="diaspora-link.html">
+          <span><span class="eyebrow">Next project</span><h3>Diaspora Link</h3></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-comment);">
-        <span style="color: var(--accent-secondary);">➜</span> ~ python evaluate.py
-        <span style="color: var(--text-muted); margin-left: 1rem;"># 94.2% accuracy on 15 fruit classes</span>
-      </p>
+    <div class="inner">
+      <span>© 2026 Collins Kibet</span>
+      <span><a href="mailto:collins.kibet@snhu.edu">collins.kibet@snhu.edu</a> &nbsp;·&nbsp; <a href="https://github.com/Goon254" target="_blank" rel="noopener">GitHub</a></span>
     </div>
   </footer>
-
-  <script>
-    // Mobile menu toggle
-    function toggleMenu() {
-      document.querySelector('.nav-menu').classList.toggle('open');
-    }
-  </script>
+  <script src="../assets/js/site.js"></script>
 </body>
 </html>
